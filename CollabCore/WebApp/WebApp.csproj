@@ -4,7 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>aspnet-WebApp-956f641a-bf78-46cc-bfb3-9d0b682441fb</UserSecretsId>
+        <UserSecretsId>aspnet-WebApp-9a69a635-721e-4bcf-97b3-3b8d86b27a37</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +17,14 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
     </ItemGroup>
 
 </Project>
