@@ -31,4 +31,6 @@ public class User : IdentityUser
     public ICollection<WorkDay>? WorkDays { get; set; }
     
     public ICollection<UserInTeam>? UserInTeams { get; set; }
+    
+    public ICollection<Role>? Roles { get; set; }
 }
