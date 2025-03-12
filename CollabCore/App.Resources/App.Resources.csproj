@@ -1,0 +1,207 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Domain\Absence.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Absence.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Department.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Department.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Absence.et.resx">
+        <DependentUpon>Absence.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Meeting.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Meeting.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Message.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Message.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Role.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Role.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Schedule.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Status.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Status.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Task.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Task.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Team.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Team.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Ticket.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Ticket.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\User.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>User.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInRole.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserInRole.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInTeam.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserInTeam.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInTeamInTask.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserInTeamInTask.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInWorkDay.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserInWorkDay.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\WorkDay.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>WorkDay.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Department.et.resx">
+        <DependentUpon>Department.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Meeting.et.resx">
+        <DependentUpon>Meeting.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Message.et.resx">
+        <DependentUpon>Message.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Role.et.resx">
+        <DependentUpon>Role.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Schedule.et.resx">
+        <DependentUpon>Schedule.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Status.et.resx">
+        <DependentUpon>Status.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Task.et.resx">
+        <DependentUpon>Task.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Team.et.resx">
+        <DependentUpon>Team.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Ticket.et.resx">
+        <DependentUpon>Ticket.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\User.et.resx">
+        <DependentUpon>User.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInRole.et.resx">
+        <DependentUpon>UserInRole.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInTeam.et.resx">
+        <DependentUpon>UserInTeam.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInTeamInTask.et.resx">
+        <DependentUpon>UserInTeamInTask.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\UserInWorkDay.et.resx">
+        <DependentUpon>UserInWorkDay.resx</DependentUpon>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\WorkDay.et.resx">
+        <DependentUpon>WorkDay.resx</DependentUpon>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Domain\Absence.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Absence.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Department.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Department.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Meeting.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Meeting.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Message.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Message.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Role.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Role.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Schedule.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Schedule.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Status.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Status.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Task.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Task.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Team.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Team.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Ticket.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Ticket.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\User.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>User.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\UserInRole.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserInRole.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\UserInTeam.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserInTeam.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\UserInTeamInTask.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserInTeamInTask.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\UserInWorkDay.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserInWorkDay.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\WorkDay.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>WorkDay.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>
