@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SinceDate)
+                @Html.DisplayNameFor(model => model.Since)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ToDate)
+                @Html.DisplayNameFor(model => model.Until)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.WorkDay)
@@ -31,13 +31,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.SinceDate)
+                @Html.DisplayFor(modelItem => item.Since)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ToDate)
+                @Html.DisplayFor(modelItem => item.Until)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.User)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WorkDay!.Id)

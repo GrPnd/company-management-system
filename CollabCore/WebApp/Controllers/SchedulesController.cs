@@ -57,7 +57,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StartDate,EndDate,TeamId,Id")] Schedule schedule)
+        public async Task<IActionResult> Create([Bind("StartDate,EndDate,TeamId,CreatedAt,DeletedAt,Id")] Schedule schedule)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +92,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,TeamId,Id")] Schedule schedule)
+        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,TeamId,CreatedAt,DeletedAt,Id")] Schedule schedule)
         {
             if (id != schedule.Id)
             {

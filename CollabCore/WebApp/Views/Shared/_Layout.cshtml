@@ -24,53 +24,58 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Absences" asp-action="Index">Absences</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Absences" asp-action="Index">@App.Resources.Domain.Absence._AbsenceLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Departments" asp-action="Index">@App.Resources.Domain.Department._DepartmentLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Meetings" asp-action="Index">Meetings</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Meetings" asp-action="Index">@App.Resources.Domain.Meeting._MeetingLayOut</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">Messages</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Messages" asp-action="Index">@App.Resources.Domain.Message._MessageLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">@App.Resources.Domain.Role._RoleLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="Index">Schedules</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="Index">@App.Resources.Domain.Schedule._ScehduleLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Statuses" asp-action="Index">Statuses</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Statuses" asp-action="Index">@App.Resources.Domain.Status._StatusLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="Index">Tasks</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="Index">@App.Resources.Domain.Task._TaskLayout</a>
                     </li>                    
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="Index">Teams</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="Index">@App.Resources.Domain.Team._TeamLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Tickets</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">@App.Resources.Domain.Ticket._TicketLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">@App.Resources.Domain.User._UserLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInRoles" asp-action="Index">UsersInRoles</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInRoles" asp-action="Index">@App.Resources.Domain.UserInRole._UserInRoleLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInTeams" asp-action="Index">UsersInTeams</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInTeams" asp-action="Index">@App.Resources.Domain.UserInTeam._UserInTeamLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInTeamsInTasks" asp-action="Index">UsersInTeamsInTasks</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInTeamsInTasks" asp-action="Index">@App.Resources.Domain.UserInTeamInTask._UserInTeamInTaskLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInWorkDays" asp-action="Index">UsersInWorkDays</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="UsersInWorkDays" asp-action="Index">@App.Resources.Domain.UserInWorkDay._UserInWorkDayLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="WorkDays" asp-action="Index">WorkDays</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="WorkDays" asp-action="Index">@App.Resources.Domain.WorkDay._WorkDayLayout</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
+                    </li>
+                    
+                    <partial name="_LanguageSelection"/>
                     
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -86,7 +91,8 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        &copy; 2025 - WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> |
+        @Thread.CurrentThread.CurrentCulture.Name | @Thread.CurrentThread.CurrentUICulture.Name
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

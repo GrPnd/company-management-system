@@ -39,6 +39,7 @@ dotnet aspnet-codegenerator controller -name WorkDaysController -actions -m App.
 ~~~
 
 ~~~sh
+cd WebApp
 
 dotnet aspnet-codegenerator controller -name AbsencesController -actions -m App.Domain.Absence -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name DepartmentsController -actions -m App.Domain.Department -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f

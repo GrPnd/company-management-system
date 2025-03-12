@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Text,FromUserId,ToUserId,Id")] Message message)
+        public async Task<IActionResult> Create([Bind("Text,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Message message)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Text,FromUserId,ToUserId,Id")] Message message)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Text,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Message message)
         {
             if (id != message.Id)
             {

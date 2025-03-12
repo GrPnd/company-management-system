@@ -1,0 +1,35 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Reason" xml:space="preserve">
+        <value>Põhjus</value>
+    </data>
+    <data name="AuthorizedByUser" xml:space="preserve">
+        <value>Autoriseeris</value>
+    </data>
+    <data name="ByUser" xml:space="preserve">
+        <value>Taotles</value>
+    </data>
+    <data name="EndDate" xml:space="preserve">
+        <value>Lõppkuupäev</value>
+    </data>
+    <data name="IsApproved" xml:space="preserve">
+        <value>On valideeritud</value>
+    </data>
+    <data name="StartDate" xml:space="preserve">
+        <value>Alguskuupäev</value>
+    </data>
+    <data name=".AbsenceLayout" xml:space="preserve">
+        <value>Puudumised</value>
+    </data>
+</root>
