@@ -15,7 +15,7 @@ public class UserInRole : BaseEntity
     
     public Guid UserId { get; set; }
     [Display(Name = nameof(User), Prompt = nameof(User), ResourceType = typeof(App.Resources.Domain.UserInRole))]
-    public User? User { get; set; }
+    public Person? User { get; set; }
     
     
     public Guid RoleId { get; set; }

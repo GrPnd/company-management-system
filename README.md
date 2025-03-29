@@ -16,7 +16,6 @@ dotnet ef migrations --project App.DAL.EF --startup-project WebApp remove
 dotnet ef database --project App.DAL.EF --startup-project WebApp drop
 ~~~
 
-
 ~~~sh
 cd WebApp
 
@@ -30,12 +29,14 @@ dotnet aspnet-codegenerator controller -name StatusesController -actions -m App.
 dotnet aspnet-codegenerator controller -name TasksController -actions -m App.Domain.Task -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name TeamsController -actions -m App.Domain.Team -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name TicketsController -actions -m App.Domain.Ticket -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-dotnet aspnet-codegenerator controller -name UsersController -actions -m App.Domain.User -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name PersonsController -actions -m App.Domain.Person -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name UsersInRolesController -actions -m App.Domain.UserInRole -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name UsersInTeamsController -actions -m App.Domain.UserInTeam -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name UsersInTeamsInTasksController -actions -m App.Domain.UserInTeamInTask -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name UsersInWorkDaysController -actions -m App.Domain.UserInWorkDay -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 dotnet aspnet-codegenerator controller -name WorkDaysController -actions -m App.Domain.WorkDay -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator identity -dc App.DAL.EF.AppDbContext -f
 ~~~
 
 ~~~sh
@@ -51,7 +52,7 @@ dotnet aspnet-codegenerator controller -name StatusesController -actions -m App.
 dotnet aspnet-codegenerator controller -name TasksController -actions -m App.Domain.Task -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name TeamsController -actions -m App.Domain.Team -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name TicketsController -actions -m App.Domain.Ticket -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
-dotnet aspnet-codegenerator controller -name UsersController -actions -m App.Domain.User -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
+dotnet aspnet-codegenerator controller -name PersonsController -actions -m App.Domain.Person -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name UsersInRolesController -actions -m App.Domain.UserInRole -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name UsersInTeamsController -actions -m App.Domain.UserInTeam -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f
 dotnet aspnet-codegenerator controller -name UsersInTeamsInTasksController -actions -m App.Domain.UserInTeamInTask -dc AppDbContext -outDir ApiControllers -api --useAsyncActions -f

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class UsersInWorkDaysController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,7 @@ namespace WebApp.Controllers
         // GET: UsersInWorkDays
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInWorkDays.Include(u => u.WorkDay);
+            var appDbContext = _context.UsersInWorkDays.Include(u => u.User).Include(u => u.WorkDay);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,6 +37,7 @@ namespace WebApp.Controllers
             }
 
             var userInWorkDay = await _context.UsersInWorkDays
+                .Include(u => u.User)
                 .Include(u => u.WorkDay)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInWorkDay == null)
@@ -48,6 +51,7 @@ namespace WebApp.Controllers
         // GET: UsersInWorkDays/Create
         public IActionResult Create()
         {
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id");
             return View();
         }
@@ -57,7 +61,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SinceDate,ToDate,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
+        public async Task<IActionResult> Create([Bind("Since,Until,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +70,7 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
             ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
             return View(userInWorkDay);
         }
@@ -83,6 +88,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
             ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
             return View(userInWorkDay);
         }
@@ -92,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("SinceDate,ToDate,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Since,Until,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
         {
             if (id != userInWorkDay.Id)
             {
@@ -119,6 +125,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
             ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
             return View(userInWorkDay);
         }
@@ -132,6 +139,7 @@ namespace WebApp.Controllers
             }
 
             var userInWorkDay = await _context.UsersInWorkDays
+                .Include(u => u.User)
                 .Include(u => u.WorkDay)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInWorkDay == null)

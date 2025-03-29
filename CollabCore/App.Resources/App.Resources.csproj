@@ -50,7 +50,7 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Ticket.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\User.resx">
+      <EmbeddedResource Update="Domain\Person.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>User.Designer.cs</LastGenOutput>
       </EmbeddedResource>
@@ -101,8 +101,8 @@
       <EmbeddedResource Update="Domain\Ticket.et.resx">
         <DependentUpon>Ticket.resx</DependentUpon>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\User.et.resx">
-        <DependentUpon>User.resx</DependentUpon>
+      <EmbeddedResource Update="Domain\Person.et.resx">
+        <DependentUpon>Person.resx</DependentUpon>
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\UserInRole.et.resx">
         <DependentUpon>UserInRole.resx</DependentUpon>
@@ -172,10 +172,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Ticket.resx</DependentUpon>
       </Compile>
-      <Compile Update="Domain\User.Designer.cs">
+      <Compile Update="Domain\Person.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>User.resx</DependentUpon>
+        <DependentUpon>Person.resx</DependentUpon>
       </Compile>
       <Compile Update="Domain\UserInRole.Designer.cs">
         <DesignTime>True</DesignTime>

@@ -15,7 +15,7 @@ public class UserInWorkDay : BaseEntity
     
     public Guid UserId { get; set; }
     [Display(Name = nameof(User), Prompt = nameof(User), ResourceType = typeof(App.Resources.Domain.UserInWorkDay))]
-    public User? User { get; set; }
+    public Person? User { get; set; }
     
     
     public Guid WorkDayId { get; set; }

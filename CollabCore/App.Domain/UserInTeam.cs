@@ -21,7 +21,7 @@ public class UserInTeam : BaseEntity
     
     public Guid UserId { get; set; }
     [Display(Name = nameof(User), Prompt = nameof(User), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
-    public User? User { get; set; }
+    public Person? User { get; set; }
     
     
     public Guid TeamId { get; set; }

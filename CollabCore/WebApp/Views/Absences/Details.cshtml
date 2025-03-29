@@ -35,16 +35,16 @@
             @Html.DisplayFor(model => model.IsApproved)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ByUserId)
+            @Html.DisplayNameFor(model => model.ByUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ByUserId)
+            @Html.DisplayFor(model => model.ByUser.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AuthorizedByUserId)
+            @Html.DisplayNameFor(model => model.AuthorizedByUser)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AuthorizedByUserId)
+            @Html.DisplayFor(model => model.AuthorizedByUser.Id)
         </dd>
     </dl>
 </div>

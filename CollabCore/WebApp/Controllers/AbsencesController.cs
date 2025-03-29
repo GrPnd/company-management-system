@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
+    
     public class AbsencesController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +25,8 @@ namespace WebApp.Controllers
         // GET: Absences
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Absences.ToListAsync());
+            var appDbContext = _context.Absences.Include(a => a.AuthorizedByUser).Include(a => a.ByUser);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Absences/Details/5
@@ -34,6 +38,8 @@ namespace WebApp.Controllers
             }
 
             var absence = await _context.Absences
+                .Include(a => a.AuthorizedByUser)
+                .Include(a => a.ByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (absence == null)
             {
@@ -46,6 +52,8 @@ namespace WebApp.Controllers
         // GET: Absences/Create
         public IActionResult Create()
         {
+            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -63,6 +71,8 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
+            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
             return View(absence);
         }
 
@@ -79,6 +89,8 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
+            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
             return View(absence);
         }
 
@@ -114,6 +126,8 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
+            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
             return View(absence);
         }
 
@@ -126,6 +140,8 @@ namespace WebApp.Controllers
             }
 
             var absence = await _context.Absences
+                .Include(a => a.AuthorizedByUser)
+                .Include(a => a.ByUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (absence == null)
             {

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class UsersInRolesController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,7 @@ namespace WebApp.Controllers
         // GET: UsersInRoles
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInRoles.Include(u => u.Role);
+            var appDbContext = _context.UsersInRoles.Include(u => u.Role).Include(u => u.User);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,6 +38,7 @@ namespace WebApp.Controllers
 
             var userInRole = await _context.UsersInRoles
                 .Include(u => u.Role)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInRole == null)
             {
@@ -49,6 +52,7 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -67,6 +71,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", userInRole.RoleId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInRole.UserId);
             return View(userInRole);
         }
 
@@ -84,6 +89,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", userInRole.RoleId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInRole.UserId);
             return View(userInRole);
         }
 
@@ -120,6 +126,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Name", userInRole.RoleId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInRole.UserId);
             return View(userInRole);
         }
 
@@ -133,6 +140,7 @@ namespace WebApp.Controllers
 
             var userInRole = await _context.UsersInRoles
                 .Include(u => u.Role)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInRole == null)
             {

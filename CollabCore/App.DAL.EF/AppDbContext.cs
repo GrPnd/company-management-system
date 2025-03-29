@@ -1,11 +1,12 @@
 ﻿using App.Domain;
+using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Task = App.Domain.Task;
 
 namespace App.DAL.EF;
 
-public class AppDbContext : IdentityDbContext
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     
     public DbSet<Absence> Absences { get; set; } = default!;
@@ -18,7 +19,7 @@ public class AppDbContext : IdentityDbContext
     public DbSet<Task> Tasks { get; set; } = default!;
     public DbSet<Team> Teams { get; set; } = default!;
     public DbSet<Ticket> Tickets { get; set; } = default!;
-    public DbSet<User> Users { get; set; } = default!;
+    public DbSet<Person> Persons { get; set; } = default!;
     public DbSet<UserInRole> UsersInRoles { get; set; } = default!;
     public DbSet<UserInTeam> UsersInTeams { get; set; } = default!;
     public DbSet<UserInTeamInTask> UsersInTeamsInTasks { get; set; } = default!;

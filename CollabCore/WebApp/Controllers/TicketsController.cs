@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,8 @@ namespace WebApp.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tickets.ToListAsync());
+            var appDbContext = _context.Tickets.Include(t => t.FromUser).Include(t => t.ToUser);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -34,6 +37,8 @@ namespace WebApp.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.FromUser)
+                .Include(t => t.ToUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -46,6 +51,8 @@ namespace WebApp.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -63,6 +70,8 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
             return View(ticket);
         }
 
@@ -79,6 +88,8 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
             return View(ticket);
         }
 
@@ -114,6 +125,8 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
             return View(ticket);
         }
 
@@ -126,6 +139,8 @@ namespace WebApp.Controllers
             }
 
             var ticket = await _context.Tickets
+                .Include(t => t.FromUser)
+                .Include(t => t.ToUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {

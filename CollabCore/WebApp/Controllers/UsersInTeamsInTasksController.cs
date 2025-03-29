@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class UsersInTeamsInTasksController : Controller
     {
         private readonly AppDbContext _context;
@@ -59,7 +61,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StartDate,EndDate,Review,TaskId,UserInTeamId,Id")] UserInTeamInTask userInTeamInTask)
+        public async Task<IActionResult> Create([Bind("Since,Until,Review,TaskId,UserInTeamId,Id")] UserInTeamInTask userInTeamInTask)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,Review,TaskId,UserInTeamId,Id")] UserInTeamInTask userInTeamInTask)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Since,Until,Review,TaskId,UserInTeamId,Id")] UserInTeamInTask userInTeamInTask)
         {
             if (id != userInTeamInTask.Id)
             {

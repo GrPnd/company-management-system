@@ -34,12 +34,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="ByUserId" class="control-label"></label>
-                <input asp-for="ByUserId" class="form-control" />
+                <select asp-for="ByUserId" class="form-control" asp-items="ViewBag.ByUserId"></select>
                 <span asp-validation-for="ByUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AuthorizedByUserId" class="control-label"></label>
-                <input asp-for="AuthorizedByUserId" class="form-control" />
+                <select asp-for="AuthorizedByUserId" class="form-control" asp-items="ViewBag.AuthorizedByUserId"></select>
                 <span asp-validation-for="AuthorizedByUserId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />

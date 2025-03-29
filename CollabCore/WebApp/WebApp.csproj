@@ -19,15 +19,18 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0"/>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ApiControllers\" />
       <Folder Include="Data\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
       <ProjectReference Include="..\App.Resources\App.Resources.csproj" />
+      <ProjectReference Include="..\Base.Helpers\Base.Helpers.csproj" />
       <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
     </ItemGroup>
 
@@ -72,6 +75,69 @@
       <_ContentIncludedByDefault Remove="Views\Tickets\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Tickets\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Tickets\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Users\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tasks\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tasks\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tasks\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tasks\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tasks\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInRoles\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInRoles\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInRoles\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInRoles\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInRoles\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeams\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeams\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeams\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeams\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeams\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeamsInTasks\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeamsInTasks\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeamsInTasks\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeamsInTasks\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInTeamsInTasks\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInWorkDays\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInWorkDays\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInWorkDays\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInWorkDays\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\UsersInWorkDays\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\WorkDays\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\WorkDays\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\WorkDays\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\WorkDays\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\WorkDays\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Departments\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Departments\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Departments\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Departments\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Departments\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Messages\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Messages\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Messages\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Messages\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Messages\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Teams\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Teams\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Teams\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Teams\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Teams\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Users\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Users\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Users\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Users\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Users\Index.cshtml" />
     </ItemGroup>
 
 </Project>

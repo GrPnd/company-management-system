@@ -23,7 +23,10 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
+
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Absences" asp-action="Index">@App.Resources.Domain.Absence._AbsenceLayout</a>
                     </li>
                     <li class="nav-item">
@@ -54,7 +57,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">@App.Resources.Domain.Ticket._TicketLayout</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">@App.Resources.Domain.User._UserLayout</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Persons" asp-action="Index">@App.Resources.Domain.Person._PersonLayout</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="UsersInRoles" asp-action="Index">@App.Resources.Domain.UserInRole._UserInRoleLayout</a>
@@ -71,6 +74,8 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="WorkDays" asp-action="Index">@App.Resources.Domain.WorkDay._WorkDayLayout</a>
                     </li>
+                    }
+                    
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@Base.Resources.Common.Privacy</a>
                     </li>

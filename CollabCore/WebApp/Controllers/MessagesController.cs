@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,8 @@ namespace WebApp.Controllers
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Messages.ToListAsync());
+            var appDbContext = _context.Messages.Include(m => m.FromUser).Include(m => m.ToUser);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Messages/Details/5
@@ -34,6 +37,8 @@ namespace WebApp.Controllers
             }
 
             var message = await _context.Messages
+                .Include(m => m.FromUser)
+                .Include(m => m.ToUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
             {
@@ -46,6 +51,8 @@ namespace WebApp.Controllers
         // GET: Messages/Create
         public IActionResult Create()
         {
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -63,6 +70,8 @@ namespace WebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
             return View(message);
         }
 
@@ -79,6 +88,8 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
             return View(message);
         }
 
@@ -114,6 +125,8 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
+            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
             return View(message);
         }
 
@@ -126,6 +139,8 @@ namespace WebApp.Controllers
             }
 
             var message = await _context.Messages
+                .Include(m => m.FromUser)
+                .Include(m => m.ToUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
             {

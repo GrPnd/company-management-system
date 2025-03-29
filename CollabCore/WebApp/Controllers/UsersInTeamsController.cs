@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class UsersInTeamsController : Controller
     {
         private readonly AppDbContext _context;
@@ -22,7 +24,7 @@ namespace WebApp.Controllers
         // GET: UsersInTeams
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInTeams.Include(u => u.Team);
+            var appDbContext = _context.UsersInTeams.Include(u => u.Team).Include(u => u.User);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,6 +38,7 @@ namespace WebApp.Controllers
 
             var userInTeam = await _context.UsersInTeams
                 .Include(u => u.Team)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInTeam == null)
             {
@@ -49,6 +52,7 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Role,Since,To,UserId,TeamId,Id")] UserInTeam userInTeam)
+        public async Task<IActionResult> Create([Bind("Role,Since,Until,UserId,TeamId,Id")] UserInTeam userInTeam)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +71,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
             return View(userInTeam);
         }
 
@@ -84,6 +89,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
             return View(userInTeam);
         }
 
@@ -92,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Role,Since,To,UserId,TeamId,Id")] UserInTeam userInTeam)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Role,Since,Until,UserId,TeamId,Id")] UserInTeam userInTeam)
         {
             if (id != userInTeam.Id)
             {
@@ -120,6 +126,7 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
             return View(userInTeam);
         }
 
@@ -133,6 +140,7 @@ namespace WebApp.Controllers
 
             var userInTeam = await _context.UsersInTeams
                 .Include(u => u.Team)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInTeam == null)
             {
