@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class UsersInTeamsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public UsersInTeamsController(AppDbContext context)
+        public UsersInTeamsController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: UsersInTeams
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInTeams.Include(u => u.Team).Include(u => u.User);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.UserInTeamRepository.AllAsync();
+            return View(res);
         }
 
         // GET: UsersInTeams/Details/5
@@ -36,24 +33,27 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInTeam = await _context.UsersInTeams
-                .Include(u => u.Team)
-                .Include(u => u.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userInTeam == null)
+            var entity = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(userInTeam);
+            return View(entity);
         }
 
         // GET: UsersInTeams/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var vm = new UserInTeamViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                    nameof(Team.Name)),
+                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id))
+            };
+            return View(vm);
         }
 
         // POST: UsersInTeams/Create
@@ -61,18 +61,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Role,Since,Until,UserId,TeamId,Id")] UserInTeam userInTeam)
+        public async Task<IActionResult> Create(UserInTeamViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                userInTeam.Id = Guid.NewGuid();
-                _context.Add(userInTeam);
-                await _context.SaveChangesAsync();
+                _uow.UserInTeamRepository.Add(vm.UserInTeam);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
-            return View(userInTeam);
+
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                nameof(Team.Name), vm.UserInTeam.TeamId);
+            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id), 
+                nameof(Person.Id), vm.UserInTeam.UserId);
+            
+            return View(vm);
         }
 
         // GET: UsersInTeams/Edit/5
@@ -83,14 +86,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInTeam = await _context.UsersInTeams.FindAsync(id);
+            var userInTeam = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
             if (userInTeam == null)
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
-            return View(userInTeam);
+            
+            var vm = new UserInTeamViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                    nameof(Team.Name), userInTeam.TeamId),
+                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id), userInTeam.UserId),
+                UserInTeam = userInTeam
+            };
+            return View(vm);
         }
 
         // POST: UsersInTeams/Edit/5
@@ -98,36 +108,26 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Role,Since,Until,UserId,TeamId,Id")] UserInTeam userInTeam)
+        public async Task<IActionResult> Edit(Guid id, UserInTeamViewModel vm)
         {
-            if (id != userInTeam.Id)
+            if (id != vm.UserInTeam.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(userInTeam);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserInTeamExists(userInTeam.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.UserInTeamRepository.Update(vm.UserInTeam);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", userInTeam.TeamId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInTeam.UserId);
-            return View(userInTeam);
+
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                nameof(Team.Name), vm.UserInTeam.TeamId);
+            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id), 
+                nameof(Person.Id), vm.UserInTeam.UserId);
+            
+            return View(vm);
         }
 
         // GET: UsersInTeams/Delete/5
@@ -138,10 +138,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInTeam = await _context.UsersInTeams
-                .Include(u => u.Team)
-                .Include(u => u.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var userInTeam = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (userInTeam == null)
             {
                 return NotFound();
@@ -155,19 +153,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var userInTeam = await _context.UsersInTeams.FindAsync(id);
-            if (userInTeam != null)
-            {
-                _context.UsersInTeams.Remove(userInTeam);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.UserInTeamRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool UserInTeamExists(Guid id)
-        {
-            return _context.UsersInTeams.Any(e => e.Id == id);
         }
     }
 }

@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class MeetingsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public MeetingsController(AppDbContext context)
+        public MeetingsController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Meetings
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Meetings.Include(m => m.Team);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.MeetingRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Meetings/Details/5
@@ -36,22 +33,25 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var meeting = await _context.Meetings
-                .Include(m => m.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (meeting == null)
+            var entity = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(meeting);
+            return View(entity);
         }
 
         // GET: Meetings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            return View();
+            var vm = new MeetingViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                    nameof(Team.Name))
+            };
+            return View(vm);
         }
 
         // POST: Meetings/Create
@@ -59,17 +59,18 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,IsMandatory,StartDate,Link,TeamId,Id")] Meeting meeting)
+        public async Task<IActionResult> Create(MeetingViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                meeting.Id = Guid.NewGuid();
-                _context.Add(meeting);
-                await _context.SaveChangesAsync();
+                _uow.MeetingRepository.Add(vm.Meeting);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", meeting.TeamId);
-            return View(meeting);
+            
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                nameof(Team.Name), vm.Meeting.TeamId);
+            return View(vm);
         }
 
         // GET: Meetings/Edit/5
@@ -79,14 +80,20 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var meeting = await _context.Meetings.FindAsync(id);
+            
+            var meeting = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
             if (meeting == null)
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", meeting.TeamId);
-            return View(meeting);
+
+            var vm = new MeetingViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+                    nameof(Team.Id), nameof(Team.Name), meeting.TeamId),
+                Meeting = meeting
+            };
+            return View(vm);
         }
 
         // POST: Meetings/Edit/5
@@ -94,35 +101,23 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,IsMandatory,StartDate,Link,TeamId,Id")] Meeting meeting)
+        public async Task<IActionResult> Edit(Guid id, MeetingViewModel vm)
         {
-            if (id != meeting.Id)
+            if (id != vm.Meeting.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(meeting);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MeetingExists(meeting.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.MeetingRepository.Update(vm.Meeting);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", meeting.TeamId);
-            return View(meeting);
+            
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+                nameof(Team.Id), nameof(Team.Name), vm.Meeting.TeamId);
+            return View(vm);
         }
 
         // GET: Meetings/Delete/5
@@ -132,10 +127,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            
+            var meeting = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
 
-            var meeting = await _context.Meetings
-                .Include(m => m.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (meeting == null)
             {
                 return NotFound();
@@ -149,19 +143,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var meeting = await _context.Meetings.FindAsync(id);
-            if (meeting != null)
-            {
-                _context.Meetings.Remove(meeting);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.MeetingRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MeetingExists(Guid id)
-        {
-            return _context.Meetings.Any(e => e.Id == id);
         }
     }
 }

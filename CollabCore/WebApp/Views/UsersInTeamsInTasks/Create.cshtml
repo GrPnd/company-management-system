@@ -1,4 +1,4 @@
-@model App.Domain.UserInTeamInTask
+@model WebApp.ViewModels.UserInTeamInTaskViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,27 +13,27 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Since" class="control-label"></label>
-                <input asp-for="Since" class="form-control" />
-                <span asp-validation-for="Since" class="text-danger"></span>
+                <label asp-for="UserInTeamInTask.Since" class="control-label"></label>
+                <input asp-for="UserInTeamInTask.Since" class="form-control" />
+                <span asp-validation-for="UserInTeamInTask.Since" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Until" class="control-label"></label>
-                <input asp-for="Until" class="form-control" />
-                <span asp-validation-for="Until" class="text-danger"></span>
+                <label asp-for="UserInTeamInTask.Until" class="control-label"></label>
+                <input asp-for="UserInTeamInTask.Until" class="form-control" />
+                <span asp-validation-for="UserInTeamInTask.Until" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Review" class="control-label"></label>
-                <input asp-for="Review" class="form-control" />
-                <span asp-validation-for="Review" class="text-danger"></span>
+                <label asp-for="UserInTeamInTask.Review" class="control-label"></label>
+                <input asp-for="UserInTeamInTask.Review" class="form-control" />
+                <span asp-validation-for="UserInTeamInTask.Review" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TaskId" class="control-label"></label>
-                <select asp-for="TaskId" class ="form-control" asp-items="ViewBag.TaskId"></select>
+                <label asp-for="UserInTeamInTask.TaskId" class="control-label"></label>
+                <select asp-for="UserInTeamInTask.TaskId" class ="form-control" asp-items="Model.TaskSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="UserInTeamId" class="control-label"></label>
-                <select asp-for="UserInTeamId" class ="form-control" asp-items="ViewBag.UserInTeamId"></select>
+                <label asp-for="UserInTeamInTask.UserInTeamId" class="control-label"></label>
+                <select asp-for="UserInTeamInTask.UserInTeamId" class ="form-control" asp-items="Model.UsersInTeamSelectList"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

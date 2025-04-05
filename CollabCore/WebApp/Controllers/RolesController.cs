@@ -1,30 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class RolesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public RolesController(AppDbContext context)
+        public RolesController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Roles.ToListAsync());
+            var res = await _uow.RoleRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Roles/Details/5
@@ -35,8 +32,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (role == null)
             {
                 return NotFound();
@@ -48,7 +45,8 @@ namespace WebApp.Controllers
         // GET: Roles/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new RoleViewModel();
+            return View(vm);
         }
 
         // POST: Roles/Create
@@ -56,16 +54,22 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CreatedAt,DeletedAt,Id")] Role role)
+        public async Task<IActionResult> Create(RoleViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                role.Id = Guid.NewGuid();
-                _context.Add(role);
-                await _context.SaveChangesAsync();
+                var entity = new Role()
+                {
+                    Name = vm.Name,
+                    CreatedAt = vm.CreatedAt,
+                    DeletedAt = vm.DeletedAt
+                };
+                
+                _uow.RoleRepository.Add(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(role);
+            return View(vm);
         }
 
         // GET: Roles/Edit/5
@@ -76,12 +80,19 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles.FindAsync(id);
+            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
             if (role == null)
             {
                 return NotFound();
             }
-            return View(role);
+
+            var vm = new RoleViewModel()
+            {
+                Id = role.Id,
+                Name = role.Name
+            };
+
+            return View(vm);
         }
 
         // POST: Roles/Edit/5
@@ -89,34 +100,29 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,CreatedAt,DeletedAt,Id")] Role role)
+        public async Task<IActionResult> Edit(Guid id, RoleViewModel vm)
         {
-            if (id != role.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var entity = await _uow.RoleRepository.FindAsync(vm.Id, User.GetUserId());
+                if (entity == null)
                 {
-                    _context.Update(role);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoleExists(role.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                
+                entity.Name = vm.Name;
+                
+                _uow.RoleRepository.Update(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(role);
+            
+            return View(vm);
         }
 
         // GET: Roles/Delete/5
@@ -127,8 +133,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _context.Roles
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (role == null)
             {
                 return NotFound();
@@ -142,19 +148,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role != null)
-            {
-                _context.Roles.Remove(role);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.RoleRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RoleExists(Guid id)
-        {
-            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

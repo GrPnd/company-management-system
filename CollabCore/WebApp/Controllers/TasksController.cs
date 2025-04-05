@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class TasksController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public TasksController(AppDbContext context)
+        public TasksController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Tasks.Include(t => t.Status).Include(t => t.UserInTeam);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.TaskRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Tasks/Details/5
@@ -36,24 +33,27 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks
-                .Include(t => t.Status)
-                .Include(t => t.UserInTeam)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (task == null)
+            var entity = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(task);
+            return View(entity);
         }
 
         // GET: Tasks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name");
-            ViewData["UserInTeamId"] = new SelectList(_context.UsersInTeams, "Id", "Role");
-            return View();
+            var vm = new TaskViewModel()
+            {
+                StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                    nameof(Status.Name)),
+                UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                    nameof(UserInTeam.Id), nameof(UserInTeam.Role))
+            };
+            return View(vm);
         }
 
         // POST: Tasks/Create
@@ -61,18 +61,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,AssignedAt,Deadline,StatusId,UserInTeamId,Id")] App.Domain.Task task)
+        public async Task<IActionResult> Create(TaskViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                task.Id = Guid.NewGuid();
-                _context.Add(task);
-                await _context.SaveChangesAsync();
+                _uow.TaskRepository.Add(vm.Task);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", task.StatusId);
-            ViewData["UserInTeamId"] = new SelectList(_context.UsersInTeams, "Id", "Role", task.UserInTeamId);
-            return View(task);
+            
+            vm.StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                nameof(Status.Name), vm.Task.StatusId);
+            vm.UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
+
+            return View(vm);
         }
 
         // GET: Tasks/Edit/5
@@ -83,14 +86,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks.FindAsync(id);
+            var task = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
             if (task == null)
             {
                 return NotFound();
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", task.StatusId);
-            ViewData["UserInTeamId"] = new SelectList(_context.UsersInTeams, "Id", "Role", task.UserInTeamId);
-            return View(task);
+            
+            var vm = new TaskViewModel()
+            {
+                StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                    nameof(Status.Name), task.StatusId),
+                UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                    nameof(UserInTeam.Id), nameof(UserInTeam.Role), task.UserInTeamId),
+                Task = task
+            };
+            return View(vm);
         }
 
         // POST: Tasks/Edit/5
@@ -98,36 +108,26 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,AssignedAt,Deadline,StatusId,UserInTeamId,Id")] App.Domain.Task task)
+        public async Task<IActionResult> Edit(Guid id, TaskViewModel vm)
         {
-            if (id != task.Id)
+            if (id != vm.Task.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(task);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TaskExists(task.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.TaskRepository.Update(vm.Task);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", task.StatusId);
-            ViewData["UserInTeamId"] = new SelectList(_context.UsersInTeams, "Id", "Role", task.UserInTeamId);
-            return View(task);
+            
+            vm.StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                nameof(Status.Name), vm.Task.StatusId);
+            vm.UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
+            
+            return View(vm);
         }
 
         // GET: Tasks/Delete/5
@@ -138,10 +138,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Tasks
-                .Include(t => t.Status)
-                .Include(t => t.UserInTeam)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var task = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
             if (task == null)
             {
                 return NotFound();
@@ -155,19 +152,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task != null)
-            {
-                _context.Tasks.Remove(task);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.TaskRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TaskExists(Guid id)
-        {
-            return _context.Tasks.Any(e => e.Id == id);
         }
     }
 }

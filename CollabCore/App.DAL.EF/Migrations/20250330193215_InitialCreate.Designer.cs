@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250322190841_InitialCreate")]
+    [Migration("20250330193215_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -122,6 +122,16 @@ namespace App.DAL.EF.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -237,15 +247,10 @@ namespace App.DAL.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("AppRoleId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppRoleId");
 
                     b.HasIndex("UserId");
 
@@ -712,12 +717,8 @@ namespace App.DAL.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Person", b =>
                 {
-                    b.HasOne("App.Domain.Identity.AppRole", null)
-                        .WithMany("Users")
-                        .HasForeignKey("AppRoleId");
-
                     b.HasOne("App.Domain.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Persons")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -926,9 +927,9 @@ namespace App.DAL.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Domain.Identity.AppRole", b =>
+            modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Persons");
                 });
 
             modelBuilder.Entity("App.Domain.Person", b =>

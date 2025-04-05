@@ -1,4 +1,4 @@
-@model App.Domain.Absence
+@model WebApp.ViewModels.AbsenceViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,36 +13,36 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Reason" class="control-label"></label>
-                <input asp-for="Reason" class="form-control" />
-                <span asp-validation-for="Reason" class="text-danger"></span>
+                <label asp-for="Absence.Reason" class="control-label"></label>
+                <input asp-for="Absence.Reason" class="form-control" />
+                <span asp-validation-for="Absence.Reason" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <label asp-for="Absence.StartDate" class="control-label"></label>
+                <input asp-for="Absence.StartDate" class="form-control" />
+                <span asp-validation-for="Absence.StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+                <label asp-for="Absence.EndDate" class="control-label"></label>
+                <input asp-for="Absence.EndDate" class="form-control" />
+                <span asp-validation-for="Absence.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsApproved" /> @Html.DisplayNameFor(model => model.IsApproved)
+                    <input class="form-check-input" asp-for="Absence.IsApproved" /> @Html.DisplayNameFor(model => model.Absence.IsApproved)
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="ByUserId" class="control-label"></label>
-                <select asp-for="ByUserId" class="form-control" asp-items="ViewBag.ByUserId"></select>
-                <span asp-validation-for="ByUserId" class="text-danger"></span>
+                <label asp-for="Absence.ByUserId" class="control-label"></label>
+                <select asp-for="Absence.ByUserId" class="form-control" asp-items="Model.ByUserSelectList"></select>
+                <span asp-validation-for="Absence.ByUserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AuthorizedByUserId" class="control-label"></label>
-                <select asp-for="AuthorizedByUserId" class="form-control" asp-items="ViewBag.AuthorizedByUserId"></select>
-                <span asp-validation-for="AuthorizedByUserId" class="text-danger"></span>
+                <label asp-for="Absence.AuthorizedByUserId" class="control-label"></label>
+                <select asp-for="Absence.AuthorizedByUserId" class="form-control" asp-items="Model.AuthorizedByUserSelectList"></select>
+                <span asp-validation-for="Absence.AuthorizedByUserId" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Absence.Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -1,4 +1,4 @@
-@model App.Domain.Ticket
+@model WebApp.ViewModels.TicketViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,32 +13,32 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="Ticket.Title" class="control-label"></label>
+                <input asp-for="Ticket.Title" class="form-control" />
+                <span asp-validation-for="Ticket.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Ticket.Description" class="control-label"></label>
+                <input asp-for="Ticket.Description" class="form-control" />
+                <span asp-validation-for="Ticket.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FromUserId" class="control-label"></label>
-                <select asp-for="FromUserId" class ="form-control" asp-items="ViewBag.FromUserId"></select>
+                <label asp-for="Ticket.FromUserId" class="control-label"></label>
+                <select asp-for="Ticket.FromUserId" class ="form-control" asp-items="Model.FromUserSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="ToUserId" class="control-label"></label>
-                <select asp-for="ToUserId" class ="form-control" asp-items="ViewBag.ToUserId"></select>
+                <label asp-for="Ticket.ToUserId" class="control-label"></label>
+                <select asp-for="Ticket.ToUserId" class ="form-control" asp-items="Model.ToUserSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                <label asp-for="Ticket.CreatedAt" class="control-label"></label>
+                <input asp-for="Ticket.CreatedAt" class="form-control" />
+                <span asp-validation-for="Ticket.CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedAt" class="control-label"></label>
-                <input asp-for="DeletedAt" class="form-control" />
-                <span asp-validation-for="DeletedAt" class="text-danger"></span>
+                <label asp-for="Ticket.DeletedAt" class="control-label"></label>
+                <input asp-for="Ticket.DeletedAt" class="form-control" />
+                <span asp-validation-for="Ticket.DeletedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

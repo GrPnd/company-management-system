@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class MessagesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public MessagesController(AppDbContext context)
+        public MessagesController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Messages.Include(m => m.FromUser).Include(m => m.ToUser);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.MessageRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Messages/Details/5
@@ -35,25 +32,28 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var message = await _context.Messages
-                .Include(m => m.FromUser)
-                .Include(m => m.ToUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (message == null)
+            
+            var entity = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(message);
+            return View(entity);
         }
 
         // GET: Messages/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var vm = new MessageViewModel()
+            {
+                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id)),
+                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id))
+            };
+            return View(vm);
         }
 
         // POST: Messages/Create
@@ -61,18 +61,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Text,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Message message)
+        public async Task<IActionResult> Create(MessageViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                message.Id = Guid.NewGuid();
-                _context.Add(message);
-                await _context.SaveChangesAsync();
+                _uow.MessageRepository.Add(vm.Message);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
-            return View(message);
+            
+            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Message.FromUserId);
+            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Message.ToUserId);
+
+            return View(vm);
         }
 
         // GET: Messages/Edit/5
@@ -83,14 +86,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var message = await _context.Messages.FindAsync(id);
+            var message = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
             if (message == null)
             {
                 return NotFound();
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
-            return View(message);
+
+            var vm = new MessageViewModel()
+            {
+                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), message.FromUserId),
+                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), message.ToUserId),
+                Message = message
+            };
+            return View(vm);
         }
 
         // POST: Messages/Edit/5
@@ -98,36 +108,25 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Text,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Message message)
+        public async Task<IActionResult> Edit(Guid id, MessageViewModel vm)
         {
-            if (id != message.Id)
+            if (id != vm.Message.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(message);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MessageExists(message.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.MessageRepository.Update(vm.Message);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", message.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", message.ToUserId);
-            return View(message);
+            
+            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Message.FromUserId);
+            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Message.ToUserId);
+            return View(vm);
         }
 
         // GET: Messages/Delete/5
@@ -138,10 +137,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var message = await _context.Messages
-                .Include(m => m.FromUser)
-                .Include(m => m.ToUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var message = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (message == null)
             {
                 return NotFound();
@@ -155,19 +152,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var message = await _context.Messages.FindAsync(id);
-            if (message != null)
-            {
-                _context.Messages.Remove(message);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.MessageRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MessageExists(Guid id)
-        {
-            return _context.Messages.Any(e => e.Id == id);
         }
     }
 }

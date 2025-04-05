@@ -1,30 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class StatusesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public StatusesController(AppDbContext context)
+        public StatusesController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Statuses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Statuses.ToListAsync());
+            var res = await _uow.StatusRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Statuses/Details/5
@@ -35,20 +32,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statuses
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (status == null)
+            var entity = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(status);
+            return View(entity);
         }
 
         // GET: Statuses/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new StatusViewModel();
+            return View(vm);
         }
 
         // POST: Statuses/Create
@@ -56,16 +54,22 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CreatedAt,DeletedAt,Id")] Status status)
+        public async Task<IActionResult> Create(StatusViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                status.Id = Guid.NewGuid();
-                _context.Add(status);
-                await _context.SaveChangesAsync();
+                var entity = new Status()
+                {
+                    Name = vm.Name,
+                    CreatedAt = vm.CreatedAt,
+                    DeletedAt = vm.DeletedAt
+                };
+                
+                _uow.StatusRepository.Add(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(status);
+            return View(vm);
         }
 
         // GET: Statuses/Edit/5
@@ -76,12 +80,19 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statuses.FindAsync(id);
+            var status = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
             if (status == null)
             {
                 return NotFound();
             }
-            return View(status);
+            
+            var vm = new StatusViewModel()
+            {
+                Id = status.Id,
+                Name = status.Name
+            };
+            
+            return View(vm);
         }
 
         // POST: Statuses/Edit/5
@@ -89,34 +100,29 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,CreatedAt,DeletedAt,Id")] Status status)
+        public async Task<IActionResult> Edit(Guid id, StatusViewModel vm)
         {
-            if (id != status.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var entity = await _uow.StatusRepository.FindAsync(vm.Id, User.GetUserId());
+                if (entity == null)
                 {
-                    _context.Update(status);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StatusExists(status.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                
+                entity.Name = vm.Name;
+                
+                _uow.StatusRepository.Update(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(status);
+            
+            return View(vm);
         }
 
         // GET: Statuses/Delete/5
@@ -127,8 +133,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var status = await _context.Statuses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var status = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (status == null)
             {
                 return NotFound();
@@ -142,19 +148,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var status = await _context.Statuses.FindAsync(id);
-            if (status != null)
-            {
-                _context.Statuses.Remove(status);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.StatusRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool StatusExists(Guid id)
-        {
-            return _context.Statuses.Any(e => e.Id == id);
         }
     }
 }

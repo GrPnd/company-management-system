@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
@@ -15,18 +12,18 @@ namespace WebApp.Controllers
     
     public class AbsencesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public AbsencesController(AppDbContext context)
+        public AbsencesController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Absences
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Absences.Include(a => a.AuthorizedByUser).Include(a => a.ByUser);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.AbsenceRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Absences/Details/5
@@ -36,25 +33,28 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var absence = await _context.Absences
-                .Include(a => a.AuthorizedByUser)
-                .Include(a => a.ByUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (absence == null)
+            
+            var entity = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(absence);
+            return View(entity);
         }
 
         // GET: Absences/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var vm = new AbsenceViewModel()
+            {
+                AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id)),
+                ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id))
+            };
+            return View(vm);
         }
 
         // POST: Absences/Create
@@ -62,18 +62,22 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Reason,StartDate,EndDate,IsApproved,ByUserId,AuthorizedByUserId,Id")] Absence absence)
+        public async Task<IActionResult> Create(AbsenceViewModel vm)
         {
+            //"Reason,StartDate,EndDate,IsApproved,ByUserId,AuthorizedByUserId,Id")
             if (ModelState.IsValid)
             {
-                absence.Id = Guid.NewGuid();
-                _context.Add(absence);
-                await _context.SaveChangesAsync();
+                _uow.AbsenceRepository.Add(vm.Absence);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
-            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
-            return View(absence);
+            
+            vm.AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Absence.AuthorizedByUserId);
+            vm.ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Absence.ByUserId);
+
+            return View(vm);
         }
 
         // GET: Absences/Edit/5
@@ -83,15 +87,22 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var absence = await _context.Absences.FindAsync(id);
+            
+            var absence = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
             if (absence == null)
             {
                 return NotFound();
             }
-            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
-            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
-            return View(absence);
+
+            var vm = new AbsenceViewModel()
+            {
+                AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), absence.AuthorizedByUserId),
+                ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), absence.ByUserId),
+                Absence = absence
+            };
+            return View(vm);
         }
 
         // POST: Absences/Edit/5
@@ -99,36 +110,25 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Reason,StartDate,EndDate,IsApproved,ByUserId,AuthorizedByUserId,Id")] Absence absence)
+        public async Task<IActionResult> Edit(Guid id, AbsenceViewModel vm)
         {
-            if (id != absence.Id)
+            if (id != vm.Absence.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(absence);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AbsenceExists(absence.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.AbsenceRepository.Update(vm.Absence);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorizedByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.AuthorizedByUserId);
-            ViewData["ByUserId"] = new SelectList(_context.Users, "Id", "Id", absence.ByUserId);
-            return View(absence);
+            
+            vm.AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Absence.AuthorizedByUserId);
+            vm.ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                nameof(Person.Id), nameof(Person.Id), vm.Absence.ByUserId);
+            return View(vm);
         }
 
         // GET: Absences/Delete/5
@@ -138,11 +138,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
+            
+            var absence = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
 
-            var absence = await _context.Absences
-                .Include(a => a.AuthorizedByUser)
-                .Include(a => a.ByUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (absence == null)
             {
                 return NotFound();
@@ -156,19 +154,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var absence = await _context.Absences.FindAsync(id);
-            if (absence != null)
-            {
-                _context.Absences.Remove(absence);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.AbsenceRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AbsenceExists(Guid id)
-        {
-            return _context.Absences.Any(e => e.Id == id);
         }
     }
 }

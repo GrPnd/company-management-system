@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class TicketsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public TicketsController(AppDbContext context)
+        public TicketsController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Tickets.Include(t => t.FromUser).Include(t => t.ToUser);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.TicketRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Tickets/Details/5
@@ -36,24 +33,27 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.FromUser)
-                .Include(t => t.ToUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ticket == null)
+            var entity = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(entity);
         }
 
         // GET: Tickets/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            var vm = new TicketViewModel()
+            {
+                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id)),
+                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id))
+            };
+            return View(vm);
         }
 
         // POST: Tickets/Create
@@ -61,18 +61,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Ticket ticket)
+        public async Task<IActionResult> Create(TicketViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                ticket.Id = Guid.NewGuid();
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
+                _uow.TicketRepository.Add(vm.Ticket);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
-            return View(ticket);
+
+            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Ticket.FromUserId);
+            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Ticket.ToUserId);
+
+            return View(vm);
         }
 
         // GET: Tickets/Edit/5
@@ -83,14 +86,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
             if (ticket == null)
             {
                 return NotFound();
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
-            return View(ticket);
+            
+            var vm = new TicketViewModel()
+            {
+                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), ticket.FromUserId),
+                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Person.Id), nameof(Person.Id), ticket.ToUserId),
+                Ticket = ticket
+            };
+            return View(vm);
         }
 
         // POST: Tickets/Edit/5
@@ -98,36 +108,25 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Title,Description,FromUserId,ToUserId,CreatedAt,DeletedAt,Id")] Ticket ticket)
+        public async Task<IActionResult> Edit(Guid id, TicketViewModel vm)
         {
-            if (id != ticket.Id)
+            if (id != vm.Ticket.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TicketExists(ticket.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.TicketRepository.Update(vm.Ticket);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FromUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.FromUserId);
-            ViewData["ToUserId"] = new SelectList(_context.Users, "Id", "Id", ticket.ToUserId);
-            return View(ticket);
+            
+            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Ticket.FromUserId);
+            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.Ticket.ToUserId);
+            return View(vm);
         }
 
         // GET: Tickets/Delete/5
@@ -138,10 +137,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.FromUser)
-                .Include(t => t.ToUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (ticket == null)
             {
                 return NotFound();
@@ -155,19 +152,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket != null)
-            {
-                _context.Tickets.Remove(ticket);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.TicketRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TicketExists(Guid id)
-        {
-            return _context.Tickets.Any(e => e.Id == id);
         }
     }
 }

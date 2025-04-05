@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class UsersInWorkDaysController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public UsersInWorkDaysController(AppDbContext context)
+        public UsersInWorkDaysController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: UsersInWorkDays
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInWorkDays.Include(u => u.User).Include(u => u.WorkDay);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.UserInWorkDayRepository.AllAsync();
+            return View(res);
         }
 
         // GET: UsersInWorkDays/Details/5
@@ -36,24 +33,27 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInWorkDay = await _context.UsersInWorkDays
-                .Include(u => u.User)
-                .Include(u => u.WorkDay)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (userInWorkDay == null)
+            var entity = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(userInWorkDay);
+            return View(entity);
         }
 
         // GET: UsersInWorkDays/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id");
-            return View();
+            var vm = new UserInWorkDayViewModel()
+            {
+                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id)),
+                WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                    nameof(WorkDay.Id))
+            };
+            return View(vm);
         }
 
         // POST: UsersInWorkDays/Create
@@ -61,18 +61,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Since,Until,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
+        public async Task<IActionResult> Create(UserInWorkDayViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                userInWorkDay.Id = Guid.NewGuid();
-                _context.Add(userInWorkDay);
-                await _context.SaveChangesAsync();
+                _uow.UserInWorkDayRepository.Add(vm.UserInWorkDay);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
-            ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
-            return View(userInWorkDay);
+            
+            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.UserInWorkDay.UserId);
+            vm.WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
+            
+            return View(vm);
         }
 
         // GET: UsersInWorkDays/Edit/5
@@ -83,14 +86,20 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInWorkDay = await _context.UsersInWorkDays.FindAsync(id);
+            var userInWorkDay = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
             if (userInWorkDay == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
-            ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
-            return View(userInWorkDay);
+            
+            var vm = new UserInWorkDayViewModel()
+            {
+                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                    nameof(Person.Id), userInWorkDay.UserId),
+                WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                    nameof(WorkDay.Id), userInWorkDay.WorkDayId)
+            };
+            return View(vm);
         }
 
         // POST: UsersInWorkDays/Edit/5
@@ -98,36 +107,26 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Since,Until,UserId,WorkDayId,Id")] UserInWorkDay userInWorkDay)
+        public async Task<IActionResult> Edit(Guid id, UserInWorkDayViewModel vm)
         {
-            if (id != userInWorkDay.Id)
+            if (id != vm.UserInWorkDay.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(userInWorkDay);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserInWorkDayExists(userInWorkDay.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.UserInWorkDayRepository.Update(vm.UserInWorkDay);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", userInWorkDay.UserId);
-            ViewData["WorkDayId"] = new SelectList(_context.WorkDays, "Id", "Id", userInWorkDay.WorkDayId);
-            return View(userInWorkDay);
+            
+            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                nameof(Person.Id), vm.UserInWorkDay.UserId);
+            vm.WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
+            
+            return View(vm);
         }
 
         // GET: UsersInWorkDays/Delete/5
@@ -138,10 +137,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInWorkDay = await _context.UsersInWorkDays
-                .Include(u => u.User)
-                .Include(u => u.WorkDay)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var userInWorkDay = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (userInWorkDay == null)
             {
                 return NotFound();
@@ -155,19 +152,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var userInWorkDay = await _context.UsersInWorkDays.FindAsync(id);
-            if (userInWorkDay != null)
-            {
-                _context.UsersInWorkDays.Remove(userInWorkDay);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.UserInWorkDayRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool UserInWorkDayExists(Guid id)
-        {
-            return _context.UsersInWorkDays.Any(e => e.Id == id);
         }
     }
 }

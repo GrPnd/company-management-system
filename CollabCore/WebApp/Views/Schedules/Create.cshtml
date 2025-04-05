@@ -1,4 +1,4 @@
-@model App.Domain.Schedule
+@model WebApp.ViewModels.ScheduleViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,28 +13,28 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <label asp-for="Schedule.StartDate" class="control-label"></label>
+                <input asp-for="Schedule.StartDate" class="form-control" />
+                <span asp-validation-for="Schedule.StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+                <label asp-for="Schedule.EndDate" class="control-label"></label>
+                <input asp-for="Schedule.EndDate" class="form-control" />
+                <span asp-validation-for="Schedule.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TeamId" class="control-label"></label>
-                <select asp-for="TeamId" class ="form-control" asp-items="ViewBag.TeamId"></select>
+                <label asp-for="Schedule.TeamId" class="control-label"></label>
+                <select asp-for="Schedule.TeamId" class ="form-control" asp-items="Model.TeamSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                <label asp-for="Schedule.CreatedAt" class="control-label"></label>
+                <input asp-for="Schedule.CreatedAt" class="form-control" />
+                <span asp-validation-for="Schedule.CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeletedAt" class="control-label"></label>
-                <input asp-for="DeletedAt" class="form-control" />
-                <span asp-validation-for="DeletedAt" class="text-danger"></span>
+                <label asp-for="Schedule.DeletedAt" class="control-label"></label>
+                <input asp-for="Schedule.DeletedAt" class="form-control" />
+                <span asp-validation-for="Schedule.DeletedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

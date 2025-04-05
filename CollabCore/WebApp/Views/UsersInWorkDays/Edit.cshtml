@@ -1,4 +1,4 @@
-@model App.Domain.UserInWorkDay
+@model WebApp.ViewModels.UserInWorkDayViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,26 +13,26 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Since" class="control-label"></label>
-                <input asp-for="Since" class="form-control" />
-                <span asp-validation-for="Since" class="text-danger"></span>
+                <label asp-for="UserInWorkDay.Since" class="control-label"></label>
+                <input asp-for="UserInWorkDay.Since" class="form-control" />
+                <span asp-validation-for="UserInWorkDay.Since" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Until" class="control-label"></label>
-                <input asp-for="Until" class="form-control" />
-                <span asp-validation-for="Until" class="text-danger"></span>
+                <label asp-for="UserInWorkDay.Until" class="control-label"></label>
+                <input asp-for="UserInWorkDay.Until" class="form-control" />
+                <span asp-validation-for="UserInWorkDay.Until" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label asp-for="UserInWorkDay.UserId" class="control-label"></label>
+                <select asp-for="UserInWorkDay.UserId" class="form-control" asp-items="Model.UsersSelectList"></select>
+                <span asp-validation-for="UserInWorkDay.UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WorkDayId" class="control-label"></label>
-                <select asp-for="WorkDayId" class="form-control" asp-items="ViewBag.WorkDayId"></select>
-                <span asp-validation-for="WorkDayId" class="text-danger"></span>
+                <label asp-for="UserInWorkDay.WorkDayId" class="control-label"></label>
+                <select asp-for="UserInWorkDay.WorkDayId" class="form-control" asp-items="Model.WorkDaysSelectList"></select>
+                <span asp-validation-for="UserInWorkDay.WorkDayId" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserInWorkDay.Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

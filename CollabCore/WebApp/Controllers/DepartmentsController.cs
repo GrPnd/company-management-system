@@ -1,30 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class DepartmentsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public DepartmentsController(AppDbContext context)
+        public DepartmentsController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departments.ToListAsync());
+            var res = await _uow.DepartmentRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Departments/Details/5
@@ -35,20 +32,21 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            var entity = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return View(entity);
         }
 
         // GET: Departments/Create
         public IActionResult Create()
         {
-            return View();
+            var vm = new DepartmentViewModel();
+            return View(vm);
         }
 
         // POST: Departments/Create
@@ -56,16 +54,23 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,CreatedAt,DeletedAt,Id")] Department department)
+        public async Task<IActionResult> Create(DepartmentViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                department.Id = Guid.NewGuid();
-                _context.Add(department);
-                await _context.SaveChangesAsync();
+                var entity = new Department
+                {
+                    Name = vm.Name,
+                    CreatedAt = vm.CreatedAt,
+                    DeletedAt = vm.DeletedAt
+                };
+                
+                _uow.DepartmentRepository.Add(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            
+            return View(vm);
         }
 
         // GET: Departments/Edit/5
@@ -75,13 +80,20 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var department = await _context.Departments.FindAsync(id);
+            
+            var department = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
             if (department == null)
             {
                 return NotFound();
             }
-            return View(department);
+
+            var vm = new DepartmentViewModel()
+            {
+                Id = department.Id,
+                Name = department.Name
+            };
+
+            return View(vm);
         }
 
         // POST: Departments/Edit/5
@@ -89,34 +101,28 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,CreatedAt,DeletedAt,Id")] Department department)
+        public async Task<IActionResult> Edit(Guid id, DepartmentViewModel vm)
         {
-            if (id != department.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
-                try
+                var department = await _uow.DepartmentRepository.FindAsync(id, User.GetUserId());
+                if (department == null)
                 {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DepartmentExists(department.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+            
+                department.Name = vm.Name;
+                
+                _uow.DepartmentRepository.Update(department);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            return View(vm);
         }
 
         // GET: Departments/Delete/5
@@ -126,15 +132,14 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
-            var department = await _context.Departments
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            
+            var entity = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return View(entity);
         }
 
         // POST: Departments/Delete/5
@@ -142,19 +147,10 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var department = await _context.Departments.FindAsync(id);
-            if (department != null)
-            {
-                _context.Departments.Remove(department);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.DepartmentRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
 
-        private bool DepartmentExists(Guid id)
-        {
-            return _context.Departments.Any(e => e.Id == id);
         }
     }
 }

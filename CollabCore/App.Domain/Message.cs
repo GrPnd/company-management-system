@@ -20,9 +20,9 @@ public class Message : BaseEntity
     
     
     [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
     
     
     [Display(Name = nameof(DeletedAt), Prompt = nameof(DeletedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime? DeletedAt { get; init; }
+    public DateTime? DeletedAt { get; set; }
 }

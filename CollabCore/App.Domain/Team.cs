@@ -7,12 +7,12 @@ public class Team : BaseEntity
 {
     [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
     [Display(Name = nameof(Name), Prompt = nameof(Name), ResourceType = typeof(App.Resources.Domain.Team))]
-    public string Name { get; init; } = default!;
+    public string Name { get; set; } = default!;
     
     
-    public Guid DepartmentId { get; init; }
+    public Guid DepartmentId { get; set; }
     [Display(Name = nameof(Department), Prompt = nameof(Department), ResourceType = typeof(App.Resources.Domain.Team))]
-    public Department? Department { get; init; }
+    public Department? Department { get; set; }
     
     
     public ICollection<UserInTeam>? Users { get; init; }
@@ -21,9 +21,9 @@ public class Team : BaseEntity
     
     
     [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; init; }
+    public DateTime CreatedAt { get; set; }
     
     
     [Display(Name = nameof(DeletedAt), Prompt = nameof(DeletedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime? DeletedAt { get; init; }
+    public DateTime? DeletedAt { get; set; }
 }

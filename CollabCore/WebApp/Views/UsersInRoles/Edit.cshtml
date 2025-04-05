@@ -1,4 +1,4 @@
-@model App.Domain.UserInRole
+@model WebApp.ViewModels.UserInRoleViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,26 +13,26 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Since" class="control-label"></label>
-                <input asp-for="Since" class="form-control" />
-                <span asp-validation-for="Since" class="text-danger"></span>
+                <label asp-for="UserInRole.Since" class="control-label"></label>
+                <input asp-for="UserInRole.Since" class="form-control" />
+                <span asp-validation-for="UserInRole.Since" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Until" class="control-label"></label>
-                <input asp-for="Until" class="form-control" />
-                <span asp-validation-for="Until" class="text-danger"></span>
+                <label asp-for="UserInRole.Until" class="control-label"></label>
+                <input asp-for="UserInRole.Until" class="form-control" />
+                <span asp-validation-for="UserInRole.Until" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label asp-for="UserInRole.UserId" class="control-label"></label>
+                <select asp-for="UserInRole.UserId" class="form-control" asp-items="Model.UsersSelectList"></select>
+                <span asp-validation-for="UserInRole.UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
-                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
-                <span asp-validation-for="RoleId" class="text-danger"></span>
+                <label asp-for="UserInRole.RoleId" class="control-label"></label>
+                <select asp-for="UserInRole.RoleId" class="form-control" asp-items="Model.RolesSelectList"></select>
+                <span asp-validation-for="UserInRole.RoleId" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserInRole.Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

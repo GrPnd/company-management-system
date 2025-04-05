@@ -1,31 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class SchedulesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public SchedulesController(AppDbContext context)
+        public SchedulesController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Schedules
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Schedules.Include(s => s.Team);
-            return View(await appDbContext.ToListAsync());
+            var res = await _uow.ScheduleRepository.AllAsync();
+            return View(res);
         }
 
         // GET: Schedules/Details/5
@@ -36,22 +33,25 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules
-                .Include(s => s.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (schedule == null)
+            var entity = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(schedule);
+            return View(entity);
         }
 
         // GET: Schedules/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            return View();
+            var vm = new ScheduleViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                    nameof(Team.Name))
+            };
+            return View(vm);
         }
 
         // POST: Schedules/Create
@@ -59,17 +59,18 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StartDate,EndDate,TeamId,CreatedAt,DeletedAt,Id")] Schedule schedule)
+        public async Task<IActionResult> Create(ScheduleViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                schedule.Id = Guid.NewGuid();
-                _context.Add(schedule);
-                await _context.SaveChangesAsync();
+                _uow.ScheduleRepository.Add(vm.Schedule);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", schedule.TeamId);
-            return View(schedule);
+            
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                nameof(Team.Name), vm.Schedule.TeamId);
+            return View(vm);
         }
 
         // GET: Schedules/Edit/5
@@ -80,13 +81,19 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules.FindAsync(id);
+            var schedule = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
             if (schedule == null)
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", schedule.TeamId);
-            return View(schedule);
+            
+            var vm = new ScheduleViewModel()
+            {
+                TeamSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                    nameof(Team.Id), nameof(Team.Name), schedule.TeamId),
+                Schedule = schedule
+            };
+            return View(vm);
         }
 
         // POST: Schedules/Edit/5
@@ -94,35 +101,22 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,TeamId,CreatedAt,DeletedAt,Id")] Schedule schedule)
+        public async Task<IActionResult> Edit(Guid id, ScheduleViewModel vm)
         {
-            if (id != schedule.Id)
+            if (id != vm.Schedule.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(schedule);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ScheduleExists(schedule.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _uow.ScheduleRepository.Update(vm.Schedule);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", schedule.TeamId);
-            return View(schedule);
+            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+                nameof(Team.Id), nameof(Team.Name), vm.Schedule.TeamId);
+            return View(vm);
         }
 
         // GET: Schedules/Delete/5
@@ -133,9 +127,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var schedule = await _context.Schedules
-                .Include(s => s.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var schedule = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
             if (schedule == null)
             {
                 return NotFound();
@@ -149,19 +141,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var schedule = await _context.Schedules.FindAsync(id);
-            if (schedule != null)
-            {
-                _context.Schedules.Remove(schedule);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.ScheduleRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ScheduleExists(Guid id)
-        {
-            return _context.Schedules.Any(e => e.Id == id);
         }
     }
 }

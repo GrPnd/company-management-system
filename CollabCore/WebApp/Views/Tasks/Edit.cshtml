@@ -1,4 +1,4 @@
-@model App.Domain.Task
+@model WebApp.ViewModels.TaskViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,36 +13,36 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Task.Name" class="control-label"></label>
+                <input asp-for="Task.Name" class="form-control" />
+                <span asp-validation-for="Task.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Task.Description" class="control-label"></label>
+                <input asp-for="Task.Description" class="form-control" />
+                <span asp-validation-for="Task.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AssignedAt" class="control-label"></label>
-                <input asp-for="AssignedAt" class="form-control" />
-                <span asp-validation-for="AssignedAt" class="text-danger"></span>
+                <label asp-for="Task.AssignedAt" class="control-label"></label>
+                <input asp-for="Task.AssignedAt" class="form-control" />
+                <span asp-validation-for="Task.AssignedAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Deadline" class="control-label"></label>
-                <input asp-for="Deadline" class="form-control" />
-                <span asp-validation-for="Deadline" class="text-danger"></span>
+                <label asp-for="Task.Deadline" class="control-label"></label>
+                <input asp-for="Task.Deadline" class="form-control" />
+                <span asp-validation-for="Task.Deadline" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusId" class="control-label"></label>
-                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-                <span asp-validation-for="StatusId" class="text-danger"></span>
+                <label asp-for="Task.StatusId" class="control-label"></label>
+                <select asp-for="Task.StatusId" class="form-control" asp-items="Model.StatusesSelectList"></select>
+                <span asp-validation-for="Task.StatusId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserInTeamId" class="control-label"></label>
-                <select asp-for="UserInTeamId" class="form-control" asp-items="ViewBag.UserInTeamId"></select>
-                <span asp-validation-for="UserInTeamId" class="text-danger"></span>
+                <label asp-for="Task.UserInTeamId" class="control-label"></label>
+                <select asp-for="Task.UserInTeamId" class="form-control" asp-items="Model.UsersInTeamSelectList"></select>
+                <span asp-validation-for="Task.UserInTeamId" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Task.Id" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

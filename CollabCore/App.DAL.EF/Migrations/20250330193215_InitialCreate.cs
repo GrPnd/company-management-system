@@ -30,6 +30,8 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -189,17 +191,11 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AppRoleId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Persons", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Persons_AspNetRoles_AppRoleId",
-                        column: x => x.AppRoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Persons_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -599,11 +595,6 @@ namespace App.DAL.EF.Migrations
                 column: "ToUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Persons_AppRoleId",
-                table: "Persons",
-                column: "AppRoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Persons_UserId",
                 table: "Persons",
                 column: "UserId");
@@ -732,6 +723,9 @@ namespace App.DAL.EF.Migrations
                 name: "UsersInWorkDays");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
@@ -751,9 +745,6 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "Teams");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

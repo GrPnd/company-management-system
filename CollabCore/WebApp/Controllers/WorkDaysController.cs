@@ -1,30 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
 using App.Domain;
+using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class WorkDaysController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUOW _uow;
 
-        public WorkDaysController(AppDbContext context)
+        public WorkDaysController(IAppUOW uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: WorkDays
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WorkDays.ToListAsync());
+            var res = await _uow.WorkDayRepository.AllAsync();
+            return View(res);
         }
 
         // GET: WorkDays/Details/5
@@ -35,14 +32,14 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var workDay = await _context.WorkDays
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (workDay == null)
+            var entity = await _uow.WorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return View(workDay);
+            return View(entity);
         }
 
         // GET: WorkDays/Create
@@ -56,16 +53,21 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Day,Id")] WorkDay workDay)
+        public async Task<IActionResult> Create(WorkDayViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                workDay.Id = Guid.NewGuid();
-                _context.Add(workDay);
-                await _context.SaveChangesAsync();
+                var entity = new WorkDay()
+                {
+                    Day = vm.Day
+                };
+                
+                _uow.WorkDayRepository.Add(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(workDay);
+            
+            return View(vm);
         }
 
         // GET: WorkDays/Edit/5
@@ -76,12 +78,19 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var workDay = await _context.WorkDays.FindAsync(id);
+            var workDay = await _uow.WorkDayRepository.FindAsync(id.Value, User.GetUserId());
             if (workDay == null)
             {
                 return NotFound();
             }
-            return View(workDay);
+            
+            var vm = new WorkDayViewModel()
+            {
+                Id = workDay.Id,
+                Day = workDay.Day
+            };
+
+            return View(vm);
         }
 
         // POST: WorkDays/Edit/5
@@ -89,34 +98,29 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Day,Id")] WorkDay workDay)
+        public async Task<IActionResult> Edit(Guid id, WorkDayViewModel vm)
         {
-            if (id != workDay.Id)
+            if (id != vm.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                var entity = await _uow.WorkDayRepository.FindAsync(vm.Id, User.GetUserId());
+                if (entity == null)
                 {
-                    _context.Update(workDay);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WorkDayExists(workDay.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                
+                entity.Day = vm.Day;
+                
+                _uow.WorkDayRepository.Update(entity);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(workDay);
+            
+            return View(vm);
         }
 
         // GET: WorkDays/Delete/5
@@ -127,8 +131,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var workDay = await _context.WorkDays
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var workDay = await _uow.WorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            
             if (workDay == null)
             {
                 return NotFound();
@@ -142,19 +146,10 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var workDay = await _context.WorkDays.FindAsync(id);
-            if (workDay != null)
-            {
-                _context.WorkDays.Remove(workDay);
-            }
-
-            await _context.SaveChangesAsync();
+            await _uow.WorkDayRepository.RemoveAsync(id, User.GetUserId());
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
 
-        private bool WorkDayExists(Guid id)
-        {
-            return _context.WorkDays.Any(e => e.Id == id);
         }
     }
 }
