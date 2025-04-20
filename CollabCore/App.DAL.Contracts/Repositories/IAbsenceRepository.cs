@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface IAbsenceRepository: IBaseRepository<Absence>
+public interface IAbsenceRepository: IBaseRepository<App.DAL.DTO.Absence>
 {
     
 }

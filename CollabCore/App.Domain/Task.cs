@@ -32,5 +32,5 @@ public class Task : BaseEntity
     public UserInTeam? UserInTeam { get; set; }
     
     
-    public ICollection<UserInTeamInTask>? UserInTasks { get; set; }
+    public ICollection<UserInTeamInTask>? UserInTeamInTasks { get; set; }
 }

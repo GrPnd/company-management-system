@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface IRoleRepository: IBaseRepository<Role>
+public interface IRoleRepository: IBaseRepository<App.DAL.DTO.Role>
 {
     
 }

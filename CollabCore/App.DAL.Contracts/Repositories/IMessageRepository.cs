@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface IMessageRepository: IBaseRepository<Message>
+public interface IMessageRepository: IBaseRepository<App.DAL.DTO.Message>
 {
     
     

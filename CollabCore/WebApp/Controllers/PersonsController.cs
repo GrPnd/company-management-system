@@ -1,17 +1,24 @@
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.Domain;
+using App.DAL.DTO;
+using App.Domain.Identity;
 using Base.Helpers;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     public class PersonsController : Controller
     {
         private readonly IAppUOW _uow;
+        private readonly UserManager<AppUser> _userManager;
 
-        public PersonsController(IAppUOW uow)
+        public PersonsController(IAppUOW uow, UserManager<AppUser> userManager)
         {
             _uow = uow;
+            _userManager = userManager;
         }
 
         // GET: Persons
@@ -40,9 +47,16 @@ namespace WebApp.Controllers
         }
 
         // GET: Persons/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var users = await _userManager.Users.ToListAsync();
+            
+            var vm = new PersonViewModel()
+            {
+                Person = new Person(),
+                UsersSelectList = new SelectList(users, "Id", "UserName")
+            };
+            return View(vm);
         }
 
         // POST: Persons/Create
@@ -50,16 +64,17 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Person entity)
+        public async Task<IActionResult> Create(PersonViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                _uow.PersonRepository.Add(entity);
+                // todo KAHTLANE KOHT??
+                _uow.PersonRepository.Add(vm.Person, User.GetUserId());
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            return View(entity);
+            return View(vm);
         }
 
         // GET: Persons/Edit/5
@@ -93,7 +108,6 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                entity.UserId = User.GetUserId();
                 _uow.PersonRepository.Update(entity);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

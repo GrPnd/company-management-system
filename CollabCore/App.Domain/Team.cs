@@ -15,15 +15,7 @@ public class Team : BaseEntity
     public Department? Department { get; set; }
     
     
-    public ICollection<UserInTeam>? Users { get; init; }
+    public ICollection<UserInTeam>? UsersInTeams { get; init; }
     public ICollection<Schedule>? Schedules { get; init; }
     public ICollection<Meeting>? Meetings { get; init; }
-    
-    
-    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; set; }
-    
-    
-    [Display(Name = nameof(DeletedAt), Prompt = nameof(DeletedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime? DeletedAt { get; set; }
 }

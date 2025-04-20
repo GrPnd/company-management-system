@@ -1,6 +1,6 @@
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;

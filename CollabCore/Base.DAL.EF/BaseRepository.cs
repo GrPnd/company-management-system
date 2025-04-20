@@ -6,80 +6,108 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
 
-public class BaseRepository<TEntity> : BaseRepository<TEntity, Guid>, IBaseRepository<TEntity>
-    where TEntity : BaseEntity
+public class BaseRepository<TDalEntity, TDomainEntity> : BaseRepository<TDalEntity, TDomainEntity, Guid>,
+    IBaseRepository<TDalEntity>
+    where TDalEntity : class, IDomainId
+    where TDomainEntity : class, IDomainId
 {
-    public BaseRepository(DbContext repositoryDbContext) : base(repositoryDbContext)
+    public BaseRepository(DbContext repositoryDbContext, IMapper<TDalEntity, TDomainEntity> mapper)
+        : base(repositoryDbContext, mapper)
     {
     }
 }
 
-public class BaseRepository<TEntity, TKey>: IBaseRepository<TEntity, TKey>
-    where TEntity : BaseEntity<TKey>
+public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<TDalEntity, TKey>
+    where TDalEntity : class, IDomainId<TKey>
+    where TDomainEntity : class, IDomainId<TKey>
     where TKey : IEquatable<TKey>
 {
     protected DbContext RepositoryDbContext;
-    protected DbSet<TEntity> RepositoryDbSet;
+    protected DbSet<TDomainEntity> RepositoryDbSet;
+    protected IMapper<TDalEntity, TDomainEntity, TKey> Mapper;
 
-    public BaseRepository(DbContext repositoryDbContext)
+    public BaseRepository(DbContext repositoryDbContext, IMapper<TDalEntity, TDomainEntity, TKey> mapper)
     {
         RepositoryDbContext = repositoryDbContext;
-        RepositoryDbSet = RepositoryDbContext.Set<TEntity>();
+        Mapper = mapper;
+        RepositoryDbSet = RepositoryDbContext.Set<TDomainEntity>();
     }
-    
-    
-    private IQueryable<TEntity> GetQuery(TKey? id = default!)
+
+
+    protected virtual IQueryable<TDomainEntity> GetQuery(TKey? userId = default!)
     {
         var query = RepositoryDbSet.AsQueryable();
-        
-        // todo check userid for null/default
-        if (typeof(IDomainUser<TKey, IdentityUser<TKey>>).IsAssignableFrom(typeof(TEntity)))
+
+        // todo : check userId for null/default
+        if (typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
+            userId != null &&
+            !EqualityComparer<TKey>.Default.Equals(userId, default))
         {
-            query = query.Where(e => ((IDomainUser<TKey, IdentityUser<TKey>>)e).UserId.Equals(id));
+            query = query.Where(e => ((IDomainUserId<TKey>)e).UserId.Equals(userId));
         }
+
         return query;
     }
-    
-    
-    public IEnumerable<TEntity> All(TKey? userId = default!)
+
+    // TODO: Implement UOW, remove SaveChangesAsync from repository
+    public async Task<int> SaveChangesAsync()
     {
-        return GetQuery(userId).ToList();
+        return await RepositoryDbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<TEntity>> AllAsync(TKey? userId = default!)
+    public virtual IEnumerable<TDalEntity> All(TKey? userId = default!)
     {
-        return await GetQuery(userId).ToListAsync();
+        return GetQuery(userId)
+            .ToList()
+            .Select(e => Mapper.Map(e)!);
     }
 
-    public TEntity? Find(TKey id, TKey? userId)
+    public virtual async Task<IEnumerable<TDalEntity>> AllAsync(TKey? userId = default!)
+    {
+        return (await GetQuery(userId)
+                .ToListAsync())
+            .Select(e => Mapper.Map(e)!);
+    }
+
+    public virtual TDalEntity? Find(TKey id, TKey? userId = default!)
     {
         var query = GetQuery(userId);
-        return query.FirstOrDefault(e => e.Id.Equals(id));
+        var res = query.FirstOrDefault(e => e.Id.Equals(id));
+        return Mapper.Map(res);
     }
 
-    public async Task<TEntity?> FindAsync(TKey id, TKey? userId)
+    public virtual async Task<TDalEntity?> FindAsync(TKey id, TKey? userId = default!)
     {
         var query = GetQuery(userId);
-        return await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var res = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+        return Mapper.Map(res);
     }
 
-    public void Add(TEntity entity)
+    public virtual void Add(TDalEntity entity, TKey? userId = default!)
     {
-        RepositoryDbSet.Add(entity);
+        var dbEntity = Mapper.Map(entity);
+        
+        if (typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
+            userId != null &&
+            !EqualityComparer<TKey>.Default.Equals(userId, default))
+        {
+           ((IDomainUserId<TKey>) dbEntity!).UserId = userId;
+        }
+        
+        RepositoryDbSet.Add(dbEntity!);
     }
 
-    public TEntity Update(TEntity entity)
+    public virtual TDalEntity Update(TDalEntity entity)
     {
-        return RepositoryDbSet.Update(entity).Entity;
+        return Mapper.Map(RepositoryDbSet.Update(Mapper.Map(entity)!).Entity)!;
     }
 
-   public virtual void Remove(TEntity entity, TKey? userId = default!)
+    public virtual void Remove(TDalEntity entity, TKey? userId = default!)
     {
         Remove(entity.Id, userId);
     }
 
-
-    public void Remove(TKey id, TKey? userId)
+    public virtual void Remove(TKey id, TKey? userId)
     {
         var query = GetQuery(userId);
         query = query.Where(e => e.Id.Equals(id));
@@ -88,8 +116,8 @@ public class BaseRepository<TEntity, TKey>: IBaseRepository<TEntity, TKey>
         {
             RepositoryDbSet.Remove(dbEntity);
         }
-
     }
+
     public virtual async Task RemoveAsync(TKey id, TKey? userId = default!)
     {
         var query = GetQuery(userId);
@@ -112,5 +140,4 @@ public class BaseRepository<TEntity, TKey>: IBaseRepository<TEntity, TKey>
         var query = GetQuery(userId);
         return await query.AnyAsync(e => e.Id.Equals(id));
     }
-
 }

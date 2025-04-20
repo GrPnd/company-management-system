@@ -10,7 +10,7 @@ public class UserInRole : BaseEntity
     
     
     [Display(Name = nameof(Until), Prompt = nameof(Until), ResourceType = typeof(App.Resources.Domain.UserInRole))]
-    public DateTime Until { get; set; }
+    public DateTime? Until { get; set; }
     
     
     public Guid UserId { get; set; }

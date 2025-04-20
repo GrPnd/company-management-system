@@ -1,7 +1,7 @@
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -21,7 +21,7 @@ namespace WebApp.Controllers
         // GET: UsersInTeams
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.UserInTeamRepository.AllAsync();
+            var res = await _uow.UserInTeamRepository.AllAsync(User.GetUserId());
             return View(res);
         }
 

@@ -58,8 +58,11 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,8 +75,11 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -191,6 +197,12 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PersonName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -205,14 +217,44 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true),
+                    RefreshToken = table.Column<string>(type: "TEXT", nullable: false),
+                    Expiration = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PreviousRefreshToken = table.Column<string>(type: "TEXT", nullable: true),
+                    PreviousExpiration = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     DepartmentId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -235,7 +277,12 @@ namespace App.DAL.EF.Migrations
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     IsApproved = table.Column<bool>(type: "INTEGER", nullable: false),
                     ByUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AuthorizedByUserId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    AuthorizedByUserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -262,8 +309,11 @@ namespace App.DAL.EF.Migrations
                     Text = table.Column<string>(type: "TEXT", nullable: false),
                     FromUserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ToUserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -288,9 +338,12 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -311,8 +364,11 @@ namespace App.DAL.EF.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     FromUserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     ToUserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -337,7 +393,12 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Day = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -358,7 +419,12 @@ namespace App.DAL.EF.Migrations
                     IsMandatory = table.Column<bool>(type: "INTEGER", nullable: false),
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Link = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -379,8 +445,11 @@ namespace App.DAL.EF.Migrations
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -402,7 +471,12 @@ namespace App.DAL.EF.Migrations
                     Since = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Until = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -427,9 +501,14 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Since = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Until = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Until = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -456,7 +535,12 @@ namespace App.DAL.EF.Migrations
                     Since = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Until = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkDayId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    WorkDayId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -485,7 +569,12 @@ namespace App.DAL.EF.Migrations
                     AssignedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Deadline = table.Column<DateTime>(type: "TEXT", nullable: false),
                     StatusId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -513,7 +602,12 @@ namespace App.DAL.EF.Migrations
                     Until = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Review = table.Column<string>(type: "TEXT", nullable: true),
                     TaskId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -597,6 +691,11 @@ namespace App.DAL.EF.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_UserId",
                 table: "Persons",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -706,6 +805,9 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Schedules");

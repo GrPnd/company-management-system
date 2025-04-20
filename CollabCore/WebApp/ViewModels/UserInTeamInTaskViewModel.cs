@@ -1,4 +1,4 @@
-﻿using App.Domain;
+﻿using App.DAL.DTO;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

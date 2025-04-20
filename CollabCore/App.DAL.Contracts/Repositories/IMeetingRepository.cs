@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface IMeetingRepository: IBaseRepository<Meeting>
+public interface IMeetingRepository: IBaseRepository<App.DAL.DTO.Meeting>
 {
     
 }

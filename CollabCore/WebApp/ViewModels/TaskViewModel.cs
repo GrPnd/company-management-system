@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Task = App.Domain.Task;
+using Task = App.DAL.DTO.Task;
 
 namespace WebApp.ViewModels;
 

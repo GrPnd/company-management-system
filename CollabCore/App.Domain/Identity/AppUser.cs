@@ -17,4 +17,5 @@ public class AppUser : IdentityUser<Guid>
     
     
     public ICollection<Person>? Persons { get; set; }
+    public ICollection<AppRefreshToken>? RefreshTokens { get; set; }
 }

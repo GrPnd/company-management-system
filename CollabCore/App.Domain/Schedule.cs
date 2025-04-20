@@ -17,12 +17,4 @@ public class Schedule : BaseEntity
     
     [Display(Name = nameof(Team), Prompt = nameof(Team), ResourceType = typeof(App.Resources.Domain.Schedule))]
     public Team? Team { get; set; }
-    
-    
-    [Display(Name = nameof(CreatedAt), Prompt = nameof(CreatedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime CreatedAt { get; set; }
-    
-    
-    [Display(Name = nameof(DeletedAt), Prompt = nameof(DeletedAt), ResourceType = typeof(Base.Resources.Common))]
-    public DateTime? DeletedAt { get; set; }
 }

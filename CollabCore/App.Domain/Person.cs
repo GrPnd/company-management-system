@@ -6,13 +6,10 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class Person : BaseEntity, IDomainUser<Guid, AppUser>
+public class Person : BaseEntityUser<AppUser>
 {
-    public Guid UserId { get; set; }
-    public AppUser? User { get; set; }
-    
-    
-    
+    [MaxLength(128)]
+    public string PersonName { get; set; } = default!;
     
     [InverseProperty("FromUser")]
     public ICollection<Message>? FromMessages { get; set; }

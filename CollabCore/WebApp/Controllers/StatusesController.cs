@@ -1,6 +1,6 @@
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -61,8 +61,6 @@ namespace WebApp.Controllers
                 var entity = new Status()
                 {
                     Name = vm.Name,
-                    CreatedAt = vm.CreatedAt,
-                    DeletedAt = vm.DeletedAt
                 };
                 
                 _uow.StatusRepository.Add(entity);

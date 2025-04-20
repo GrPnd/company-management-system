@@ -1,5 +1,6 @@
 ﻿using App.Domain;
 using App.Domain.Identity;
+using Base.Contracts;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Task = App.Domain.Task;
@@ -25,9 +26,40 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<UserInTeamInTask> UsersInTeamsInTasks { get; set; } = default!;
     public DbSet<UserInWorkDay> UsersInWorkDays { get; set; } = default!;
     public DbSet<WorkDay> WorkDays { get; set; } = default!;
+    public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
+    
+    
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var addedEntries = ChangeTracker.Entries()
+            .Where(e => e is { Entity: IDomainMeta });
+        foreach (var entry in addedEntries)
+        {
+            if (entry.State == EntityState.Added)
+            {
+                (entry.Entity as IDomainMeta)!.CreatedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.CreatedBy = "system";
+            }
+            else if (entry.State == EntityState.Modified)
+            {
+                (entry.Entity as IDomainMeta)!.ChangedAt = DateTime.UtcNow;
+                (entry.Entity as IDomainMeta)!.ChangedBy = "system";
+                
+                // Prevent overwriting CreatedBy/CreatedAt/UserId on update
+                entry.Property("CreatedAt").IsModified = false;
+                entry.Property("CreatedBy").IsModified = false;
+
+                entry.Property("UserId").IsModified = false;
+            }
+        }
+
+
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
 }

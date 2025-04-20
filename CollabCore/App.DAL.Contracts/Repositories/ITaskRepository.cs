@@ -3,7 +3,7 @@ using Task = App.Domain.Task;
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface ITaskRepository: IBaseRepository<Task>
+public interface ITaskRepository: IBaseRepository<App.DAL.DTO.Task>
 {
     
 }

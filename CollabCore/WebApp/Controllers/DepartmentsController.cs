@@ -1,6 +1,6 @@
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.Domain;
+using App.DAL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -60,9 +60,7 @@ namespace WebApp.Controllers
             {
                 var entity = new Department
                 {
-                    Name = vm.Name,
-                    CreatedAt = vm.CreatedAt,
-                    DeletedAt = vm.DeletedAt
+                    Name = vm.Name
                 };
                 
                 _uow.DepartmentRepository.Add(entity);
