@@ -15,79 +15,79 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
 
     private IAbsenceService? _absenceService;
     public IAbsenceService AbsenceService => 
-        _absenceService ??= new AbsenceService(BLLUOW, BLLUOW.AbsenceRepository, new AbsenceBLLMapper());
+        _absenceService ??= new AbsenceService(BLLUOW, new AbsenceBLLMapper());
     
 
     private IDepartmentService? _departmentService;
     public IDepartmentService DepartmentService => 
-        _departmentService ??= new DepartmentService(BLLUOW, BLLUOW.DepartmentRepository, new DepartmentBLLMapper());
+        _departmentService ??= new DepartmentService(BLLUOW, new DepartmentBLLMapper());
     
 
     private IMeetingService? _meetingService;
     public IMeetingService MeetingService => 
-        _meetingService ??= new MeetingService(BLLUOW, BLLUOW.MeetingRepository, new MeetingBLLMapper());
+        _meetingService ??= new MeetingService(BLLUOW, new MeetingBLLMapper());
     
 
     private IMessageService? _messageService;
     public IMessageService MessageService => 
-        _messageService ??= new MessageService(BLLUOW, BLLUOW.MessageRepository, new MessageBLLMapper());
+        _messageService ??= new MessageService(BLLUOW, new MessageBLLMapper());
     
 
     private IPersonService? _personService;
     public IPersonService PersonService => 
-        _personService ??= new PersonService(BLLUOW, BLLUOW.PersonRepository, new PersonBLLMapper());
+        _personService ??= new PersonService(BLLUOW, new PersonBLLMapper());
     
 
     private IRoleService? _roleService;
     public IRoleService RoleService => 
-        _roleService ??= new RoleService(BLLUOW, BLLUOW.RoleRepository, new RoleBLLMapper());
+        _roleService ??= new RoleService(BLLUOW, new RoleBLLMapper());
     
 
     private IScheduleService? _scheduleService;
     public IScheduleService ScheduleService => 
-        _scheduleService ??= new ScheduleService(BLLUOW, BLLUOW.ScheduleRepository, new ScheduleBLLMapper());
+        _scheduleService ??= new ScheduleService(BLLUOW, new ScheduleBLLMapper());
     
 
     private IStatusService? _statusService;
     public IStatusService StatusService =>
-        _statusService ??= new StatusService(BLLUOW, BLLUOW.StatusRepository, new StatusBLLMapper());
+        _statusService ??= new StatusService(BLLUOW, new StatusBLLMapper());
     
 
     private ITaskService? _taskService;
     public ITaskService TaskService => 
-        _taskService ??= new TaskService(BLLUOW, BLLUOW.TaskRepository, new TaskBLLMapper());
+        _taskService ??= new TaskService(BLLUOW, new TaskBLLMapper());
     
     private ITeamService? _teamService;
     public ITeamService TeamService => 
-        _teamService ??= new TeamService(BLLUOW, BLLUOW.TeamRepository, new TeamBLLMapper());
+        _teamService ??= new TeamService(BLLUOW, new TeamBLLMapper());
     
 
     private ITicketService? _ticketService;
     public ITicketService TicketService => 
-        _ticketService ??= new TicketService(BLLUOW, BLLUOW.TicketRepository, new TicketBLLMapper());
+        _ticketService ??= new TicketService(BLLUOW, new TicketBLLMapper());
     
 
     private IUserInRoleService? _userInRoleService;
     public IUserInRoleService UserInRoleService => 
-        _userInRoleService ??= new UserInRoleService(BLLUOW, BLLUOW.UserInRoleRepository, new UserInRoleBLLMapper());
+        _userInRoleService ??= new UserInRoleService(BLLUOW, new UserInRoleBLLMapper());
     
 
     private IUserInTeamInTaskService? _userInTeamInTaskService;
     public IUserInTeamInTaskService UserInTeamInTaskService => 
-        _userInTeamInTaskService ??= new UserInTeamInTaskService(BLLUOW, BLLUOW.UserInTeamInTaskRepository, new UserInTeamInTaskBLLMapper());
+        _userInTeamInTaskService ??= new UserInTeamInTaskService(BLLUOW, new UserInTeamInTaskBLLMapper());
     
 
     private IUserInTeamService? _userInTeamService;
     public IUserInTeamService UserInTeamService => 
-        _userInTeamService ??= new UserInTeamService(BLLUOW, BLLUOW.UserInTeamRepository, new UserInTeamBLLMapper());
+        _userInTeamService ??= new UserInTeamService(BLLUOW, new UserInTeamBLLMapper());
     
 
     private IUserInWorkDayService? _userInWorkDayService;
     public IUserInWorkDayService UserInWorkDayService => 
-        _userInWorkDayService ??= new UserInWorkDayService(BLLUOW, BLLUOW.UserInWorkDayRepository, new UserInWorkDayBLLMapper());
+        _userInWorkDayService ??= new UserInWorkDayService(BLLUOW, new UserInWorkDayBLLMapper());
     
 
     private IWorkDayService? _workDayService;
     public IWorkDayService WorkDayService => 
-        _workDayService ??= new WorkDayService(BLLUOW, BLLUOW.WorkDayRepository, new WorkDayBLLMapper());
+        _workDayService ??= new WorkDayService(BLLUOW, new WorkDayBLLMapper());
 }
