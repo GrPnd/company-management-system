@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class WorkDayRepository : BaseRepository<App.DAL.DTO.WorkDay, App.Domain.WorkDay>, IWorkDayRepository
 {
-    public WorkDayRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new WorkDayMapper())
+    public WorkDayRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new WorkDayIuowMapper())
     {
     }
 }

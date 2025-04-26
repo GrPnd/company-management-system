@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class DepartmentRepository : BaseRepository<App.DAL.DTO.Department, App.Domain.Department>, IDepartmentRepository
 {
-    public DepartmentRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new DepartmentMapper())
+    public DepartmentRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new DepartmentIuowMapper())
     {
     }
 }

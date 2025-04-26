@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class MessageRepository : BaseRepository<App.DAL.DTO.Message, App.Domain.Message>, IMessageRepository
 {
-    public MessageRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new MessageMapper())
+    public MessageRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new MessageIuowMapper())
     {
     }
 }

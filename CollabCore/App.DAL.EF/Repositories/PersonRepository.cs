@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class PersonRepository : BaseRepository<App.DAL.DTO.Person, App.Domain.Person>, IPersonRepository
 {
-    public PersonRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new PersonMapper())
+    public PersonRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new PersonIuowMapper())
     {
     }
     

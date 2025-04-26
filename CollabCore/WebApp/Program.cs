@@ -40,7 +40,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 
-builder.Services.AddScoped<IAppUOW, AppUow>();
+builder.Services.AddScoped<IAppUOW, AppUOW>();
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
             options.SignIn.RequireConfirmedAccount = false)

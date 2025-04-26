@@ -1,0 +1,20 @@
+﻿using Base.BLL.Contracts;
+using Base.Contracts;
+
+namespace Base.BLL;
+
+public class BaseBLL<TUOW> : IBaseBLL
+    where TUOW: IBaseUOW
+{
+    protected readonly TUOW BLLUOW;
+
+    public BaseBLL(TUOW blluow)
+    {
+        BLLUOW = blluow;
+    }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        return await BLLUOW.SaveChangesAsync();
+    }
+}

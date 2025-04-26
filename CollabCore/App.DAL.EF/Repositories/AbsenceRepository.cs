@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class AbsenceRepository : BaseRepository<App.DAL.DTO.Absence, App.Domain.Absence>, IAbsenceRepository
 {
-    public AbsenceRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new AbsenceMapper())
+    public AbsenceRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new AbsenceIuowMapper())
     {
     }
 }

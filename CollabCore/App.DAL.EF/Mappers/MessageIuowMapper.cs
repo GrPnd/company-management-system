@@ -1,0 +1,42 @@
+﻿using App.DAL.DTO;
+using Base.DAL.Contracts;
+
+namespace App.DAL.EF.Mappers;
+
+public class MessageIuowMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Message>
+{
+    private readonly PersonIuowMapper _personIuowMapper = new();
+    public Message? Map(Domain.Message? entity)
+    {
+        if (entity == null) return null;
+
+        var res = new Message()
+        {
+            Id = entity.Id,
+            Text = entity.Text,
+            FromUserId = entity.FromUserId,
+            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            ToUserId = entity.ToUserId,
+            ToUser = _personIuowMapper.Map(entity.ToUser)!
+        };
+        
+        return res;
+    }
+
+    public Domain.Message? Map(Message? entity)
+    {
+        if (entity == null) return null;
+
+        var res = new Domain.Message()
+        {
+            Id = entity.Id,
+            Text = entity.Text,
+            FromUserId = entity.FromUserId,
+            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            ToUserId = entity.ToUserId,
+            ToUser = _personIuowMapper.Map(entity.ToUser)!
+        };
+        
+        return res;
+    }
+}
