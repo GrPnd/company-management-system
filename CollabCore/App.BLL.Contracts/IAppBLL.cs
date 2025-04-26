@@ -14,6 +14,7 @@ public interface IAppBLL : IBaseBLL
     IScheduleService ScheduleService { get; }
     IStatusService StatusService { get; }
     ITaskService TaskService { get; }
+    ITeamService TeamService { get; }
     ITicketService TicketService { get; }
     IUserInRoleService UserInRoleService { get; }
     IUserInTeamInTaskService UserInTeamInTaskService { get; }

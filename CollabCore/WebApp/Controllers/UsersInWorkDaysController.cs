@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class UsersInWorkDaysController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public UsersInWorkDaysController(IAppUOW uow)
+        public UsersInWorkDaysController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: UsersInWorkDays
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.UserInWorkDayRepository.AllAsync();
+            var res = await _bll.UserInWorkDayService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.UserInWorkDayService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new UserInWorkDayViewModel()
             {
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id)),
-                WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
                     nameof(WorkDay.Id))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.UserInWorkDayRepository.Add(vm.UserInWorkDay);
-                await _uow.SaveChangesAsync();
+                _bll.UserInWorkDayService.Add(vm.UserInWorkDay);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.UserInWorkDay.UserId);
-            vm.WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+            vm.WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
                 nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
             
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInWorkDay = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            var userInWorkDay = await _bll.UserInWorkDayService.FindAsync(id.Value, User.GetUserId());
             if (userInWorkDay == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
             
             var vm = new UserInWorkDayViewModel()
             {
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id), userInWorkDay.UserId),
-                WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+                WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
                     nameof(WorkDay.Id), userInWorkDay.WorkDayId)
             };
             return View(vm);
@@ -116,14 +117,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.UserInWorkDayRepository.Update(vm.UserInWorkDay);
-                await _uow.SaveChangesAsync();
+                _bll.UserInWorkDayService.Update(vm.UserInWorkDay);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.UserInWorkDay.UserId);
-            vm.WorkDaysSelectList = new SelectList(await _uow.WorkDayRepository.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
+            vm.WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
                 nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
             
             return View(vm);
@@ -137,7 +138,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInWorkDay = await _uow.UserInWorkDayRepository.FindAsync(id.Value, User.GetUserId());
+            var userInWorkDay = await _bll.UserInWorkDayService.FindAsync(id.Value, User.GetUserId());
             
             if (userInWorkDay == null)
             {
@@ -152,8 +153,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.UserInWorkDayRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.UserInWorkDayService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

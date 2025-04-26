@@ -1,13 +1,12 @@
 ﻿using App.DAL.DTO;
-using Base.DAL.Contracts;
+using Base.BLL.Contracts;
 
-namespace App.DAL.EF.Mappers;
+namespace App.BLL.Mappers;
 
-public class ScheduleIuowMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Schedule>
+public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Schedule>
 {
-    private readonly TeamIuowMapper _teamIuowMapper = new();
-    
-    public Schedule? Map(Domain.Schedule? entity)
+    private readonly TeamBLLMapper _teamUOWMapper = new();
+    public Schedule? Map(DTO.Schedule? entity)
     {
         if (entity == null) return null;
 
@@ -17,23 +16,23 @@ public class ScheduleIuowMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Sc
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamIuowMapper.Map(entity.Team)
+            Team = _teamUOWMapper.Map(entity.Team)
         };
         
         return res;
     }
 
-    public Domain.Schedule? Map(Schedule? entity)
+    public DTO.Schedule? Map(Schedule? entity)
     {
         if (entity == null) return null;
 
-        var res = new Domain.Schedule()
+        var res = new DTO.Schedule()
         {
             Id = entity.Id,
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamIuowMapper.Map(entity.Team)
+            Team = _teamUOWMapper.Map(entity.Team)
         };
         
         return res;

@@ -4,11 +4,11 @@ using Task = App.DAL.DTO.Task;
 
 namespace App.DAL.EF.Mappers;
 
-public class TaskIuowMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
+public class TaskUOWMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
 {
-    private readonly StatusIuowMapper _statusIuowMapper = new();
-    private readonly UserInTeamIuowMapper _userInTeamIuowMapper = new();
-    private readonly TaskIuowMapper _taskIuowMapper = new();
+    private readonly StatusUOWMapper _statusUOWMapper = new();
+    private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
+    private readonly TaskUOWMapper _taskUOWMapper = new();
     
     public Task? Map(Domain.Task? entity)
     {
@@ -22,9 +22,9 @@ public class TaskIuowMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
-            Status = _statusIuowMapper.Map(entity.Status),
+            Status = _statusUOWMapper.Map(entity.Status),
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamIuowMapper.Map(entity.UserInTeam),
+            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask()
             {
                 Id = u.Id,
@@ -32,9 +32,9 @@ public class TaskIuowMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
                 Until = u.Until,
                 Review = u.Review,
                 TaskId = u.TaskId,
-                Task = _taskIuowMapper.Map(u.Task),
+                Task = _taskUOWMapper.Map(u.Task),
                 UserInTeamId = u.UserInTeamId,
-                UserInTeam = _userInTeamIuowMapper.Map(u.UserInTeam)
+                UserInTeam = _userInTeamUOWMapper.Map(u.UserInTeam)
             }).ToList()
         };
         
@@ -53,9 +53,9 @@ public class TaskIuowMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
-            Status = _statusIuowMapper.Map(entity.Status),
+            Status = _statusUOWMapper.Map(entity.Status),
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamIuowMapper.Map(entity.UserInTeam),
+            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new Domain.UserInTeamInTask()
             {
                 Id = u.Id,
@@ -63,9 +63,9 @@ public class TaskIuowMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
                 Until = u.Until,
                 Review = u.Review,
                 TaskId = u.TaskId,
-                Task = _taskIuowMapper.Map(u.Task),
+                Task = _taskUOWMapper.Map(u.Task),
                 UserInTeamId = u.UserInTeamId,
-                UserInTeam = _userInTeamIuowMapper.Map(u.UserInTeam)
+                UserInTeam = _userInTeamUOWMapper.Map(u.UserInTeam)
             }).ToList()
         };
         

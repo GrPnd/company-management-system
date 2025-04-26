@@ -1,6 +1,7 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -10,17 +11,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class StatusesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public StatusesController(IAppUOW uow)
+        public StatusesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Statuses
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.StatusRepository.AllAsync();
+            var res = await _bll.StatusService.AllAsync();
             return View(res);
         }
 
@@ -32,7 +33,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.StatusService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -63,8 +64,8 @@ namespace WebApp.Controllers
                     Name = vm.Name,
                 };
                 
-                _uow.StatusRepository.Add(entity);
-                await _uow.SaveChangesAsync();
+                _bll.StatusService.Add(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -78,7 +79,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var status = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
+            var status = await _bll.StatusService.FindAsync(id.Value, User.GetUserId());
             if (status == null)
             {
                 return NotFound();
@@ -107,7 +108,7 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var entity = await _uow.StatusRepository.FindAsync(vm.Id, User.GetUserId());
+                var entity = await _bll.StatusService.FindAsync(vm.Id, User.GetUserId());
                 if (entity == null)
                 {
                     return NotFound();
@@ -115,8 +116,8 @@ namespace WebApp.Controllers
                 
                 entity.Name = vm.Name;
                 
-                _uow.StatusRepository.Update(entity);
-                await _uow.SaveChangesAsync();
+                _bll.StatusService.Update(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -131,7 +132,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var status = await _uow.StatusRepository.FindAsync(id.Value, User.GetUserId());
+            var status = await _bll.StatusService.FindAsync(id.Value, User.GetUserId());
             
             if (status == null)
             {
@@ -146,8 +147,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.StatusRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.StatusService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

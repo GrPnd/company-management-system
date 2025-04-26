@@ -1,26 +1,27 @@
-using App.DAL.Contracts;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
+using Department = App.BLL.DTO.Department;
 
 namespace WebApp.Controllers
 {
     [Authorize]
     public class DepartmentsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public DepartmentsController(IAppUOW uow)
+        public DepartmentsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.DepartmentRepository.AllAsync();
+            var res = await _bll.DepartmentService.AllAsync();
             return View(res);
         }
 
@@ -32,7 +33,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.DepartmentService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -63,8 +64,8 @@ namespace WebApp.Controllers
                     Name = vm.Name
                 };
                 
-                _uow.DepartmentRepository.Add(entity);
-                await _uow.SaveChangesAsync();
+                _bll.DepartmentService.Add(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -79,7 +80,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var department = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
+            var department = await _bll.DepartmentService.FindAsync(id.Value, User.GetUserId());
             if (department == null)
             {
                 return NotFound();
@@ -108,7 +109,7 @@ namespace WebApp.Controllers
             
             if (ModelState.IsValid)
             {
-                var department = await _uow.DepartmentRepository.FindAsync(id, User.GetUserId());
+                var department = await _bll.DepartmentService.FindAsync(id, User.GetUserId());
                 if (department == null)
                 {
                     return NotFound();
@@ -116,8 +117,8 @@ namespace WebApp.Controllers
             
                 department.Name = vm.Name;
                 
-                _uow.DepartmentRepository.Update(department);
-                await _uow.SaveChangesAsync();
+                _bll.DepartmentService.Update(department);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -131,7 +132,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var entity = await _uow.DepartmentRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.DepartmentService.FindAsync(id.Value, User.GetUserId());
             if (entity == null)
             {
                 return NotFound();
@@ -145,8 +146,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.DepartmentRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.DepartmentService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
         }

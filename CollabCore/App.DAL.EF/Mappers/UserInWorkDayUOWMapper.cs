@@ -3,10 +3,10 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class UserInWorkDayIuowMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.Domain.UserInWorkDay>
+public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.Domain.UserInWorkDay>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
-    private readonly WorkDayIuowMapper _workDayIuowMapper = new();
+    private readonly PersonUOWMapper _personUOWMapper = new();
+    private readonly WorkDayUOWMapper _workDayUOWMapper = new();
     
     public UserInWorkDay? Map(Domain.UserInWorkDay? entity)
     {
@@ -18,9 +18,9 @@ public class UserInWorkDayIuowMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personIuowMapper.Map(entity.User),
+            User = _personUOWMapper.Map(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = _workDayIuowMapper.Map(entity.WorkDay)
+            WorkDay = _workDayUOWMapper.Map(entity.WorkDay)
         };
         
         return res;
@@ -36,9 +36,9 @@ public class UserInWorkDayIuowMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personIuowMapper.Map(entity.User),
+            User = _personUOWMapper.Map(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = _workDayIuowMapper.Map(entity.WorkDay)
+            WorkDay = _workDayUOWMapper.Map(entity.WorkDay)
         };
         
         return res;

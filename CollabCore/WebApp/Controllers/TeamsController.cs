@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class TeamsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public TeamsController(IAppUOW uow)
+        public TeamsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.TeamRepository.AllAsync();
+            var res = await _bll.TeamService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.TeamRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.TeamService.FindAsync(id.Value, User.GetUserId());
 
             if (entity == null)
             {
@@ -48,7 +49,7 @@ namespace WebApp.Controllers
         {
             var vm = new TeamViewModel()
             {
-                DepartmentsSelectList = new SelectList(await _uow.DepartmentRepository.AllAsync(User.GetUserId()), nameof(Department.Id),
+                DepartmentsSelectList = new SelectList(await _bll.DepartmentService.AllAsync(User.GetUserId()), nameof(Department.Id),
                     nameof(Department.Name))
             };
             return View(vm);
@@ -63,12 +64,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.TeamRepository.Add(vm.Team);
-                await _uow.SaveChangesAsync();
+                _bll.TeamService.Add(vm.Team);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.DepartmentsSelectList = new SelectList(await _uow.DepartmentRepository.AllAsync(User.GetUserId()),
+            vm.DepartmentsSelectList = new SelectList(await _bll.DepartmentService.AllAsync(User.GetUserId()),
                 nameof(Department.Id), nameof(Department.Name), vm.Team.DepartmentId);
 
             return View(vm);
@@ -82,7 +83,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var team = await _uow.TeamRepository.FindAsync(id.Value, User.GetUserId());
+            var team = await _bll.TeamService.FindAsync(id.Value, User.GetUserId());
             if (team == null)
             {
                 return NotFound();
@@ -90,7 +91,7 @@ namespace WebApp.Controllers
 
             var vm = new TeamViewModel()
             {
-                DepartmentsSelectList = new SelectList(await _uow.DepartmentRepository.AllAsync(User.GetUserId()), nameof(Department.Id),
+                DepartmentsSelectList = new SelectList(await _bll.DepartmentService.AllAsync(User.GetUserId()), nameof(Department.Id),
                     nameof(Department.Name), team.DepartmentId),
                 Team = team
             };
@@ -111,12 +112,12 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.TeamRepository.Update(vm.Team);
-                await _uow.SaveChangesAsync();
+                _bll.TeamService.Update(vm.Team);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.DepartmentsSelectList = new SelectList(await _uow.DepartmentRepository.AllAsync(User.GetUserId()),
+            vm.DepartmentsSelectList = new SelectList(await _bll.DepartmentService.AllAsync(User.GetUserId()),
                 nameof(Department.Id), nameof(Department.Name), vm.Team.DepartmentId);
 
             return View(vm);
@@ -130,7 +131,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var team = await _uow.TeamRepository.FindAsync(id.Value, User.GetUserId());
+            var team = await _bll.TeamService.FindAsync(id.Value, User.GetUserId());
             
             if (team == null)
             {
@@ -145,8 +146,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.TeamRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.TeamService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class ScheduleRepository : BaseRepository<App.DAL.DTO.Schedule, App.Domain.Schedule>, IScheduleRepository
 {
-    public ScheduleRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new ScheduleIuowMapper())
+    public ScheduleRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new ScheduleUOWMapper())
     {
     }
 }

@@ -3,7 +3,7 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class DepartmentIuowMapper : IUOWMapper<App.DAL.DTO.Department, App.Domain.Department>
+public class DepartmentUOWMapper : IUOWMapper<App.DAL.DTO.Department, App.Domain.Department>
 {
     public Department? Map(Domain.Department? entity)
     {

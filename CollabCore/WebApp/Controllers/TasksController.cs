@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class TasksController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public TasksController(IAppUOW uow)
+        public TasksController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.TaskRepository.AllAsync();
+            var res = await _bll.TaskService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.TaskService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new TaskViewModel()
             {
-                StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                     nameof(Status.Name)),
-                UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
                     nameof(UserInTeam.Id), nameof(UserInTeam.Role))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.TaskRepository.Add(vm.Task);
-                await _uow.SaveChangesAsync();
+                _bll.TaskService.Add(vm.Task);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+            vm.StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                 nameof(Status.Name), vm.Task.StatusId);
-            vm.UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+            vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
                 nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
 
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var task = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
+            var task = await _bll.TaskService.FindAsync(id.Value, User.GetUserId());
             if (task == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
             
             var vm = new TaskViewModel()
             {
-                StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+                StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                     nameof(Status.Name), task.StatusId),
-                UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+                UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
                     nameof(UserInTeam.Id), nameof(UserInTeam.Role), task.UserInTeamId),
                 Task = task
             };
@@ -117,14 +118,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.TaskRepository.Update(vm.Task);
-                await _uow.SaveChangesAsync();
+                _bll.TaskService.Update(vm.Task);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.StatusesSelectList = new SelectList(await _uow.StatusRepository.AllAsync(User.GetUserId()), nameof(Status.Id),
+            vm.StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                 nameof(Status.Name), vm.Task.StatusId);
-            vm.UsersInTeamSelectList = new SelectList(await _uow.UserInTeamRepository.AllAsync(User.GetUserId()),
+            vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
                 nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
             
             return View(vm);
@@ -138,7 +139,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var task = await _uow.TaskRepository.FindAsync(id.Value, User.GetUserId());
+            var task = await _bll.TaskService.FindAsync(id.Value, User.GetUserId());
             if (task == null)
             {
                 return NotFound();
@@ -152,8 +153,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.TaskRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.TaskService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

@@ -3,9 +3,9 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class WorkDayIuowMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkDay>
+public class WorkDayUOWMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkDay>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
+    private readonly PersonUOWMapper _personUOWMapper = new();
     
     public WorkDay? Map(Domain.WorkDay? entity)
     {
@@ -21,7 +21,7 @@ public class WorkDayIuowMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.Work
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personIuowMapper.Map(u.User),
+                User = _personUOWMapper.Map(u.User),
                 WorkDayId = u.WorkDayId,
                 WorkDay = null // prevent circular reference
             }).ToList()
@@ -44,7 +44,7 @@ public class WorkDayIuowMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.Work
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personIuowMapper.Map(u.User),
+                User = _personUOWMapper.Map(u.User),
                 WorkDayId = u.WorkDayId,
                 WorkDay = null // prevent circular reference
             }).ToList()

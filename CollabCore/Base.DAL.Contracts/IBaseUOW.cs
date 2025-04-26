@@ -1,4 +1,4 @@
-﻿namespace Base.Contracts;
+﻿namespace Base.DAL.Contracts;
 
 public interface IBaseUOW
 {

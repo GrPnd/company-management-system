@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class UserInRoleRepository : BaseRepository<App.DAL.DTO.UserInRole, App.Domain.UserInRole>, IUserInRoleRepository
 {
-    public UserInRoleRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new UserInRoleIuowMapper())
+    public UserInRoleRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new UserInRoleUOWMapper())
     {
     }
 }

@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class MeetingsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public MeetingsController(IAppUOW uow)
+        public MeetingsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Meetings
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.MeetingRepository.AllAsync();
+            var res = await _bll.MeetingService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,7 +49,7 @@ namespace WebApp.Controllers
         {
             var vm = new MeetingViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name))
             };
             return View(vm);
@@ -63,12 +64,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.MeetingRepository.Add(vm.Meeting);
-                await _uow.SaveChangesAsync();
+                _bll.MeetingService.Add(vm.Meeting);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.Meeting.TeamId);
             return View(vm);
         }
@@ -81,7 +82,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var meeting = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
+            var meeting = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
             if (meeting == null)
             {
                 return NotFound();
@@ -89,7 +90,7 @@ namespace WebApp.Controllers
 
             var vm = new MeetingViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+                TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()),
                     nameof(Team.Id), nameof(Team.Name), meeting.TeamId),
                 Meeting = meeting
             };
@@ -110,12 +111,12 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.MeetingRepository.Update(vm.Meeting);
-                await _uow.SaveChangesAsync();
+                _bll.MeetingService.Update(vm.Meeting);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()),
                 nameof(Team.Id), nameof(Team.Name), vm.Meeting.TeamId);
             return View(vm);
         }
@@ -128,7 +129,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var meeting = await _uow.MeetingRepository.FindAsync(id.Value, User.GetUserId());
+            var meeting = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
 
             if (meeting == null)
             {
@@ -143,8 +144,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.MeetingRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.MeetingService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

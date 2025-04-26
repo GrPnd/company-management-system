@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class MeetingRepository : BaseRepository<App.DAL.DTO.Meeting, App.Domain.Meeting>, IMeetingRepository
 {
-    public MeetingRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new MeetingIuowMapper())
+    public MeetingRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new MeetingUOWMapper())
     {
     }
 }

@@ -3,10 +3,10 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class RoleIuowMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
+public class RoleUOWMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
-    private readonly RoleIuowMapper _roleIuowMapper = new();
+    private readonly PersonUOWMapper _personUOWMapper = new();
+    private readonly RoleUOWMapper _roleUOWMapper = new();
     
     public Role? Map(Domain.Role? entity)
     {
@@ -22,9 +22,9 @@ public class RoleIuowMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personIuowMapper.Map(u.User),
+                User = _personUOWMapper.Map(u.User),
                 RoleId = u.RoleId,
-                Role = _roleIuowMapper.Map(u.Role)
+                Role = _roleUOWMapper.Map(u.Role)
             }).ToList()
         };
         
@@ -45,9 +45,9 @@ public class RoleIuowMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personIuowMapper.Map(u.User),
+                User = _personUOWMapper.Map(u.User),
                 RoleId = u.RoleId,
-                Role = _roleIuowMapper.Map(u.Role)
+                Role = _roleUOWMapper.Map(u.Role)
             }).ToList()
         };
         

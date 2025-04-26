@@ -1,6 +1,6 @@
-using App.DAL.Contracts;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using App.Domain.Identity;
 using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
@@ -12,19 +12,19 @@ namespace WebApp.Controllers
 {
     public class PersonsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
         private readonly UserManager<AppUser> _userManager;
 
-        public PersonsController(IAppUOW uow, UserManager<AppUser> userManager)
+        public PersonsController(IAppBLL bll, UserManager<AppUser> userManager)
         {
-            _uow = uow;
+            _bll = bll;
             _userManager = userManager;
         }
 
         // GET: Persons
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.PersonRepository.AllAsync(User.GetUserId());
+            var res = await _bll.PersonService.AllAsync(User.GetUserId());
             return View(res);
         }
 
@@ -36,7 +36,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -53,7 +53,7 @@ namespace WebApp.Controllers
             
             var vm = new PersonViewModel()
             {
-                Person = new Person(),
+                Person = new App.BLL.DTO.Person(),
                 UsersSelectList = new SelectList(users, "Id", "UserName")
             };
             return View(vm);
@@ -69,8 +69,8 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 // todo KAHTLANE KOHT??
-                _uow.PersonRepository.Add(vm.Person, User.GetUserId());
-                await _uow.SaveChangesAsync();
+                _bll.PersonService.Add(vm.Person, User.GetUserId());
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var person = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+            var person = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
             if (person == null)
             {
                 return NotFound();
@@ -108,8 +108,8 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.PersonRepository.Update(entity);
-                await _uow.SaveChangesAsync();
+                _bll.PersonService.Update(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -125,7 +125,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.PersonRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.PersonService.FindAsync(id.Value, User.GetUserId());
             if (entity == null)
             {
                 return NotFound();
@@ -140,9 +140,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.PersonRepository.RemoveAsync(id, User.GetUserId());
+            await _bll.PersonService.RemoveAsync(id, User.GetUserId());
 
-            await _uow.SaveChangesAsync();
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
         }

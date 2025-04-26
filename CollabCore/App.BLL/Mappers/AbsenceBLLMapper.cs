@@ -1,13 +1,12 @@
 ﻿using App.DAL.DTO;
-using Base.DAL.Contracts;
+using Base.BLL.Contracts;
 
-namespace App.DAL.EF.Mappers;
+namespace App.BLL.Mappers;
 
-public class AbsenceIuowMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absence>
+public class AbsenceBLLMapper : IBLLMapper<App.BLL.DTO.Absence, App.DAL.DTO.Absence>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
-    
-    public Absence? Map(Domain.Absence? entity)
+    private readonly PersonBLLMapper _personUOWMapper = new();
+    public Absence? Map(DTO.Absence? entity)
     {
         if (entity == null) return null;
 
@@ -19,19 +18,19 @@ public class AbsenceIuowMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Abse
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personIuowMapper.Map(entity.ByUser)!,
+            ByUser = _personUOWMapper.Map(entity.ByUser)!,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personIuowMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
         };
         
         return res;
     }
 
-    public Domain.Absence? Map(Absence? entity)
+    public DTO.Absence? Map(Absence? entity)
     {
         if (entity == null) return null;
         
-        var res = new Domain.Absence()
+        var res = new DTO.Absence()
         {
             Id = entity.Id,
             Reason = entity.Reason,
@@ -39,9 +38,9 @@ public class AbsenceIuowMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Abse
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personIuowMapper.Map(entity.ByUser)!,
+            ByUser = _personUOWMapper.Map(entity.ByUser)!,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personIuowMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
         };
         
         return res;

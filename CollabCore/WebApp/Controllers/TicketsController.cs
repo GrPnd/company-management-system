@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class TicketsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public TicketsController(IAppUOW uow)
+        public TicketsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.TicketRepository.AllAsync();
+            var res = await _bll.TicketService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.TicketService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new TicketViewModel()
             {
-                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id)),
-                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.TicketRepository.Add(vm.Ticket);
-                await _uow.SaveChangesAsync();
+                _bll.TicketService.Add(vm.Ticket);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Ticket.FromUserId);
-            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Ticket.ToUserId);
 
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
+            var ticket = await _bll.TicketService.FindAsync(id.Value, User.GetUserId());
             if (ticket == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
             
             var vm = new TicketViewModel()
             {
-                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), ticket.FromUserId),
-                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), ticket.ToUserId),
                 Ticket = ticket
             };
@@ -117,14 +118,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.TicketRepository.Update(vm.Ticket);
-                await _uow.SaveChangesAsync();
+                _bll.TicketService.Update(vm.Ticket);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Ticket.FromUserId);
-            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Ticket.ToUserId);
             return View(vm);
         }
@@ -137,7 +138,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var ticket = await _uow.TicketRepository.FindAsync(id.Value, User.GetUserId());
+            var ticket = await _bll.TicketService.FindAsync(id.Value, User.GetUserId());
             
             if (ticket == null)
             {
@@ -152,8 +153,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.TicketRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.TicketService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

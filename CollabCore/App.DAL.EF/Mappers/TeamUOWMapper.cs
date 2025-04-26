@@ -4,10 +4,10 @@ using Task = App.DAL.DTO.Task;
 
 namespace App.DAL.EF.Mappers;
 
-public class TeamIuowMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
+public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
 {
-    private readonly DepartmentIuowMapper _departmentIuowMapper = new();
-    private readonly UserInTeamIuowMapper _userInTeamIuowMapper = new();
+    private readonly DepartmentUOWMapper _departmentUOWMapper = new();
+    private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
     
     public Team? Map(Domain.Team? entity)
     {
@@ -18,8 +18,8 @@ public class TeamIuowMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Id = entity.Id,
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
-            Department = _departmentIuowMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamIuowMapper.Map).ToList()!,
+            Department = _departmentUOWMapper.Map(entity.Department),
+            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamUOWMapper.Map).ToList()!,
             Schedules = entity.Schedules?.Select(s => new Schedule()
             {
                 Id = s.Id,
@@ -52,8 +52,8 @@ public class TeamIuowMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Id = entity.Id,
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
-            Department = _departmentIuowMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamIuowMapper.Map).ToList()!,
+            Department = _departmentUOWMapper.Map(entity.Department),
+            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamUOWMapper.Map).ToList()!,
             Schedules = entity.Schedules?.Select(s => new Domain.Schedule()
             {
                 Id = s.Id,

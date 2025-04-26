@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class SchedulesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public SchedulesController(IAppUOW uow)
+        public SchedulesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Schedules
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.ScheduleRepository.AllAsync();
+            var res = await _bll.ScheduleService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.ScheduleService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,7 +49,7 @@ namespace WebApp.Controllers
         {
             var vm = new ScheduleViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name))
             };
             return View(vm);
@@ -63,12 +64,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.ScheduleRepository.Add(vm.Schedule);
-                await _uow.SaveChangesAsync();
+                _bll.ScheduleService.Add(vm.Schedule);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.Schedule.TeamId);
             return View(vm);
         }
@@ -81,7 +82,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var schedule = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
+            var schedule = await _bll.ScheduleService.FindAsync(id.Value, User.GetUserId());
             if (schedule == null)
             {
                 return NotFound();
@@ -89,7 +90,7 @@ namespace WebApp.Controllers
             
             var vm = new ScheduleViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                TeamSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Team.Id), nameof(Team.Name), schedule.TeamId),
                 Schedule = schedule
             };
@@ -110,11 +111,11 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.ScheduleRepository.Update(vm.Schedule);
-                await _uow.SaveChangesAsync();
+                _bll.ScheduleService.Update(vm.Schedule);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()),
                 nameof(Team.Id), nameof(Team.Name), vm.Schedule.TeamId);
             return View(vm);
         }
@@ -127,7 +128,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var schedule = await _uow.ScheduleRepository.FindAsync(id.Value, User.GetUserId());
+            var schedule = await _bll.ScheduleService.FindAsync(id.Value, User.GetUserId());
             if (schedule == null)
             {
                 return NotFound();
@@ -141,8 +142,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.ScheduleRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.ScheduleService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

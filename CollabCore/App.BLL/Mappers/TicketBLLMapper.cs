@@ -1,13 +1,12 @@
 ﻿using App.DAL.DTO;
-using Base.DAL.Contracts;
+using Base.BLL.Contracts;
 
-namespace App.DAL.EF.Mappers;
+namespace App.BLL.Mappers;
 
-public class TicketIuowMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
+public class TicketBLLMapper : IBLLMapper<App.BLL.DTO.Ticket, App.DAL.DTO.Ticket>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
-    
-    public Ticket? Map(Domain.Ticket? entity)
+    private readonly PersonBLLMapper _personUOWMapper = new();
+    public Ticket? Map(DTO.Ticket? entity)
     {
         if (entity == null) return null;
 
@@ -17,27 +16,27 @@ public class TicketIuowMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            FromUser = _personUOWMapper.Map(entity.FromUser)!,
             ToUserId = entity.ToUserId,
-            ToUser = _personIuowMapper.Map(entity.ToUser)!
+            ToUser = _personUOWMapper.Map(entity.ToUser)!
         };
         
         return res;
     }
 
-    public Domain.Ticket? Map(Ticket? entity)
+    public DTO.Ticket? Map(Ticket? entity)
     {
         if (entity == null) return null;
 
-        var res = new Domain.Ticket()
+        var res = new DTO.Ticket()
         {
             Id = entity.Id,
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            FromUser = _personUOWMapper.Map(entity.FromUser)!,
             ToUserId = entity.ToUserId,
-            ToUser = _personIuowMapper.Map(entity.ToUser)!
+            ToUser = _personUOWMapper.Map(entity.ToUser)!
         };
         
         return res;

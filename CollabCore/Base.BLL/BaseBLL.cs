@@ -1,5 +1,6 @@
 ﻿using Base.BLL.Contracts;
 using Base.Contracts;
+using Base.DAL.Contracts;
 
 namespace Base.BLL;
 

@@ -3,9 +3,9 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MessageIuowMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Message>
+public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Message>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
+    private readonly PersonUOWMapper _personUOWMapper = new();
     public Message? Map(Domain.Message? entity)
     {
         if (entity == null) return null;
@@ -15,9 +15,9 @@ public class MessageIuowMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            FromUser = _personUOWMapper.Map(entity.FromUser)!,
             ToUserId = entity.ToUserId,
-            ToUser = _personIuowMapper.Map(entity.ToUser)!
+            ToUser = _personUOWMapper.Map(entity.ToUser)!
         };
         
         return res;
@@ -32,9 +32,9 @@ public class MessageIuowMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personIuowMapper.Map(entity.FromUser)!,
+            FromUser = _personUOWMapper.Map(entity.FromUser)!,
             ToUserId = entity.ToUserId,
-            ToUser = _personIuowMapper.Map(entity.ToUser)!
+            ToUser = _personUOWMapper.Map(entity.ToUser)!
         };
         
         return res;

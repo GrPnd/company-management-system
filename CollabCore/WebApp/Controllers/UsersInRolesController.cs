@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class UsersInRolesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public UsersInRolesController(IAppUOW uow)
+        public UsersInRolesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: UsersInRoles
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.UserInRoleRepository.AllAsync();
+            var res = await _bll.UserInRoleService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.UserInRoleRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.UserInRoleService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new UserInRoleViewModel()
             {
-                RolesSelectList = new SelectList(await _uow.RoleRepository.AllAsync(User.GetUserId()), nameof(Role.Id),
+                RolesSelectList = new SelectList(await _bll.RoleService.AllAsync(User.GetUserId()), nameof(Role.Id),
                     nameof(Role.Name)),
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.UserInRoleRepository.Add(vm.UserInRole);
-                await _uow.SaveChangesAsync();
+                _bll.UserInRoleService.Add(vm.UserInRole);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.RolesSelectList = new SelectList(await _uow.RoleRepository.AllAsync(User.GetUserId()), nameof(Role.Id),
+            vm.RolesSelectList = new SelectList(await _bll.RoleService.AllAsync(User.GetUserId()), nameof(Role.Id),
                 nameof(Role.Name), vm.UserInRole.RoleId);
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.UserInRole.UserId);
             
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInRole = await _uow.UserInRoleRepository.FindAsync(id.Value, User.GetUserId());
+            var userInRole = await _bll.UserInRoleService.FindAsync(id.Value, User.GetUserId());
             if (userInRole == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
             
             var vm = new UserInRoleViewModel()
             {
-                RolesSelectList = new SelectList(await _uow.RoleRepository.AllAsync(User.GetUserId()), nameof(Role.Id),
+                RolesSelectList = new SelectList(await _bll.RoleService.AllAsync(User.GetUserId()), nameof(Role.Id),
                     nameof(Role.Name), userInRole.RoleId),
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id), userInRole.UserId),
                 UserInRole = userInRole
             };
@@ -117,14 +118,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.UserInRoleRepository.Update(vm.UserInRole);
-                await _uow.SaveChangesAsync();
+                _bll.UserInRoleService.Update(vm.UserInRole);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.RolesSelectList = new SelectList(await _uow.RoleRepository.AllAsync(User.GetUserId()), nameof(Role.Id),
+            vm.RolesSelectList = new SelectList(await _bll.RoleService.AllAsync(User.GetUserId()), nameof(Role.Id),
                 nameof(Role.Name), vm.UserInRole.RoleId);
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.UserInRole.UserId);
             
             return View(vm);
@@ -138,7 +139,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInRole = await _uow.UserInRoleRepository.FindAsync(id.Value, User.GetUserId());
+            var userInRole = await _bll.UserInRoleService.FindAsync(id.Value, User.GetUserId());
             
             if (userInRole == null)
             {
@@ -153,8 +154,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.UserInRoleRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.UserInRoleService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

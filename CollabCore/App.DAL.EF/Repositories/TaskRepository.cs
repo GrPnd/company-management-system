@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class TaskRepository : BaseRepository<App.DAL.DTO.Task, App.Domain.Task>, ITaskRepository
 {
-    public TaskRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new TaskIuowMapper())
+    public TaskRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new TaskUOWMapper())
     {
     }
 }

@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class TicketRepository : BaseRepository<App.DAL.DTO.Ticket, App.Domain.Ticket>, ITicketRepository
 {
-    public TicketRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new TicketIuowMapper())
+    public TicketRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new TicketUOWMapper())
     {
     }
 }

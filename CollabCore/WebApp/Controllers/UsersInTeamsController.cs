@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class UsersInTeamsController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public UsersInTeamsController(IAppUOW uow)
+        public UsersInTeamsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: UsersInTeams
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.UserInTeamRepository.AllAsync(User.GetUserId());
+            var res = await _bll.UserInTeamService.AllAsync(User.GetUserId());
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var entity = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.UserInTeamService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new UserInTeamViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name)),
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.UserInTeamRepository.Add(vm.UserInTeam);
-                await _uow.SaveChangesAsync();
+                _bll.UserInTeamService.Add(vm.UserInTeam);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id), 
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
                 nameof(Person.Id), vm.UserInTeam.UserId);
             
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInTeam = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
+            var userInTeam = await _bll.UserInTeamService.FindAsync(id.Value, User.GetUserId());
             if (userInTeam == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
             
             var vm = new UserInTeamViewModel()
             {
-                TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+                TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name), userInTeam.TeamId),
-                UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id), userInTeam.UserId),
                 UserInTeam = userInTeam
             };
@@ -117,14 +118,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.UserInTeamRepository.Update(vm.UserInTeam);
-                await _uow.SaveChangesAsync();
+                _bll.UserInTeamService.Update(vm.UserInTeam);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            vm.TeamSelectList = new SelectList(await _uow.TeamRepository.AllAsync(User.GetUserId()), nameof(Team.Id),
+            vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
-            vm.UsersSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id), 
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
                 nameof(Person.Id), vm.UserInTeam.UserId);
             
             return View(vm);
@@ -138,7 +139,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var userInTeam = await _uow.UserInTeamRepository.FindAsync(id.Value, User.GetUserId());
+            var userInTeam = await _bll.UserInTeamService.FindAsync(id.Value, User.GetUserId());
             
             if (userInTeam == null)
             {
@@ -153,8 +154,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.UserInTeamRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.UserInTeamService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

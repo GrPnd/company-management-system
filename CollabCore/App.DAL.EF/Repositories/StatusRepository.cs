@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class StatusRepository : BaseRepository<App.DAL.DTO.Status, App.Domain.Status>, IStatusRepository
 {
-    public StatusRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new StatusIuowMapper())
+    public StatusRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new StatusUOWMapper())
     {
     }
 }

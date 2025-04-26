@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -12,17 +13,17 @@ namespace WebApp.Controllers
     
     public class AbsencesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public AbsencesController(IAppUOW uow)
+        public AbsencesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Absences
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.AbsenceRepository.AllAsync();
+            var res = await _bll.AbsenceService.AllAsync();
             return View(res);
         }
 
@@ -34,7 +35,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var entity = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.AbsenceService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -49,9 +50,9 @@ namespace WebApp.Controllers
         {
             var vm = new AbsenceViewModel()
             {
-                AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id)),
-                ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id))
             };
             return View(vm);
@@ -67,14 +68,14 @@ namespace WebApp.Controllers
             //"Reason,StartDate,EndDate,IsApproved,ByUserId,AuthorizedByUserId,Id")
             if (ModelState.IsValid)
             {
-                _uow.AbsenceRepository.Add(vm.Absence);
-                await _uow.SaveChangesAsync();
+                _bll.AbsenceService.Add(vm.Absence);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Absence.AuthorizedByUserId);
-            vm.ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Absence.ByUserId);
 
             return View(vm);
@@ -88,7 +89,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var absence = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
+            var absence = await _bll.AbsenceService.FindAsync(id.Value, User.GetUserId());
             if (absence == null)
             {
                 return NotFound();
@@ -96,9 +97,9 @@ namespace WebApp.Controllers
 
             var vm = new AbsenceViewModel()
             {
-                AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), absence.AuthorizedByUserId),
-                ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), absence.ByUserId),
                 Absence = absence
             };
@@ -119,14 +120,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.AbsenceRepository.Update(vm.Absence);
-                await _uow.SaveChangesAsync();
+                _bll.AbsenceService.Update(vm.Absence);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.AuthorizedByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Absence.AuthorizedByUserId);
-            vm.ByUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+            vm.ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                 nameof(Person.Id), nameof(Person.Id), vm.Absence.ByUserId);
             return View(vm);
         }
@@ -139,7 +140,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var absence = await _uow.AbsenceRepository.FindAsync(id.Value, User.GetUserId());
+            var absence = await _bll.AbsenceService.FindAsync(id.Value, User.GetUserId());
 
             if (absence == null)
             {
@@ -154,8 +155,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.AbsenceRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.AbsenceService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

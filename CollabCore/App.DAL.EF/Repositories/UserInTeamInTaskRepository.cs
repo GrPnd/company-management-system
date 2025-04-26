@@ -8,7 +8,7 @@ namespace App.DAL.EF.Repositories;
 
 public class UserInTeamInTaskRepository : BaseRepository<App.DAL.DTO.UserInTeamInTask, App.Domain.UserInTeamInTask>, IUserInTeamInTaskRepository
 {
-    public UserInTeamInTaskRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new UserInTeamInTaskIuowMapper())
+    public UserInTeamInTaskRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new UserInTeamInTaskUOWMapper())
     {
     }
 }

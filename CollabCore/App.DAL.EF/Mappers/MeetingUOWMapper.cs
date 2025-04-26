@@ -3,9 +3,9 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class MeetingIuowMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeting>
+public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeting>
 {
-    private readonly TeamIuowMapper _teamIuowMapper = new();
+    private readonly TeamUOWMapper _teamUOWMapper = new();
     
     public Meeting? Map(Domain.Meeting? entity)
     {
@@ -19,7 +19,7 @@ public class MeetingIuowMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamIuowMapper.Map(entity.Team)
+            Team = _teamUOWMapper.Map(entity.Team)
         };
         
         return res;
@@ -37,7 +37,7 @@ public class MeetingIuowMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamIuowMapper.Map(entity.Team)
+            Team = _teamUOWMapper.Map(entity.Team)
         };
         
         return res;

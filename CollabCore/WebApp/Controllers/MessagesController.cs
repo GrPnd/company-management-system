@@ -1,7 +1,8 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -11,17 +12,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class MessagesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public MessagesController(IAppUOW uow)
+        public MessagesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.MessageRepository.AllAsync();
+            var res = await _bll.MessageService.AllAsync();
             return View(res);
         }
 
@@ -33,7 +34,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var entity = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
+            var entity = await _bll.MessageService.FindAsync(id.Value, User.GetUserId());
             
             if (entity == null)
             {
@@ -48,9 +49,9 @@ namespace WebApp.Controllers
         {
             var vm = new MessageViewModel()
             {
-                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id)),
-                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+                ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                     nameof(Person.Id))
             };
             return View(vm);
@@ -65,14 +66,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _uow.MessageRepository.Add(vm.Message);
-                await _uow.SaveChangesAsync();
+                _bll.MessageService.Add(vm.Message);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Message.FromUserId);
-            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Message.ToUserId);
 
             return View(vm);
@@ -86,7 +87,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var message = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
+            var message = await _bll.MessageService.FindAsync(id.Value, User.GetUserId());
             if (message == null)
             {
                 return NotFound();
@@ -94,9 +95,9 @@ namespace WebApp.Controllers
 
             var vm = new MessageViewModel()
             {
-                FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), message.FromUserId),
-                ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()),
+                ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
                     nameof(Person.Id), nameof(Person.Id), message.ToUserId),
                 Message = message
             };
@@ -117,14 +118,14 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                _uow.MessageRepository.Update(vm.Message);
-                await _uow.SaveChangesAsync();
+                _bll.MessageService.Update(vm.Message);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
-            vm.FromUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Message.FromUserId);
-            vm.ToUserSelectList = new SelectList(await _uow.PersonRepository.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
                 nameof(Person.Id), vm.Message.ToUserId);
             return View(vm);
         }
@@ -137,7 +138,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var message = await _uow.MessageRepository.FindAsync(id.Value, User.GetUserId());
+            var message = await _bll.MessageService.FindAsync(id.Value, User.GetUserId());
             
             if (message == null)
             {
@@ -152,8 +153,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.MessageRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.MessageService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }

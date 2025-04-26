@@ -1,5 +1,6 @@
 ﻿using App.DAL.Contracts.Repositories;
 using Base.Contracts;
+using Base.DAL.Contracts;
 
 namespace App.DAL.Contracts;
 

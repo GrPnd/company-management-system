@@ -3,10 +3,10 @@ using Base.DAL.Contracts;
 
 namespace App.DAL.EF.Mappers;
 
-public class UserInTeamIuowMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain.UserInTeam>
+public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain.UserInTeam>
 {
-    private readonly PersonIuowMapper _personIuowMapper = new();
-    private readonly TaskIuowMapper _taskIuowMapper = new();
+    private readonly PersonUOWMapper _personUOWMapper = new();
+    private readonly TaskUOWMapper _taskUOWMapper = new();
     
     public UserInTeam? Map(Domain.UserInTeam? entity)
     {
@@ -19,10 +19,10 @@ public class UserInTeamIuowMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domai
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personIuowMapper.Map(entity.User),
+            User = _personUOWMapper.Map(entity.User),
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskIuowMapper.Map).ToList()!,
+            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask
             {
                 Id = u.Id,
@@ -50,10 +50,10 @@ public class UserInTeamIuowMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domai
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personIuowMapper.Map(entity.User),
+            User = _personUOWMapper.Map(entity.User),
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskIuowMapper.Map).ToList()!,
+            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new Domain.UserInTeamInTask
             {
                 Id = u.Id,

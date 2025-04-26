@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using App.BLL;
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.Repositories;
@@ -41,6 +43,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddScoped<IAppUOW, AppUOW>();
+builder.Services.AddScoped<IAppBLL, AppBLL>();
+
+
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
             options.SignIn.RequireConfirmedAccount = false)

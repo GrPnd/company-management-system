@@ -1,6 +1,7 @@
+using App.BLL.Contracts;
 using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.DAL.DTO;
+using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
@@ -10,17 +11,17 @@ namespace WebApp.Controllers
     [Authorize]
     public class RolesController : Controller
     {
-        private readonly IAppUOW _uow;
+        private readonly IAppBLL _bll;
 
-        public RolesController(IAppUOW uow)
+        public RolesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            var res = await _uow.RoleRepository.AllAsync();
+            var res = await _bll.RoleService.AllAsync();
             return View(res);
         }
 
@@ -32,7 +33,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
+            var role = await _bll.RoleService.FindAsync(id.Value, User.GetUserId());
             
             if (role == null)
             {
@@ -63,8 +64,8 @@ namespace WebApp.Controllers
                     Name = vm.Name,
                 };
                 
-                _uow.RoleRepository.Add(entity);
-                await _uow.SaveChangesAsync();
+                _bll.RoleService.Add(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(vm);
@@ -78,7 +79,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
+            var role = await _bll.RoleService.FindAsync(id.Value, User.GetUserId());
             if (role == null)
             {
                 return NotFound();
@@ -107,7 +108,7 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
-                var entity = await _uow.RoleRepository.FindAsync(vm.Id, User.GetUserId());
+                var entity = await _bll.RoleService.FindAsync(vm.Id, User.GetUserId());
                 if (entity == null)
                 {
                     return NotFound();
@@ -115,8 +116,8 @@ namespace WebApp.Controllers
                 
                 entity.Name = vm.Name;
                 
-                _uow.RoleRepository.Update(entity);
-                await _uow.SaveChangesAsync();
+                _bll.RoleService.Update(entity);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
@@ -131,7 +132,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var role = await _uow.RoleRepository.FindAsync(id.Value, User.GetUserId());
+            var role = await _bll.RoleService.FindAsync(id.Value, User.GetUserId());
             
             if (role == null)
             {
@@ -146,8 +147,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            await _uow.RoleRepository.RemoveAsync(id, User.GetUserId());
-            await _uow.SaveChangesAsync();
+            await _bll.RoleService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }
