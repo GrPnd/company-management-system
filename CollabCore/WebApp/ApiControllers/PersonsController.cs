@@ -2,37 +2,59 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.BLL;
+using App.BLL.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
+using App.BLL.DTO;
+using Asp.Versioning;
+using Base.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.ApiControllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PersonsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public PersonsController(AppDbContext context)
+        public PersonsController(AppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
+        /// <summary>
+        /// Get all persons for currently logged in user
+        /// </summary>
+        /// <returns>List of persons</returns>
         // GET: api/Persons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Person> ), 200 )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Person>>> GetPersons()
         {
-            return await _context.Persons.ToListAsync();
+            var data = (await _bll.PersonService.AllAsync(User.GetUserId())).ToList();
+            // TODO - add mapper
+            var res = data.Select(p => new App.DTO.v1.ApiEntities.Person()
+            {
+                Id = p.Id,
+                PersonName = p.PersonName
+
+            }).ToList();
+            return res;
         }
 
         // GET: api/Persons/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(Guid id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id);
 
             if (person == null)
             {
@@ -52,23 +74,8 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(person).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _bll.PersonService.Update(person);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
@@ -78,31 +85,32 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            _context.Persons.Add(person);
-            await _context.SaveChangesAsync();
+            _bll.PersonService.Add(person, User.GetUserId());
+            await _bll.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            return CreatedAtAction("GetPerson", new
+            {
+                // todo - get person id
+                id = person.Id,
+                version = HttpContext.GetRequestedApiVersion()!.ToString()
+            }, person);
         }
+
 
         // DELETE: api/Persons/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(Guid id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = await _bll.PersonService.FindAsync(id, User.GetUserId());
             if (person == null)
             {
                 return NotFound();
             }
 
-            _context.Persons.Remove(person);
-            await _context.SaveChangesAsync();
+            _bll.PersonService.Remove(person);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool PersonExists(Guid id)
-        {
-            return _context.Persons.Any(e => e.Id == id);
         }
     }
 }

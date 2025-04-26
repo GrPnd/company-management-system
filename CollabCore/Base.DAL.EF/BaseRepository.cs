@@ -91,7 +91,8 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
         RepositoryDbSet.Add(dbEntity!);
     }
 
-    public virtual TDalEntity Update(TDalEntity entity)
+    // todo update where userid is correct
+    public virtual TDalEntity Update(TDalEntity entity, TKey? userId)
     {
         return UOWMapper.Map(RepositoryDbSet.Update(UOWMapper.Map(entity)!).Entity)!;
     }

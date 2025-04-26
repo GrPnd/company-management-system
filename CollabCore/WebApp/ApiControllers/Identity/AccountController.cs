@@ -36,7 +36,6 @@ public class AccountController : ControllerBase
     }
     
     
-    
      /// <summary>
     /// Register new local user into app.
     /// </summary>
