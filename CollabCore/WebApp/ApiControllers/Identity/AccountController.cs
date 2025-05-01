@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.ApiControllers.Identity;
 
+/// <inheritdoc />
 [Route("api/[controller]/[action]")]
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -25,6 +26,7 @@ public class AccountController : ControllerBase
     private readonly Random _random = new Random();
     private readonly AppDbContext _context;
 
+    /// <inheritdoc />
     public AccountController(IConfiguration configuration, UserManager<AppUser> userManager, 
         ILogger<AccountController> logger, SignInManager<AppUser> signInManager, AppDbContext context)
     {
@@ -144,10 +146,14 @@ public class AccountController : ControllerBase
     }
     
     
-    
-    
-    
-
+     
+    /// <summary>
+    /// Login with user credentials and receive JWT and refresh token.
+    /// </summary>
+    /// <param name="loginInfo">User login info: email and password.</param>
+    /// <param name="jwtExpiresInSeconds">Custom JWT expiry time in seconds.</param>
+    /// <param name="refreshTokenExpiresInSeconds">Custom refresh token expiry time in seconds.</param>
+    /// <returns>JWT and refresh token</returns>
     [HttpPost]
     public async Task<ActionResult<JWTResponse>> Login(
         [FromBody] LoginInfo loginInfo,
@@ -228,7 +234,13 @@ public class AccountController : ControllerBase
     
     
     
-     [HttpPost]
+    /// <summary>
+    /// Generate a new JWT and refresh token using a valid refresh token.
+    /// </summary>
+    /// <param name="tokenRefreshInfo">Current JWT and refresh token.</param>
+    /// <param name="expiresInSeconds">New JWT expiry time in seconds.</param>
+    /// <returns>New JWT and refresh token.</returns>
+    [HttpPost]
     public async Task<ActionResult<JWTResponse>> RefreshTokenData(
         [FromBody] TokenRefreshInfo tokenRefreshInfo,
         [FromQuery] int expiresInSeconds
@@ -368,7 +380,11 @@ public class AccountController : ControllerBase
     
     
     
-    
+    /// <summary>
+    /// Logout the user by deleting their refresh tokens.
+    /// </summary>
+    /// <param name="logout">Logout info including refresh token.</param>
+    /// <returns>Number of deleted tokens.</returns>
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost]
     public async Task<ActionResult> Logout(
@@ -428,5 +444,3 @@ public class AccountController : ControllerBase
         return Ok(new {TokenDeleteCount = deleteCount});
     }
 }
-
-

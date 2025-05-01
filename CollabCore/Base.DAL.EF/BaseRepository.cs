@@ -90,16 +90,52 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
         
         RepositoryDbSet.Add(dbEntity!);
     }
-
-    // todo update where userid is correct
-    public virtual TDalEntity Update(TDalEntity entity, TKey? userId)
+    
+    public virtual TDalEntity? Update(TDalEntity entity, TKey? userId)
     {
-        return UOWMapper.Map(RepositoryDbSet.Update(UOWMapper.Map(entity)!).Entity)!;
+        var domainEntity = UOWMapper.Map(entity)!;
+
+        if (ShouldUseUserId(userId))
+        {
+            var dbEntity = RepositoryDbSet
+                .AsNoTracking()
+                .FirstOrDefault(e => e.Id.Equals(entity.Id));
+
+            if (dbEntity == null || !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+            if (ShouldUseUserId(userId) && !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+        }
+
+        return UOWMapper.Map(RepositoryDbSet.Update(domainEntity).Entity)!;
     }
+    
+    public virtual async Task<TDalEntity?> UpdateAsync(TDalEntity entity, TKey? userId = default!)
+    {
+        var domainEntity = UOWMapper.Map(entity)!;
+
+        if (ShouldUseUserId(userId))
+        {
+            var dbEntity = await RepositoryDbSet
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id.Equals(entity.Id));
+
+            if (dbEntity == null || !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+            if (ShouldUseUserId(userId) && !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
+        }
+
+        return UOWMapper.Map(RepositoryDbSet.Update(domainEntity).Entity)!;
+    }
+
 
     public virtual void Remove(TDalEntity entity, TKey? userId = default!)
     {
         Remove(entity.Id, userId);
+    }
+    
+    private bool ShouldUseUserId(TKey? userId = default!)
+    {
+        return typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
+               userId != null &&
+               !EqualityComparer<TKey>.Default.Equals(userId, default);
     }
 
     public virtual void Remove(TKey id, TKey? userId)

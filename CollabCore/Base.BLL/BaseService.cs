@@ -68,6 +68,13 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey>: IBaseSer
         var updatedEntity = ServiceRepository.Update(dalEntity!);
         return BLLMapper.Map(updatedEntity)!;
     }
+    
+    public virtual async Task<TBllEntity?> UpdateAsync(TBllEntity entity, TKey? userId = default)
+    {
+        var dalEntity = BLLMapper.Map(entity);
+        var updatedEntity = await ServiceRepository.UpdateAsync(dalEntity!, userId);
+        return BLLMapper.Map(updatedEntity);
+    }
 
     public virtual void Remove(TBllEntity entity, TKey? userId = default)
     {
