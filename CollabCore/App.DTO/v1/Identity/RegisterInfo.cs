@@ -11,8 +11,8 @@ public class RegisterInfo
     public string Password { get; set; } = default!;
     
     [MaxLength(128)]
-    public string Firstname { get; set; } = default!;
+    public string FirstName { get; set; } = default!;
     
     [MaxLength(128)]
-    public string Lastname { get; set; } = default!;
+    public string LastName { get; set; } = default!;
 }

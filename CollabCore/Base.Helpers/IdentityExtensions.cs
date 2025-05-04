@@ -14,14 +14,15 @@ public static class IdentityExtensions
 
         return userId;
     }
-    
+
     private static readonly JwtSecurityTokenHandler JwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-    
-    public static string GenerateJwt(IEnumerable<Claim> claims, string key, string issuer, string audience, int expiresInSeconds)
+
+    public static string GenerateJwt(IEnumerable<Claim> claims, string key, string issuer, string audience,
+        DateTime expires)
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha512);
-        var expires = DateTime.Now.AddSeconds(expiresInSeconds);
+
         var token = new JwtSecurityToken(
             issuer: issuer,
             audience: issuer,
@@ -38,22 +39,25 @@ public static class IdentityExtensions
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+
             ValidateIssuer = true,
             ValidIssuer = issuer,
+
             ValidateAudience = true,
             ValidAudience = audience,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero // Optional: remove clock skew tolerance
+
+            ValidateLifetime = false
         };
 
         try
         {
-            JwtSecurityTokenHandler.ValidateToken(jwt, tokenValidationParameters, out _);
-            return true;
+            new JwtSecurityTokenHandler().ValidateToken(jwt, tokenValidationParameters, out _);
         }
-        catch
+        catch (Exception)
         {
             return false;
         }
+
+        return true;
     }
 }

@@ -1,6 +1,10 @@
-﻿namespace App.DTO.v1.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace App.DTO.v1.Identity;
 
 public class LogoutInfo
 {
-    public string RefreshToken { get; set; } = Guid.NewGuid().ToString();
+    [MaxLength(128)]
+    [Required]
+    public string RefreshToken { get; set; } = default!;
 }
