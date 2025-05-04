@@ -5,7 +5,6 @@ namespace App.BLL.Mappers;
 
 public class MeetingBLLMapper : IBLLMapper<App.BLL.DTO.Meeting, App.DAL.DTO.Meeting>
 {
-    private readonly TeamBLLMapper _teamUOWMapper = new();
     public Meeting? Map(DTO.Meeting? entity)
     {
         if (entity == null) return null;
@@ -18,7 +17,7 @@ public class MeetingBLLMapper : IBLLMapper<App.BLL.DTO.Meeting, App.DAL.DTO.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;
@@ -36,7 +35,7 @@ public class MeetingBLLMapper : IBLLMapper<App.BLL.DTO.Meeting, App.DAL.DTO.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;

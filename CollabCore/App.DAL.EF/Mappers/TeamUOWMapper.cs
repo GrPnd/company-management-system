@@ -19,7 +19,19 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
             Department = _departmentUOWMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamUOWMapper.Map).ToList()!,
+            UsersInTeams = entity.UsersInTeams?.Select(u => new UserInTeam()
+            {
+                Id = u.Id,
+                Role = u.Role,
+                Since = u.Since,
+                Until = u.Until,
+                UserId = u.UserId,
+                User = null,
+                TeamId = u.TeamId,
+                Team = null,
+                Tasks = null,
+                UserInTeamInTasks = null
+            }).ToList()!,
             Schedules = entity.Schedules?.Select(s => new Schedule()
             {
                 Id = s.Id,
@@ -53,7 +65,19 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
             Department = _departmentUOWMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(_userInTeamUOWMapper.Map).ToList()!,
+            UsersInTeams = entity.UsersInTeams?.Select(u => new Domain.UserInTeam()
+            {
+                Id = u.Id,
+                Role = u.Role,
+                Since = u.Since,
+                Until = u.Until,
+                UserId = u.UserId,
+                User = null,
+                TeamId = u.TeamId,
+                Team = null,
+                Tasks = null,
+                UserInTeamInTasks = null
+            }).ToList()!,
             Schedules = entity.Schedules?.Select(s => new Domain.Schedule()
             {
                 Id = s.Id,

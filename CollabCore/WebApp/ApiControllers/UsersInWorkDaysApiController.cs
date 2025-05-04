@@ -10,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersInWorkDaysApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly UserInWorkDayApiMapper _mapper;
+        private readonly UserInWorkDayApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public UsersInWorkDaysApiController(IAppBLL bll, UserInWorkDayApiMapper mapper)
+        public UsersInWorkDaysApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
         
         
@@ -59,7 +58,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(userInWorkDay);
+            return _mapper.Map(userInWorkDay)!;
         }
 
         

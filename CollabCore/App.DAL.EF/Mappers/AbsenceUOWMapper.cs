@@ -19,9 +19,9 @@ public class AbsenceUOWMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absen
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personUOWMapper.Map(entity.ByUser)!,
+            ByUser = null,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = null
         };
         
         return res;
@@ -39,9 +39,9 @@ public class AbsenceUOWMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absen
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personUOWMapper.Map(entity.ByUser)!,
+            ByUser = null,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = null
         };
         
         return res;

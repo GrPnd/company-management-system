@@ -5,8 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class ScheduleUOWMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Schedule>
 {
-    private readonly TeamUOWMapper _teamUOWMapper = new();
-    
     public Schedule? Map(Domain.Schedule? entity)
     {
         if (entity == null) return null;
@@ -17,7 +15,7 @@ public class ScheduleUOWMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Sch
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;
@@ -33,7 +31,7 @@ public class ScheduleUOWMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Sch
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;

@@ -6,8 +6,6 @@ namespace App.DAL.EF.Mappers;
 public class RoleUOWMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
 {
     private readonly PersonUOWMapper _personUOWMapper = new();
-    private readonly RoleUOWMapper _roleUOWMapper = new();
-    
     public Role? Map(Domain.Role? entity)
     {
         if (entity == null) return null;
@@ -24,7 +22,7 @@ public class RoleUOWMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
                 UserId = u.UserId,
                 User = _personUOWMapper.Map(u.User),
                 RoleId = u.RoleId,
-                Role = _roleUOWMapper.Map(u.Role)
+                Role = null
             }).ToList()
         };
         
@@ -47,7 +45,7 @@ public class RoleUOWMapper : IUOWMapper<App.DAL.DTO.Role, App.Domain.Role>
                 UserId = u.UserId,
                 User = _personUOWMapper.Map(u.User),
                 RoleId = u.RoleId,
-                Role = _roleUOWMapper.Map(u.Role)
+                Role = null
             }).ToList()
         };
         

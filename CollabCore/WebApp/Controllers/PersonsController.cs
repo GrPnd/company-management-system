@@ -49,7 +49,9 @@ namespace WebApp.Controllers
         // GET: Persons/Create
         public async Task<IActionResult> Create()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users
+                .Include(u => u.Persons) // ensure Persons are loaded
+                .ToListAsync();
             
             var vm = new PersonViewModel()
             {
@@ -68,12 +70,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                // todo KAHTLANE KOHT??
                 _bll.PersonService.Add(vm.Person, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             
+            // Repopulate SelectList if model state is invalid
+            var users = await _userManager.Users.ToListAsync();
+            vm.UsersSelectList = new SelectList(users, "Id", "UserName");
             return View(vm);
         }
 

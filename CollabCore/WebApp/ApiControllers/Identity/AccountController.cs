@@ -3,7 +3,8 @@ using System.Net;
 using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain.Identity;
-using App.DTO.Identity;
+using App.DTO.v1.Identity;
+using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -14,9 +15,9 @@ using Microsoft.EntityFrameworkCore;
 namespace WebApp.ApiControllers.Identity;
 
 /// <inheritdoc />
-[Route("api/[controller]/[action]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [ApiController]
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class AccountController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
@@ -267,7 +268,7 @@ public class AccountController : ControllerBase
                 );
             }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return BadRequest(new RestApiErrorResponse()
                 {

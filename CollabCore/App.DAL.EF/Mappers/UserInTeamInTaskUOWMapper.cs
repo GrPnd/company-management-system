@@ -19,7 +19,7 @@ public class UserInTeamInTaskUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeamInTask
             Until = entity.Until,
             Review = entity.Review,
             TaskId = entity.TaskId,
-            Task = _taskUOWMapper.Map(entity.Task),
+            Task = null,
             UserInTeamId = entity.UserInTeamId,
             UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam)
         };
@@ -38,7 +38,7 @@ public class UserInTeamInTaskUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeamInTask
             Until = entity.Until,
             Review = entity.Review,
             TaskId = entity.TaskId,
-            Task = _taskUOWMapper.Map(entity.Task),
+            Task = null,
             UserInTeamId = entity.UserInTeamId,
             UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam)
         };

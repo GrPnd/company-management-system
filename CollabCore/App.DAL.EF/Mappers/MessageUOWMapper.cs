@@ -5,7 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Message>
 {
-    private readonly PersonUOWMapper _personUOWMapper = new();
     public Message? Map(Domain.Message? entity)
     {
         if (entity == null) return null;
@@ -15,9 +14,9 @@ public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Messa
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null,
         };
         
         return res;
@@ -32,9 +31,9 @@ public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Messa
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null
         };
         
         return res;

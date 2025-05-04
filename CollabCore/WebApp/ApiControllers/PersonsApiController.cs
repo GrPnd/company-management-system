@@ -1,5 +1,4 @@
-﻿using App.BLL;
-using App.BLL.Contracts;
+﻿using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using App.DTO.v1.ApiMappers;
 using Asp.Versioning;
@@ -11,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PersonsApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly PersonApiMapper _mapper;
+        private readonly PersonApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public PersonsApiController(AppBLL bll, PersonApiMapper mapper)
+        public PersonsApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -60,7 +58,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(person);
+            return _mapper.Map(person)!;
         }
 
         

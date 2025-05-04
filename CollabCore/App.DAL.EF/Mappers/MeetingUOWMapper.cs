@@ -5,8 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeting>
 {
-    private readonly TeamUOWMapper _teamUOWMapper = new();
-    
     public Meeting? Map(Domain.Meeting? entity)
     {
         if (entity == null) return null;
@@ -19,7 +17,7 @@ public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeti
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;
@@ -37,7 +35,7 @@ public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeti
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;

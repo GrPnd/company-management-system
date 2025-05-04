@@ -18,9 +18,9 @@ public class AbsenceBLLMapper : IBLLMapper<App.BLL.DTO.Absence, App.DAL.DTO.Abse
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personUOWMapper.Map(entity.ByUser)!,
+            ByUser = null,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = null
         };
         
         return res;
@@ -38,9 +38,9 @@ public class AbsenceBLLMapper : IBLLMapper<App.BLL.DTO.Absence, App.DAL.DTO.Abse
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = _personUOWMapper.Map(entity.ByUser)!,
+            ByUser = null,
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = _personUOWMapper.Map(entity.AuthorizedByUser)!
+            AuthorizedByUser = null
         };
         
         return res;

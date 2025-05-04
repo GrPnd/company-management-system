@@ -5,10 +5,13 @@ using App.BLL;
 using App.BLL.Contracts;
 using App.DAL.Contracts;
 using App.DAL.EF;
+using App.DAL.EF.DataSeeding;
 using App.DAL.EF.Repositories;
 using App.Domain.Identity;
+using App.DTO.v1.ApiMappers;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Base.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
+using WebApp.Helpers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,7 +87,8 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 */
 
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserNameResolver, UserNameResolver>();
 
 // add culture switching support
 var supportedCultures = builder.Configuration
@@ -152,6 +157,9 @@ var app = builder.Build();
 // ===============================================================================
 
 
+// Migrate db, seed initial data...
+SetupAppData(app, app.Environment, app.Configuration);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -160,8 +168,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -192,6 +198,11 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
+app.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
@@ -200,3 +211,93 @@ app.MapRazorPages()
     .WithStaticAssets();
 
 app.Run();
+
+
+// ======================================================================================================
+return;
+// ======================================================================================================
+
+static void SetupAppData(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
+{
+    using var serviceScope = ((IApplicationBuilder)app).ApplicationServices
+        .GetRequiredService<IServiceScopeFactory>()
+        .CreateScope();
+    var logger = serviceScope.ServiceProvider.GetRequiredService<ILogger<IApplicationBuilder>>();
+
+    using var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    WaitDbConnection(context, logger);
+
+    using var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    using var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
+
+
+    if (context.Database.ProviderName!.Contains("InMemory"))
+    {
+        context.Database.EnsureDeleted();
+        context.Database.EnsureCreated();
+        return;
+    }
+
+    if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
+    {
+        logger.LogWarning("DropDatabase");
+        AppDataInit.DeleteDatabase(context);
+    }
+
+    if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase"))
+    {
+        logger.LogInformation("MigrateDatabase");
+        AppDataInit.MigrateDatabase(context);
+    }
+
+    if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
+    {
+        logger.LogInformation("SeedIdentity");
+        AppDataInit.SeedIdentity(userManager, roleManager);
+    }
+
+    if (configuration.GetValue<bool>("DataInitialization:SeedData"))
+    {
+        logger.LogInformation("SeedData");
+        AppDataInit.SeedAppData(context);
+    }
+}
+
+static void WaitDbConnection(AppDbContext ctx, ILogger<IApplicationBuilder> logger)
+{
+    // TODO: Login failed for user 'sa'. Reason: Failed to open the explicitly specified database 'nutikas'. [CLIENT: 172.18.0.3]
+    // could actually log in, but db was not there - migrations where not applied yet
+
+    // maybe Database.OpenConnection
+
+    while (true)
+    {
+        try
+        {
+            ctx.Database.OpenConnection();
+            ctx.Database.CloseConnection();
+            return;
+        }
+        catch (Npgsql.PostgresException e)
+        {
+            logger.LogWarning("Checked postgres db connection. Got: {}", e.Message);
+
+            if (e.Message.Contains("does not exist"))
+            {
+                logger.LogWarning("Applying migration, probably db is not there (but server is)");
+                return;
+            }
+
+            logger.LogWarning("Waiting for db connection. Sleep 1 sec");
+            System.Threading.Thread.Sleep(1000);
+        }
+    }
+}
+
+
+// ======================================================================================================
+// needed for unit testing, to change generated top level statement class to public
+public partial class Program
+{
+}

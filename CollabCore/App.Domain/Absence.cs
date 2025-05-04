@@ -24,11 +24,11 @@ public class Absence : BaseEntity
     public Guid ByUserId { get; set; }
     
     [Display(Name = nameof(ByUser), Prompt = nameof(ByUser), ResourceType = typeof(App.Resources.Domain.Absence))]
-    public Person ByUser { get; set; } = default!;
+    public Person? ByUser { get; set; } = default!;
     
     
     public Guid AuthorizedByUserId { get; set; }
     
     [Display(Name = nameof(AuthorizedByUser), Prompt = nameof(AuthorizedByUser), ResourceType = typeof(App.Resources.Domain.Absence))]
-    public Person AuthorizedByUser { get; set; } = default!;
+    public Person? AuthorizedByUser { get; set; } = default!;
 }

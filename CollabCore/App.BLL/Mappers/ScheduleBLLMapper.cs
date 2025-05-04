@@ -5,7 +5,6 @@ namespace App.BLL.Mappers;
 
 public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Schedule>
 {
-    private readonly TeamBLLMapper _teamUOWMapper = new();
     public Schedule? Map(DTO.Schedule? entity)
     {
         if (entity == null) return null;
@@ -16,7 +15,7 @@ public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Sc
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;
@@ -32,7 +31,7 @@ public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Sc
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = _teamUOWMapper.Map(entity.Team)
+            Team = null
         };
         
         return res;

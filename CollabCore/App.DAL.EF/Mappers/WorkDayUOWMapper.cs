@@ -21,9 +21,9 @@ public class WorkDayUOWMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkD
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
+                User = null,
                 WorkDayId = u.WorkDayId,
-                WorkDay = null // prevent circular reference
+                WorkDay = null
             }).ToList()
         };
         
@@ -44,9 +44,9 @@ public class WorkDayUOWMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkD
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
+                User = null,
                 WorkDayId = u.WorkDayId,
-                WorkDay = null // prevent circular reference
+                WorkDay = null
             }).ToList()
         };
         

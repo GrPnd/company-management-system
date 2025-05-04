@@ -10,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessagesApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly MessageApiMapper _mapper;
+        private readonly MessageApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public MessagesApiController(IAppBLL bll, MessageApiMapper mapper)
+        public MessagesApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -60,7 +59,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(message);
+            return _mapper.Map(message)!;
         }
 
         

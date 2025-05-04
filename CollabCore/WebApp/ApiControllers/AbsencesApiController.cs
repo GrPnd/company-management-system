@@ -12,19 +12,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AbsencesApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly AbsenceApiMapper _mapper;
+        private readonly AbsenceApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public AbsencesApiController(AppBLL bll, AbsenceApiMapper mapper)
+        public AbsencesApiController(AppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -61,7 +60,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(absence);
+            return _mapper.Map(absence)!;
         }
 
         

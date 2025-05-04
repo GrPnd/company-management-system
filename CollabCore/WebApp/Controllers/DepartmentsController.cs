@@ -1,6 +1,5 @@
 using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;

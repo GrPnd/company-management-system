@@ -10,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersInRolesApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly UserInRoleApiMapper _mapper;
+        private readonly UserInRoleApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public UsersInRolesApiController(IAppBLL bll, UserInRoleApiMapper mapper)
+        public UsersInRolesApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -59,7 +58,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(userInRole);
+            return _mapper.Map(userInRole)!;
         }
 
         

@@ -6,9 +6,6 @@ namespace App.BLL.Mappers;
 
 public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
 {
-    private readonly StatusBLLMapper _statusUOWMapper = new();
-    private readonly UserInTeamBLLMapper _userInTeamUOWMapper = new();
-    private readonly TaskBLLMapper _taskUOWMapper = new();
     public Task? Map(DTO.Task? entity)
     {
         if (entity == null) return null;
@@ -21,9 +18,14 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
-            Status = _statusUOWMapper.Map(entity.Status),
+            Status = new Status()
+            {
+                Id = entity.StatusId,
+                Name = entity.Name,
+                Tasks = null
+            },
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam),
+            UserInTeam = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask()
             {
                 Id = u.Id,
@@ -31,9 +33,9 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
                 Until = u.Until,
                 Review = u.Review,
                 TaskId = u.TaskId,
-                Task = _taskUOWMapper.Map(u.Task),
+                Task = null,
                 UserInTeamId = u.UserInTeamId,
-                UserInTeam = _userInTeamUOWMapper.Map(u.UserInTeam)
+                UserInTeam = null
             }).ToList()
         };
         
@@ -52,9 +54,14 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
-            Status = _statusUOWMapper.Map(entity.Status),
+            Status = new DTO.Status()
+            {
+                Id = entity.StatusId,
+                Name = entity.Name,
+                Tasks = null
+            },
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam),
+            UserInTeam = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new DTO.UserInTeamInTask()
             {
                 Id = u.Id,
@@ -62,9 +69,9 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
                 Until = u.Until,
                 Review = u.Review,
                 TaskId = u.TaskId,
-                Task = _taskUOWMapper.Map(u.Task),
+                Task = null,
                 UserInTeamId = u.UserInTeamId,
-                UserInTeam = _userInTeamUOWMapper.Map(u.UserInTeam)
+                UserInTeam = null
             }).ToList()
         };
         

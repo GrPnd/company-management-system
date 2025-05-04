@@ -19,10 +19,10 @@ public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = null,
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask
             {
                 Id = u.Id,
@@ -50,10 +50,10 @@ public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = null,
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new Domain.UserInTeamInTask
             {
                 Id = u.Id,

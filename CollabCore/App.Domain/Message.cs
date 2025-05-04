@@ -11,10 +11,10 @@ public class Message : BaseEntity
     
     public Guid FromUserId { get; set; }
     [Display(Name = nameof(FromUser), Prompt = nameof(FromUser), ResourceType = typeof(App.Resources.Domain.Message))]
-    public Person FromUser { get; set; } = default!;
+    public Person? FromUser { get; set; } = default!;
     
     
     public Guid ToUserId { get; set; }
     [Display(Name = nameof(ToUser), Prompt = nameof(ToUser), ResourceType = typeof(App.Resources.Domain.Message))]
-    public Person ToUser { get; set; } = default!;
+    public Person? ToUser { get; set; } = default!;
 }

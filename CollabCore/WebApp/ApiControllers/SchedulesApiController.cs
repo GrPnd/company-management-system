@@ -10,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SchedulesApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly ScheduleApiMapper _mapper;
+        private readonly ScheduleApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public SchedulesApiController(IAppBLL bll, ScheduleApiMapper mapper)
+        public SchedulesApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -60,7 +59,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(schedule);
+            return _mapper.Map(schedule)!;
         }
 
         

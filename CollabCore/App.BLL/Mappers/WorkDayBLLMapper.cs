@@ -20,9 +20,9 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
+                User = null,
                 WorkDayId = u.WorkDayId,
-                WorkDay = null // prevent circular reference
+                WorkDay = null
             }).ToList()
         };
         
@@ -43,7 +43,7 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
                 Since = u.Since,
                 Until = u.Until,
                 UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
+                User = null,
                 WorkDayId = u.WorkDayId,
                 WorkDay = null // prevent circular reference
             }).ToList()

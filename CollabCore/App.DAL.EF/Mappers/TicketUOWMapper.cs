@@ -17,9 +17,9 @@ public class TicketUOWMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null
         };
         
         return res;
@@ -35,9 +35,9 @@ public class TicketUOWMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null
         };
         
         return res;

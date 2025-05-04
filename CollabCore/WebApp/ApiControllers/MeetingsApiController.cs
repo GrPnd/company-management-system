@@ -11,19 +11,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MeetingsApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly MeetingApiMapper _mapper;
+        private readonly MeetingApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public MeetingsApiController(AppBLL bll, MeetingApiMapper mapper)
+        public MeetingsApiController(AppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -59,7 +58,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(meeting);
+            return _mapper.Map(meeting)!;
         }
 
         

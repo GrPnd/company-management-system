@@ -21,7 +21,7 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
             User = _personUOWMapper.Map(entity.User),
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask
             {
                 Id = u.Id,
@@ -52,7 +52,7 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
             User = _personUOWMapper.Map(entity.User),
             TeamId = entity.TeamId,
             Team = null, // prevent circular reference
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = null,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new DTO.UserInTeamInTask
             {
                 Id = u.Id,

@@ -18,9 +18,9 @@ public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = null,
             WorkDayId = entity.WorkDayId,
-            WorkDay = _workDayUOWMapper.Map(entity.WorkDay)
+            WorkDay = null
         };
         
         return res;
@@ -36,9 +36,9 @@ public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = null,
             WorkDayId = entity.WorkDayId,
-            WorkDay = _workDayUOWMapper.Map(entity.WorkDay)
+            WorkDay = null
         };
         
         return res;

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
 
-namespace App.DTO.Identity;
+namespace App.DTO.v1.Identity;
 
 public class RestApiErrorResponse
 {

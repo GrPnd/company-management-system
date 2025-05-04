@@ -1,5 +1,4 @@
 using App.BLL.Contracts;
-using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using App.BLL.DTO;

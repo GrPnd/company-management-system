@@ -5,7 +5,6 @@ namespace App.BLL.Mappers;
 
 public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status>
 {
-    private readonly TaskBLLMapper _taskUOWMapper = new();
     public Status? Map(DTO.Status? entity)
     {
         if (entity == null) return null;
@@ -14,7 +13,19 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = entity.Tasks?.Select(t => new App.DAL.DTO.Task()
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Description = t.Description,
+                AssignedAt = t.AssignedAt,
+                Deadline = t.Deadline,
+                StatusId = t.StatusId,
+                Status = null,
+                UserInTeamId = t.UserInTeamId,
+                UserInTeam = null,
+                UserInTeamInTasks = null
+            }).ToList()!
         };
         
         return res;
@@ -28,7 +39,19 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(_taskUOWMapper.Map).ToList()!,
+            Tasks = entity.Tasks?.Select(t => new App.BLL.DTO.Task()
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Description = t.Description,
+                AssignedAt = t.AssignedAt,
+                Deadline = t.Deadline,
+                StatusId = t.StatusId,
+                Status = null,
+                UserInTeamId = t.UserInTeamId,
+                UserInTeam = null,
+                UserInTeamInTasks = null
+            }).ToList()!
         };
         
         return res;

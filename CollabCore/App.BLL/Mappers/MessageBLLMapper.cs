@@ -5,7 +5,6 @@ namespace App.BLL.Mappers;
 
 public class MessageBLLMapper : IBLLMapper<App.BLL.DTO.Message, App.DAL.DTO.Message>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
     public Message? Map(DTO.Message? entity)
     {
         if (entity == null) return null;
@@ -15,9 +14,9 @@ public class MessageBLLMapper : IBLLMapper<App.BLL.DTO.Message, App.DAL.DTO.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null,
         };
         
         return res;
@@ -32,9 +31,9 @@ public class MessageBLLMapper : IBLLMapper<App.BLL.DTO.Message, App.DAL.DTO.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = _personUOWMapper.Map(entity.FromUser)!,
+            FromUser = null,
             ToUserId = entity.ToUserId,
-            ToUser = _personUOWMapper.Map(entity.ToUser)!
+            ToUser = null,
         };
         
         return res;

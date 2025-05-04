@@ -10,19 +10,18 @@ namespace WebApp.ApiControllers
 {
     /// <inheritdoc />
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TicketsApiController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly TicketApiMapper _mapper;
+        private readonly TicketApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public TicketsApiController(IAppBLL bll, TicketApiMapper mapper)
+        public TicketsApiController(IAppBLL bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         
@@ -59,7 +58,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            return _mapper.Map(ticket);
+            return _mapper.Map(ticket)!;
         }
 
         

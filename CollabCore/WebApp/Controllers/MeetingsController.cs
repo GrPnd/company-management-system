@@ -1,5 +1,4 @@
 using App.BLL.Contracts;
-using App.DAL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using App.BLL.DTO;
@@ -35,7 +34,7 @@ namespace WebApp.Controllers
             }
 
             var entity = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
-            
+
             if (entity == null)
             {
                 return NotFound();
@@ -68,7 +67,7 @@ namespace WebApp.Controllers
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.Meeting.TeamId);
             return View(vm);
@@ -81,7 +80,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            
+
             var meeting = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
             if (meeting == null)
             {
@@ -115,7 +114,7 @@ namespace WebApp.Controllers
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
+
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()),
                 nameof(Team.Id), nameof(Team.Name), vm.Meeting.TeamId);
             return View(vm);
@@ -128,7 +127,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            
+
             var meeting = await _bll.MeetingService.FindAsync(id.Value, User.GetUserId());
 
             if (meeting == null)
