@@ -14,9 +14,9 @@ public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Messa
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonUOWMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null,
+            ToUser = PersonUOWMapper.MapSimple(entity.ToUser)
         };
         
         return res;
@@ -31,9 +31,9 @@ public class MessageUOWMapper : IUOWMapper<App.DAL.DTO.Message, App.Domain.Messa
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonUOWMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null
+            ToUser = PersonUOWMapper.MapSimple(entity.ToUser)
         };
         
         return res;

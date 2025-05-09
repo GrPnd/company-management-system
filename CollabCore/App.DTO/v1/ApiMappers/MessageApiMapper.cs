@@ -6,11 +6,27 @@ public class MessageApiMapper : IApiMapper<ApiEntities.Message, App.BLL.DTO.Mess
 {
     public Message? Map(BLL.DTO.Message? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Message()
+        {
+            Id = entity.Id,
+            Text = entity.Text,
+            ToUserId = entity.ToUserId,
+            FromUserId = entity.FromUserId
+        };
     }
 
     public BLL.DTO.Message? Map(Message? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Message()
+        {
+            Id = entity.Id,
+            Text = entity.Text,
+            ToUserId = entity.ToUserId,
+            FromUserId = entity.FromUserId
+        };
     }
 }

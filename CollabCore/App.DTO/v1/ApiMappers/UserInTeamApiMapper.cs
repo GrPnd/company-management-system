@@ -6,11 +6,32 @@ public class UserInTeamApiMapper : IApiMapper<ApiEntities.UserInTeam, App.BLL.DT
 {
     public UserInTeam? Map(BLL.DTO.UserInTeam? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
     }
 
     public BLL.DTO.UserInTeam? Map(UserInTeam? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
+
     }
 }

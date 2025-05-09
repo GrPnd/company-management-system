@@ -1,13 +1,11 @@
 ﻿using App.DAL.DTO;
 using Base.DAL.Contracts;
+using Task = System.Threading.Tasks.Task;
 
 namespace App.DAL.EF.Mappers;
 
 public class UserInTeamInTaskUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeamInTask, App.Domain.UserInTeamInTask>
 {
-    private readonly TaskUOWMapper _taskUOWMapper = new();
-    private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
-    
     public UserInTeamInTask? Map(Domain.UserInTeamInTask? entity)
     {
         if (entity == null) return null;
@@ -19,9 +17,9 @@ public class UserInTeamInTaskUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeamInTask
             Until = entity.Until,
             Review = entity.Review,
             TaskId = entity.TaskId,
-            Task = null,
+            Task = TaskUOWMapper.MapSimple(entity.Task),
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam)
+            UserInTeam = UserInTeamUOWMapper.MapSimple(entity.UserInTeam)
         };
         
         return res;
@@ -38,9 +36,9 @@ public class UserInTeamInTaskUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeamInTask
             Until = entity.Until,
             Review = entity.Review,
             TaskId = entity.TaskId,
-            Task = null,
+            Task = TaskUOWMapper.MapSimple(entity.Task),
             UserInTeamId = entity.UserInTeamId,
-            UserInTeam = _userInTeamUOWMapper.Map(entity.UserInTeam)
+            UserInTeam = UserInTeamUOWMapper.MapSimple(entity.UserInTeam)
         };
         
         return res;

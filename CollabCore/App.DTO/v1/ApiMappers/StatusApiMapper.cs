@@ -6,11 +6,24 @@ public class StatusApiMapper : IApiMapper<ApiEntities.Status, App.BLL.DTO.Status
 {
     public Status? Map(BLL.DTO.Status? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Status()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
     }
 
     public BLL.DTO.Status? Map(Status? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Status()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
+
     }
 }

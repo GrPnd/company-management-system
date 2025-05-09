@@ -17,7 +17,7 @@ public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeti
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamUOWMapper.MapSimple(entity.Team!)
         };
         
         return res;
@@ -35,7 +35,7 @@ public class MeetingUOWMapper : IUOWMapper<App.DAL.DTO.Meeting, App.Domain.Meeti
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamUOWMapper.MapSimple(entity.Team!)
         };
         
         return res;

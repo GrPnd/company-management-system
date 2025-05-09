@@ -5,8 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class TicketUOWMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
 {
-    private readonly PersonUOWMapper _personUOWMapper = new();
-    
     public Ticket? Map(Domain.Ticket? entity)
     {
         if (entity == null) return null;
@@ -17,9 +15,9 @@ public class TicketUOWMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonUOWMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null
+            ToUser = PersonUOWMapper.MapSimple(entity.ToUser)
         };
         
         return res;
@@ -35,9 +33,9 @@ public class TicketUOWMapper : IUOWMapper<App.DAL.DTO.Ticket, App.Domain.Ticket>
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonUOWMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null
+            ToUser = PersonUOWMapper.MapSimple(entity.ToUser)
         };
         
         return res;

@@ -15,7 +15,7 @@ public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Sc
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamBLLMapper.MapSimple(entity.Team!)
         };
         
         return res;
@@ -31,7 +31,7 @@ public class ScheduleBLLMapper : IBLLMapper<App.BLL.DTO.Schedule, App.DAL.DTO.Sc
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamBLLMapper.MapSimple(entity.Team!)
         };
         
         return res;

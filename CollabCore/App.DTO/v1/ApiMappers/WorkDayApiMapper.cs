@@ -6,11 +6,23 @@ public class WorkDayApiMapper : IApiMapper<ApiEntities.WorkDay, App.BLL.DTO.Work
 {
     public WorkDay? Map(BLL.DTO.WorkDay? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new WorkDay()
+        {
+            Id = entity.Id,
+            Day = entity.Day
+        };
     }
 
     public BLL.DTO.WorkDay? Map(WorkDay? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.WorkDay()
+        {
+            Id = entity.Id,
+            Day = entity.Day
+        };
     }
 }

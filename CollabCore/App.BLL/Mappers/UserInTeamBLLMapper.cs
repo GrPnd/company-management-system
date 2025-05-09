@@ -5,8 +5,8 @@ namespace App.BLL.Mappers;
 
 public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DTO.UserInTeam>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
-    private readonly TaskBLLMapper _taskUOWMapper = new();
+    private readonly TaskBLLMapper _taskBLLMapper = new();
+    private readonly UserInTeamInTaskBLLMapper _userInTeamInTaskBLLMapper = new();
     public UserInTeam? Map(DTO.UserInTeam? entity)
     {
         if (entity == null) return null;
@@ -18,21 +18,11 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = PersonBLLMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
-            Team = null, // prevent circular reference
-            Tasks = null,
-            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                Review = u.Review,
-                TaskId = u.TaskId,
-                Task = null, // todo ????
-                UserInTeamId = u.UserInTeamId,
-                UserInTeam = null // todo ????
-            }).ToList()
+            Team = TeamBLLMapper.MapSimple(entity.Team!),
+            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!,
+            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -49,23 +39,43 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = PersonBLLMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
-            Team = null, // prevent circular reference
-            Tasks = null,
-            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new DTO.UserInTeamInTask
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                Review = u.Review,
-                TaskId = u.TaskId,
-                Task = null,
-                UserInTeamId = u.UserInTeamId,
-                UserInTeam = null
-            }).ToList()
+            Team = TeamBLLMapper.MapSimple(entity.Team!),
+            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!,
+            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
         return res;
+    }
+    
+    public static UserInTeam? MapSimple(DTO.UserInTeam? entity)
+    {
+        if (entity == null) return null;
+
+        return new UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
+    }
+    
+    public static DTO.UserInTeam? MapSimple(UserInTeam? entity)
+    {
+        if (entity == null) return null;
+
+        return new DTO.UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
     }
 }

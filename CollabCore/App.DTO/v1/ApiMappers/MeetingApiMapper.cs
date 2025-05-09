@@ -6,11 +6,31 @@ public class MeetingApiMapper : IApiMapper<ApiEntities.Meeting, App.BLL.DTO.Meet
 {
     public Meeting? Map(BLL.DTO.Meeting? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Meeting()
+        {
+            Id = entity.Id,
+            IsMandatory = entity.IsMandatory,
+            Link = entity.Link,
+            Name = entity.Name,
+            StartDate = entity.StartDate,
+            TeamId = entity.TeamId
+        };
     }
 
     public BLL.DTO.Meeting? Map(Meeting? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Meeting()
+        {
+            Id = entity.Id,
+            IsMandatory = entity.IsMandatory,
+            Link = entity.Link,
+            Name = entity.Name,
+            StartDate = entity.StartDate,
+            TeamId = entity.TeamId
+        };
     }
 }

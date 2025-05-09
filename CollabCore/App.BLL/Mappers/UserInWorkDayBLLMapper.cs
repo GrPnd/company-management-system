@@ -5,8 +5,6 @@ namespace App.BLL.Mappers;
 
 public class UserInWorkDayBLLMapper : IBLLMapper<App.BLL.DTO.UserInWorkDay, App.DAL.DTO.UserInWorkDay>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
-    private readonly WorkDayBLLMapper _workDayUOWMapper = new();
     public UserInWorkDay? Map(DTO.UserInWorkDay? entity)
     {
         if (entity == null) return null;
@@ -17,9 +15,9 @@ public class UserInWorkDayBLLMapper : IBLLMapper<App.BLL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonBLLMapper.MapSimple(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = null
+            WorkDay = WorkDayBLLMapper.MapSimple(entity.WorkDay),
         };
         
         return res;
@@ -35,9 +33,9 @@ public class UserInWorkDayBLLMapper : IBLLMapper<App.BLL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonBLLMapper.MapSimple(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = null
+            WorkDay = WorkDayBLLMapper.MapSimple(entity.WorkDay),
         };
         
         return res;

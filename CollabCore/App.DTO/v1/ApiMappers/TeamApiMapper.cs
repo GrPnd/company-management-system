@@ -6,11 +6,26 @@ public class TeamApiMapper : IApiMapper<ApiEntities.Team, App.BLL.DTO.Team>
 {
     public Team? Map(BLL.DTO.Team? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Team()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DepartmentId = entity.DepartmentId
+        };
     }
 
     public BLL.DTO.Team? Map(Team? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Team()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DepartmentId = entity.DepartmentId
+        };
+
     }
 }

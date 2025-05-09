@@ -6,8 +6,9 @@ namespace App.DAL.EF.Mappers;
 
 public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
 {
-    private readonly DepartmentUOWMapper _departmentUOWMapper = new();
     private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
+    private readonly ScheduleUOWMapper _scheduleUOWMapper = new();
+    private readonly MeetingUOWMapper _meetingUOWMapper = new();
     
     public Team? Map(Domain.Team? entity)
     {
@@ -18,38 +19,10 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Id = entity.Id,
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
-            Department = _departmentUOWMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(u => new UserInTeam()
-            {
-                Id = u.Id,
-                Role = u.Role,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = null,
-                TeamId = u.TeamId,
-                Team = null,
-                Tasks = null,
-                UserInTeamInTasks = null
-            }).ToList()!,
-            Schedules = entity.Schedules?.Select(s => new Schedule()
-            {
-                Id = s.Id,
-                StartDate = s.StartDate,
-                EndDate = s.EndDate,
-                TeamId = s.TeamId,
-                Team = null // prevent circular reference
-            }).ToList(),
-            Meetings = entity.Meetings?.Select(m => new Meeting()
-            {
-                Id = m.Id,
-                Name = m.Name,
-                IsMandatory = m.IsMandatory,
-                StartDate = m.StartDate,
-                Link = m.Link,
-                TeamId = m.TeamId,
-                Team = null // prevent circular reference
-            }).ToList()
+            Department = DepartmentUOWMapper.MapSimple(entity.Department),
+            UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
+            Schedules = entity.Schedules?.Select(s => _scheduleUOWMapper.Map(s)).ToList()!,
+            Meetings = entity.Meetings?.Select(m => _meetingUOWMapper.Map(m)).ToList()!
         };
         
         return res;
@@ -64,40 +37,37 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             Id = entity.Id,
             Name = entity.Name,
             DepartmentId = entity.DepartmentId,
-            Department = _departmentUOWMapper.Map(entity.Department),
-            UsersInTeams = entity.UsersInTeams?.Select(u => new Domain.UserInTeam()
-            {
-                Id = u.Id,
-                Role = u.Role,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = null,
-                TeamId = u.TeamId,
-                Team = null,
-                Tasks = null,
-                UserInTeamInTasks = null
-            }).ToList()!,
-            Schedules = entity.Schedules?.Select(s => new Domain.Schedule()
-            {
-                Id = s.Id,
-                StartDate = s.StartDate,
-                EndDate = s.EndDate,
-                TeamId = s.TeamId,
-                Team = null // prevent circular reference
-            }).ToList(),
-            Meetings = entity.Meetings?.Select(m => new Domain.Meeting()
-            {
-                Id = m.Id,
-                Name = m.Name,
-                IsMandatory = m.IsMandatory,
-                StartDate = m.StartDate,
-                Link = m.Link,
-                TeamId = m.TeamId,
-                Team = null // prevent circular reference
-            }).ToList()
+            Department = DepartmentUOWMapper.MapSimple(entity.Department),
+            UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
+            Schedules = entity.Schedules?.Select(s => _scheduleUOWMapper.Map(s)).ToList()!,
+            Meetings = entity.Meetings?.Select(m => _meetingUOWMapper.Map(m)).ToList()!
         };
         
         return res;
+    }
+
+
+    public static Team? MapSimple(Domain.Team entity)
+    {
+        if (entity == null) return null;
+
+        return new Team()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DepartmentId = entity.DepartmentId
+        };
+    }
+    
+    public static Domain.Team? MapSimple(Team entity)
+    {
+        if (entity == null) return null;
+
+        return new Domain.Team()
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            DepartmentId = entity.DepartmentId
+        };
     }
 }

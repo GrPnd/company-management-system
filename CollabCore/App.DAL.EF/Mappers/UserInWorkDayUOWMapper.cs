@@ -5,9 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.Domain.UserInWorkDay>
 {
-    private readonly PersonUOWMapper _personUOWMapper = new();
-    private readonly WorkDayUOWMapper _workDayUOWMapper = new();
-    
     public UserInWorkDay? Map(Domain.UserInWorkDay? entity)
     {
         if (entity == null) return null;
@@ -18,9 +15,9 @@ public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonUOWMapper.MapSimple(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = null
+            WorkDay = WorkDayUOWMapper.MapSimple(entity.WorkDay),
         };
         
         return res;
@@ -36,9 +33,9 @@ public class UserInWorkDayUOWMapper : IUOWMapper<App.DAL.DTO.UserInWorkDay, App.
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonUOWMapper.MapSimple(entity.User),
             WorkDayId = entity.WorkDayId,
-            WorkDay = null
+            WorkDay = WorkDayUOWMapper.MapSimple(entity.WorkDay),
         };
         
         return res;

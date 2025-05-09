@@ -5,8 +5,6 @@ namespace App.DAL.EF.Mappers;
 
 public class AbsenceUOWMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absence>
 {
-    private readonly PersonUOWMapper _personUOWMapper = new();
-    
     public Absence? Map(Domain.Absence? entity)
     {
         if (entity == null) return null;
@@ -19,9 +17,9 @@ public class AbsenceUOWMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absen
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = null,
+            ByUser = PersonUOWMapper.MapSimple(entity.ByUser),
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = null
+            AuthorizedByUser = PersonUOWMapper.MapSimple(entity.AuthorizedByUser)
         };
         
         return res;
@@ -39,9 +37,9 @@ public class AbsenceUOWMapper : IUOWMapper<App.DAL.DTO.Absence, App.Domain.Absen
             EndDate = entity.EndDate,
             IsApproved = entity.IsApproved,
             ByUserId = entity.ByUserId,
-            ByUser = null,
+            ByUser = PersonUOWMapper.MapSimple(entity.ByUser),
             AuthorizedByUserId = entity.AuthorizedByUserId,
-            AuthorizedByUser = null
+            AuthorizedByUser = PersonUOWMapper.MapSimple(entity.AuthorizedByUser)
         };
         
         return res;

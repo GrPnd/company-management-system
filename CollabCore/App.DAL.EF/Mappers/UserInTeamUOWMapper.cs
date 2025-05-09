@@ -5,8 +5,8 @@ namespace App.DAL.EF.Mappers;
 
 public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain.UserInTeam>
 {
-    private readonly PersonUOWMapper _personUOWMapper = new();
     private readonly TaskUOWMapper _taskUOWMapper = new();
+    private readonly UserInTeamInTaskUOWMapper _userInTeamInTaskUOWMapper = new();
     
     public UserInTeam? Map(Domain.UserInTeam? entity)
     {
@@ -19,21 +19,11 @@ public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonUOWMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
-            Team = null, // prevent circular reference
-            Tasks = null,
-            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new UserInTeamInTask
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                Review = u.Review,
-                TaskId = u.TaskId,
-                Task = null, // todo ????
-                UserInTeamId = u.UserInTeamId,
-                UserInTeam = null // todo ????
-            }).ToList()
+            Team = TeamUOWMapper.MapSimple(entity.Team!),
+            Tasks = entity.Tasks?.Select(t => _taskUOWMapper.Map(t)).ToList()!,
+            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskUOWMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -50,23 +40,43 @@ public class UserInTeamUOWMapper : IUOWMapper<App.DAL.DTO.UserInTeam, App.Domain
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = null,
+            User = PersonUOWMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
-            Team = null, // prevent circular reference
-            Tasks = null,
-            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => new Domain.UserInTeamInTask
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                Review = u.Review,
-                TaskId = u.TaskId,
-                Task = null,
-                UserInTeamId = u.UserInTeamId,
-                UserInTeam = null
-            }).ToList()
+            Team = TeamUOWMapper.MapSimple(entity.Team!),
+            Tasks = entity.Tasks?.Select(t => _taskUOWMapper.Map(t)).ToList()!,
+            UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskUOWMapper.Map(u)).ToList()!
         };
         
         return res;
+    }
+
+    public static UserInTeam? MapSimple(Domain.UserInTeam? entity)
+    {
+        if (entity == null) return null;
+
+        return new UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
+    }
+    
+    public static Domain.UserInTeam? MapSimple(UserInTeam? entity)
+    {
+        if (entity == null) return null;
+
+        return new Domain.UserInTeam()
+        {
+            Id = entity.Id,
+            Role = entity.Role,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            TeamId = entity.TeamId
+        };
     }
 }

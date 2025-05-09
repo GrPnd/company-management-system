@@ -6,11 +6,30 @@ public class UserInRoleApiMapper : IApiMapper<ApiEntities.UserInRole, App.BLL.DT
 {
     public UserInRole? Map(BLL.DTO.UserInRole? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new UserInRole()
+        {
+            Id = entity.Id,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            RoleId = entity.RoleId
+        };
     }
 
     public BLL.DTO.UserInRole? Map(UserInRole? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.UserInRole()
+        {
+            Id = entity.Id,
+            Since = entity.Since,
+            Until = entity.Until,
+            UserId = entity.UserId,
+            RoleId = entity.RoleId
+        };
+
     }
 }

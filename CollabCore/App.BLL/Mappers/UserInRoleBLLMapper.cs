@@ -5,8 +5,6 @@ namespace App.BLL.Mappers;
 
 public class UserInRoleBLLMapper : IBLLMapper<App.BLL.DTO.UserInRole, App.DAL.DTO.UserInRole>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
-    private readonly RoleBLLMapper _roleUOWMapper = new();
     public UserInRole? Map(DTO.UserInRole? entity)
     {
         if (entity == null) return null;
@@ -17,9 +15,9 @@ public class UserInRoleBLLMapper : IBLLMapper<App.BLL.DTO.UserInRole, App.DAL.DT
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = PersonBLLMapper.MapSimple(entity.User),
             RoleId = entity.RoleId,
-            Role = _roleUOWMapper.Map(entity.Role)
+            Role = RoleBLLMapper.MapSimple(entity.Role)
         };
         
         return res;
@@ -35,9 +33,9 @@ public class UserInRoleBLLMapper : IBLLMapper<App.BLL.DTO.UserInRole, App.DAL.DT
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
-            User = _personUOWMapper.Map(entity.User),
+            User = PersonBLLMapper.MapSimple(entity.User),
             RoleId = entity.RoleId,
-            Role = _roleUOWMapper.Map(entity.Role)
+            Role = RoleBLLMapper.MapSimple(entity.Role)
         };
         
         return res;

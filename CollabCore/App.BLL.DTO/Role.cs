@@ -12,5 +12,5 @@ public class Role : IDomainId
     public string Name { get; set; } = default!;
     
     
-    public ICollection<UserInRole>? Users { get; set; }
+    public ICollection<UserInRole>? UsersInRoles { get; set; }
 }

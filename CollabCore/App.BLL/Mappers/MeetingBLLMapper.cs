@@ -17,7 +17,7 @@ public class MeetingBLLMapper : IBLLMapper<App.BLL.DTO.Meeting, App.DAL.DTO.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamBLLMapper.MapSimple(entity.Team!)
         };
         
         return res;
@@ -35,7 +35,7 @@ public class MeetingBLLMapper : IBLLMapper<App.BLL.DTO.Meeting, App.DAL.DTO.Meet
             StartDate = entity.StartDate,
             Link = entity.Link,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamBLLMapper.MapSimple(entity.Team!)
         };
         
         return res;

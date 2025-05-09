@@ -6,11 +6,28 @@ public class ScheduleApiMapper : IApiMapper<ApiEntities.Schedule, App.BLL.DTO.Sc
 {
     public Schedule? Map(BLL.DTO.Schedule? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Schedule()
+        {
+            Id = entity.Id,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            TeamId = entity.TeamId
+        };
     }
 
     public BLL.DTO.Schedule? Map(Schedule? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Schedule()
+        {
+            Id = entity.Id,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            TeamId = entity.TeamId
+        };
+
     }
 }

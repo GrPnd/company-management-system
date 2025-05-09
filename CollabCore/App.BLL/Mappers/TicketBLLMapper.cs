@@ -5,7 +5,6 @@ namespace App.BLL.Mappers;
 
 public class TicketBLLMapper : IBLLMapper<App.BLL.DTO.Ticket, App.DAL.DTO.Ticket>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
     public Ticket? Map(DTO.Ticket? entity)
     {
         if (entity == null) return null;
@@ -16,9 +15,9 @@ public class TicketBLLMapper : IBLLMapper<App.BLL.DTO.Ticket, App.DAL.DTO.Ticket
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonBLLMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null
+            ToUser = PersonBLLMapper.MapSimple(entity.ToUser)
         };
         
         return res;
@@ -34,9 +33,9 @@ public class TicketBLLMapper : IBLLMapper<App.BLL.DTO.Ticket, App.DAL.DTO.Ticket
             Title = entity.Title,
             Description = entity.Description,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonBLLMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null
+            ToUser = PersonBLLMapper.MapSimple(entity.ToUser)
         };
         
         return res;

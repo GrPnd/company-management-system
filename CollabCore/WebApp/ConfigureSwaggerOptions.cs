@@ -42,8 +42,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
         {
-            Description =
-                "foo bar",
+            Description = "This is a description for the API ",
             Name = "Authorization",
             In = ParameterLocation.Header,
             Type = SecuritySchemeType.ApiKey,

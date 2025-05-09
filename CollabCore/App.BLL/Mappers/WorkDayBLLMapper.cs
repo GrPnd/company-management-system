@@ -5,7 +5,7 @@ namespace App.BLL.Mappers;
 
 public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.WorkDay>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
+    private readonly UserInWorkDayBLLMapper _userInWorkDayBLLMapper = new();
     public WorkDay? Map(DTO.WorkDay? entity)
     {
         if (entity == null) return null;
@@ -14,16 +14,7 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => new UserInWorkDay()
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = null,
-                WorkDayId = u.WorkDayId,
-                WorkDay = null
-            }).ToList()
+            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -37,18 +28,31 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => new DTO.UserInWorkDay()
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = null,
-                WorkDayId = u.WorkDayId,
-                WorkDay = null // prevent circular reference
-            }).ToList()
+            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
         };
         
         return res;
+    }
+    
+    public static WorkDay? MapSimple(DTO.WorkDay? entity)
+    {
+        if (entity == null) return null;
+
+        return new WorkDay()
+        {
+            Id = entity.Id,
+            Day = entity.Day
+        };
+    }
+    
+    public static DTO.WorkDay? MapSimple(WorkDay? entity)
+    {
+        if (entity == null) return null;
+        
+        return new DTO.WorkDay()
+        {
+            Id = entity.Id,
+            Day = entity.Day
+        };
     }
 }

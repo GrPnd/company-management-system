@@ -15,7 +15,7 @@ public class ScheduleUOWMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Sch
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamUOWMapper.MapSimple(entity.Team!)
         };
         
         return res;
@@ -31,7 +31,7 @@ public class ScheduleUOWMapper : IUOWMapper<App.DAL.DTO.Schedule, App.Domain.Sch
             StartDate = entity.StartDate,
             EndDate = entity.EndDate,
             TeamId = entity.TeamId,
-            Team = null
+            Team = TeamUOWMapper.MapSimple(entity.Team!)
         };
         
         return res;

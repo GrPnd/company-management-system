@@ -6,11 +6,33 @@ public class AbsenceApiMapper : IApiMapper<ApiEntities.Absence, App.BLL.DTO.Abse
 {
     public Absence? Map(BLL.DTO.Absence? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new Absence()
+        {
+            Id = entity.Id,
+            Reason = entity.Reason,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            IsApproved = entity.IsApproved,
+            ByUserId = entity.ByUserId,
+            AuthorizedByUserId = entity.AuthorizedByUserId,
+        };
     }
 
     public BLL.DTO.Absence? Map(Absence? entity)
     {
-        throw new NotImplementedException();
+        if (entity == null) return null;
+
+        return new BLL.DTO.Absence()
+        {
+            Id = entity.Id,
+            Reason = entity.Reason,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            IsApproved = entity.IsApproved,
+            ByUserId = entity.ByUserId,
+            AuthorizedByUserId = entity.AuthorizedByUserId,
+        };
     }
 }

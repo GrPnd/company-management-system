@@ -5,7 +5,7 @@ namespace App.BLL.Mappers;
 
 public class RoleBLLMapper : IBLLMapper<App.BLL.DTO.Role, App.DAL.DTO.Role>
 {
-    private readonly PersonBLLMapper _personUOWMapper = new();
+    private readonly UserInRoleBLLMapper _userInRoleBLLMapper = new();
     public Role? Map(DTO.Role? entity)
     {
         if (entity == null) return null;
@@ -14,16 +14,7 @@ public class RoleBLLMapper : IBLLMapper<App.BLL.DTO.Role, App.DAL.DTO.Role>
         {
             Id = entity.Id,
             Name = entity.Name,
-            Users = entity.Users?.Select(u => new UserInRole()
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
-                RoleId = u.RoleId,
-                Role = null
-            }).ToList()
+            UsersInRoles = entity.UsersInRoles?.Select(u => _userInRoleBLLMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -37,18 +28,31 @@ public class RoleBLLMapper : IBLLMapper<App.BLL.DTO.Role, App.DAL.DTO.Role>
         {
             Id = entity.Id,
             Name = entity.Name,
-            Users = entity.Users?.Select(u => new DTO.UserInRole()
-            {
-                Id = u.Id,
-                Since = u.Since,
-                Until = u.Until,
-                UserId = u.UserId,
-                User = _personUOWMapper.Map(u.User),
-                RoleId = u.RoleId,
-                Role = null
-            }).ToList()
+            UsersInRoles = entity.UsersInRoles?.Select(u => _userInRoleBLLMapper.Map(u)).ToList()!
         };
         
         return res;
+    }
+    
+    public static Role? MapSimple(DTO.Role? entity)
+    {
+        if (entity == null) return null;
+
+        return new Role()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
+    }
+    
+    public static DTO.Role? MapSimple(Role? entity)
+    {
+        if (entity == null) return null;
+
+        return new DTO.Role()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
     }
 }

@@ -5,6 +5,7 @@ namespace App.BLL.Mappers;
 
 public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status>
 {
+    private readonly TaskBLLMapper _taskBLLMapper = new();
     public Status? Map(DTO.Status? entity)
     {
         if (entity == null) return null;
@@ -13,19 +14,7 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new App.DAL.DTO.Task()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                AssignedAt = t.AssignedAt,
-                Deadline = t.Deadline,
-                StatusId = t.StatusId,
-                Status = null,
-                UserInTeamId = t.UserInTeamId,
-                UserInTeam = null,
-                UserInTeamInTasks = null
-            }).ToList()!
+            Tasks = entity.Tasks?.Select(t => new TaskBLLMapper().Map(t)).ToList()!
         };
         
         return res;
@@ -39,21 +28,31 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new App.BLL.DTO.Task()
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                AssignedAt = t.AssignedAt,
-                Deadline = t.Deadline,
-                StatusId = t.StatusId,
-                Status = null,
-                UserInTeamId = t.UserInTeamId,
-                UserInTeam = null,
-                UserInTeamInTasks = null
-            }).ToList()!
+            Tasks = entity.Tasks?.Select(t => new TaskBLLMapper().Map(t)).ToList()!
         };
         
         return res;
+    }
+    
+    public static Status? MapSimple(DTO.Status? entity)
+    {
+        if (entity == null) return null;
+
+        return new Status()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
+    }
+    
+    public static DTO.Status? MapSimple(Status? entity)
+    {
+        if (entity == null) return null;
+
+        return new DTO.Status()
+        {
+            Id = entity.Id,
+            Name = entity.Name
+        };
     }
 }

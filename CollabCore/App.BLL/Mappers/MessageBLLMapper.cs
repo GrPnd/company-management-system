@@ -14,9 +14,9 @@ public class MessageBLLMapper : IBLLMapper<App.BLL.DTO.Message, App.DAL.DTO.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonBLLMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null,
+            ToUser = PersonBLLMapper.MapSimple(entity.ToUser)
         };
         
         return res;
@@ -31,9 +31,9 @@ public class MessageBLLMapper : IBLLMapper<App.BLL.DTO.Message, App.DAL.DTO.Mess
             Id = entity.Id,
             Text = entity.Text,
             FromUserId = entity.FromUserId,
-            FromUser = null,
+            FromUser = PersonBLLMapper.MapSimple(entity.FromUser),
             ToUserId = entity.ToUserId,
-            ToUser = null,
+            ToUser = PersonBLLMapper.MapSimple(entity.ToUser)
         };
         
         return res;
