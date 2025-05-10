@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,10 +16,10 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,23 +30,23 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,13 +57,13 @@ namespace App.DAL.EF.Migrations
                 name: "Departments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,13 +74,13 @@ namespace App.DAL.EF.Migrations
                 name: "Statuses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,11 +91,11 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,11 +112,11 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,10 +133,10 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,9 +153,9 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,10 +178,10 @@ namespace App.DAL.EF.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,14 +198,14 @@ namespace App.DAL.EF.Migrations
                 name: "Persons",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PersonName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PersonName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,17 +222,17 @@ namespace App.DAL.EF.Migrations
                 name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true),
-                    RefreshToken = table.Column<string>(type: "TEXT", nullable: false),
-                    Expiration = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PreviousRefreshToken = table.Column<string>(type: "TEXT", nullable: true),
-                    PreviousExpiration = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false),
+                    Expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PreviousRefreshToken = table.Column<string>(type: "text", nullable: true),
+                    PreviousExpiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,14 +249,14 @@ namespace App.DAL.EF.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -272,18 +273,18 @@ namespace App.DAL.EF.Migrations
                 name: "Absences",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Reason = table.Column<string>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    IsApproved = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ByUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    AuthorizedByUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsApproved = table.Column<bool>(type: "boolean", nullable: false),
+                    ByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AuthorizedByUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,15 +307,15 @@ namespace App.DAL.EF.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
-                    FromUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ToUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    FromUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ToUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -337,16 +338,16 @@ namespace App.DAL.EF.Migrations
                 name: "Tickets",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    FromUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ToUserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Title = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    FromUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ToUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -369,14 +370,14 @@ namespace App.DAL.EF.Migrations
                 name: "WorkDays",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Day = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Day = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PersonId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -393,14 +394,14 @@ namespace App.DAL.EF.Migrations
                 name: "XASDRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    PersonId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    PersonId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -417,17 +418,17 @@ namespace App.DAL.EF.Migrations
                 name: "Meetings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    IsMandatory = table.Column<bool>(type: "INTEGER", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Link = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    IsMandatory = table.Column<bool>(type: "boolean", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Link = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -444,15 +445,15 @@ namespace App.DAL.EF.Migrations
                 name: "Schedules",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -469,17 +470,17 @@ namespace App.DAL.EF.Migrations
                 name: "UsersInTeams",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Role = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Since = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Until = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TeamId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Role = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Since = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Until = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -502,16 +503,16 @@ namespace App.DAL.EF.Migrations
                 name: "UsersInWorkDays",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Since = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Until = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WorkDayId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Since = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Until = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WorkDayId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -534,16 +535,16 @@ namespace App.DAL.EF.Migrations
                 name: "UsersInRoles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Since = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Until = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Since = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Until = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -566,18 +567,18 @@ namespace App.DAL.EF.Migrations
                 name: "Tasks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    AssignedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    StatusId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    AssignedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Deadline = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserInTeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -600,17 +601,17 @@ namespace App.DAL.EF.Migrations
                 name: "UsersInTeamsInTasks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Since = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Until = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Review = table.Column<string>(type: "TEXT", nullable: true),
-                    TaskId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserInTeamId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreatedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ChangedBy = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    SysNotes = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Since = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Until = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Review = table.Column<string>(type: "text", nullable: true),
+                    TaskId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserInTeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

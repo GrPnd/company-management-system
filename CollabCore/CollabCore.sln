@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!SolutionItems", "!Solution
 		..\.gitignore = ..\.gitignore
 		..\Directory.Build.props = ..\Directory.Build.props
 		..\README.md = ..\README.md
+		Dockerfile = Dockerfile
+		.dockerignore = .dockerignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{78203376-FA33-4974-896E-80C251F462D0}"

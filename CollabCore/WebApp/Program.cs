@@ -6,9 +6,7 @@ using App.BLL.Contracts;
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
-using App.DAL.EF.Repositories;
 using App.Domain.Identity;
-using App.DTO.v1.ApiMappers;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Base.Contracts;
@@ -33,15 +31,29 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlite(connectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+        options
+            .UseNpgsql(
+                connectionString,
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+            )
+            // disable tracking, allow id based shared entity creation
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+    );
 }
 else
 {
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlite(connectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+        options
+            .UseNpgsql(
+                connectionString,
+                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
+            )
             .ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))
             .EnableDetailedErrors()
-            .EnableSensitiveDataLogging());
+            .EnableSensitiveDataLogging()
+            // disable tracking, allow id based shared entity creation
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution)
+    );
 }
 
 
