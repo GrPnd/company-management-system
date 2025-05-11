@@ -5,6 +5,11 @@ Gregor Pendis
 grpend
 222366IADB
 
+~~~sh
+docker compose up --build
+docker run --name webapp_docker --rm -it -p 8888:8080 webapp
+~~~
+
 
 ~~~sh
 dotnet ef migrations add InitialCreate --project App.DAL.EF --startup-project WebApp --context AppDbContext

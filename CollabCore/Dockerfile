@@ -67,9 +67,9 @@ RUN dotnet publish -c Release -o out
 # intel cpu image - aspnet:9.0-bookworm-slim-amd64 AS runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim-amd64 AS runtime
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8888
 COPY --from=build /app/out ./
-ENV ConnectionStrings:DefaultConnection="Host=host.docker.internal;Port=5432;Database=collabcorebase;Username=gregor;Password=postgres"
+ENV ConnectionStrings:DefaultConnection="Host=host.docker.internal;Port=5432;Database=collabcorebase;Username=postgres;Password=postgres"
 ENTRYPOINT ["dotnet", "WebApp.dll"]
 
 
