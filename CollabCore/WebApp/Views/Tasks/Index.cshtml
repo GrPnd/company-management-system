@@ -49,10 +49,10 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status!.Name)
+                @Html.DisplayFor(modelItem => item.StatusId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserInTeam!.Role)
+                @Html.DisplayFor(modelItem => item.UserInTeamId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

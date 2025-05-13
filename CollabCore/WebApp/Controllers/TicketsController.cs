@@ -49,9 +49,9 @@ namespace WebApp.Controllers
             var vm = new TicketViewModel()
             {
                 FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id)),
+                    nameof(Person.PersonName)),
                 ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id))
+                    nameof(Person.PersonName))
             };
             return View(vm);
         }
@@ -71,9 +71,9 @@ namespace WebApp.Controllers
             }
 
             vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Ticket.FromUserId);
+                nameof(Person.PersonName), vm.Ticket.FromUserId);
             vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Ticket.ToUserId);
+                nameof(Person.PersonName), vm.Ticket.ToUserId);
 
             return View(vm);
         }
@@ -95,9 +95,9 @@ namespace WebApp.Controllers
             var vm = new TicketViewModel()
             {
                 FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
-                    nameof(Person.Id), nameof(Person.Id), ticket.FromUserId),
+                    nameof(Person.PersonName), nameof(Person.Id), ticket.FromUserId),
                 ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
-                    nameof(Person.Id), nameof(Person.Id), ticket.ToUserId),
+                    nameof(Person.PersonName), nameof(Person.Id), ticket.ToUserId),
                 Ticket = ticket
             };
             return View(vm);
@@ -123,9 +123,9 @@ namespace WebApp.Controllers
             }
             
             vm.FromUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Ticket.FromUserId);
+                nameof(Person.PersonName), vm.Ticket.FromUserId);
             vm.ToUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Ticket.ToUserId);
+                nameof(Person.PersonName), vm.Ticket.ToUserId);
             return View(vm);
         }
 

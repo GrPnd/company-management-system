@@ -37,10 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Until)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User!.Id)
+                @Html.DisplayFor(modelItem => item.UserId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Role!.Name)
+                @Html.DisplayFor(modelItem => item.RoleId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

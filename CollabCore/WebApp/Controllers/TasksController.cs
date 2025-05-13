@@ -51,7 +51,7 @@ namespace WebApp.Controllers
                 StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                     nameof(Status.Name)),
                 UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                    nameof(UserInTeam.Id), nameof(UserInTeam.Role))
+                    nameof(UserInTeam.Id), nameof(UserInTeam.UserId))
             };
             return View(vm);
         }
@@ -76,7 +76,7 @@ namespace WebApp.Controllers
             vm.StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                 nameof(Status.Name), vm.Task.StatusId);
             vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
+                nameof(UserInTeam.Id), nameof(UserInTeam.UserId), vm.Task.UserInTeamId);
 
             return View(vm);
         }
@@ -100,7 +100,7 @@ namespace WebApp.Controllers
                 StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                     nameof(Status.Name), task.StatusId),
                 UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                    nameof(UserInTeam.Id), nameof(UserInTeam.Role), task.UserInTeamId),
+                    nameof(UserInTeam.Id), nameof(UserInTeam.UserId), task.UserInTeamId),
                 Task = task
             };
             return View(vm);
@@ -131,7 +131,7 @@ namespace WebApp.Controllers
             vm.StatusesSelectList = new SelectList(await _bll.StatusService.AllAsync(User.GetUserId()), nameof(Status.Id),
                 nameof(Status.Name), vm.Task.StatusId);
             vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.Task.UserInTeamId);
+                nameof(UserInTeam.Id), nameof(UserInTeam.UserId), vm.Task.UserInTeamId);
             
             return View(vm);
         }

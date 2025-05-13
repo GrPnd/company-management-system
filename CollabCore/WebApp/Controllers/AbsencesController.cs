@@ -50,9 +50,9 @@ namespace WebApp.Controllers
             var vm = new AbsenceViewModel()
             {
                 AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id)),
+                    nameof(Person.PersonName)),
                 ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id))
+                    nameof(Person.PersonName))
             };
             return View(vm);
         }
@@ -75,9 +75,9 @@ namespace WebApp.Controllers
             }
             
             vm.AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Absence.AuthorizedByUserId);
+                nameof(Person.PersonName), vm.Absence.AuthorizedByUserId);
             vm.ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Absence.ByUserId);
+                nameof(Person.PersonName), vm.Absence.ByUserId);
 
             return View(vm);
         }
@@ -99,9 +99,9 @@ namespace WebApp.Controllers
             var vm = new AbsenceViewModel()
             {
                 AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
-                    nameof(Person.Id), nameof(Person.Id), absence.AuthorizedByUserId),
+                    nameof(Person.Id), nameof(Person.PersonName), absence.AuthorizedByUserId),
                 ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
-                    nameof(Person.Id), nameof(Person.Id), absence.ByUserId),
+                    nameof(Person.Id), nameof(Person.PersonName), absence.ByUserId),
                 Absence = absence
             };
             return View(vm);
@@ -130,9 +130,9 @@ namespace WebApp.Controllers
             }
             
             vm.AuthorizedByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.Absence.AuthorizedByUserId);
+                nameof(Person.PersonName), vm.Absence.AuthorizedByUserId);
             vm.ByUserSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()),
-                nameof(Person.Id), nameof(Person.Id), vm.Absence.ByUserId);
+                nameof(Person.Id), nameof(Person.PersonName), vm.Absence.ByUserId);
             return View(vm);
         }
 

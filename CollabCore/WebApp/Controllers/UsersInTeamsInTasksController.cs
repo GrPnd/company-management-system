@@ -49,10 +49,10 @@ namespace WebApp.Controllers
         {
             var vm = new UserInTeamInTaskViewModel()
             {
-                TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Person.Id),
+                TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Task.Id),
                     nameof(Task.Name)),
                 UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                    nameof(UserInTeam.Id), nameof(UserInTeam.Role))
+                    nameof(UserInTeam.Id), nameof(UserInTeam.UserId))
             };
             return View(vm);
         }
@@ -78,10 +78,10 @@ namespace WebApp.Controllers
             }
             
 
-            vm.TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Task.Id),
                 nameof(Task.Name), vm.UserInTeamInTask.TaskId);
             vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.UserInTeamInTask.UserInTeamId);
+                nameof(UserInTeam.Id), nameof(UserInTeam.UserId), vm.UserInTeamInTask.UserInTeamId);
 
             return View(vm);
 
@@ -104,9 +104,9 @@ namespace WebApp.Controllers
             var vm = new UserInTeamInTaskViewModel()
             {
                 TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()),
-                    nameof(UserInTeam.Id),  nameof(Task.Name), userInTeamInTask.TaskId),
+                    nameof(Task.Id),  nameof(Task.Name), userInTeamInTask.TaskId),
                 UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                    nameof(UserInTeam.Id), nameof(UserInTeam.Role), userInTeamInTask.UserInTeamId),
+                    nameof(UserInTeam.Id), nameof(UserInTeam.UserId), userInTeamInTask.UserInTeamId),
                 UserInTeamInTask = userInTeamInTask
             };
             return View(vm);
@@ -138,10 +138,10 @@ namespace WebApp.Controllers
             }
             
             
-            vm.TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Person.Id),
+            vm.TaskSelectList = new SelectList(await _bll.TaskService.AllAsync(User.GetUserId()), nameof(Task.Id),
                 nameof(Task.Name), vm.UserInTeamInTask.TaskId);
             vm.UsersInTeamSelectList = new SelectList(await _bll.UserInTeamService.AllAsync(User.GetUserId()),
-                nameof(UserInTeam.Id), nameof(UserInTeam.Role), vm.UserInTeamInTask.UserInTeamId);
+                nameof(UserInTeam.Id), nameof(UserInTeam.UserId), vm.UserInTeamInTask.UserInTeamId);
             return View(vm);
 
         }

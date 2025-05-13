@@ -51,7 +51,7 @@ namespace WebApp.Controllers
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name)),
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id))
+                    nameof(Person.PersonName))
             };
             return View(vm);
         }
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
-                nameof(Person.Id), vm.UserInTeam.UserId);
+                nameof(Person.PersonName), vm.UserInTeam.UserId);
             
             return View(vm);
         }
@@ -103,7 +103,7 @@ namespace WebApp.Controllers
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name), userInTeam.TeamId),
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id), userInTeam.UserId),
+                    nameof(Person.PersonName), userInTeam.UserId),
                 UserInTeam = userInTeam
             };
             return View(vm);
@@ -137,7 +137,7 @@ namespace WebApp.Controllers
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
-                nameof(Person.Id), vm.UserInTeam.UserId);
+                nameof(Person.PersonName), vm.UserInTeam.UserId);
             
             return View(vm);
         }

@@ -49,9 +49,9 @@ namespace WebApp.Controllers
             var vm = new UserInWorkDayViewModel()
             {
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id)),
+                    nameof(Person.PersonName)),
                 WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
-                    nameof(WorkDay.Id))
+                    nameof(WorkDay.Day))
             };
             return View(vm);
         }
@@ -74,9 +74,9 @@ namespace WebApp.Controllers
             }
             
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.UserInWorkDay.UserId);
+                nameof(Person.PersonName), vm.UserInWorkDay.UserId);
             vm.WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
-                nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
+                nameof(WorkDay.Day), vm.UserInWorkDay.WorkDayId);
             
             return View(vm);
         }
@@ -98,9 +98,9 @@ namespace WebApp.Controllers
             var vm = new UserInWorkDayViewModel()
             {
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.Id), userInWorkDay.UserId),
+                    nameof(Person.PersonName), userInWorkDay.UserId),
                 WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
-                    nameof(WorkDay.Id), userInWorkDay.WorkDayId)
+                    nameof(WorkDay.Day), userInWorkDay.WorkDayId)
             };
             return View(vm);
         }
@@ -128,9 +128,9 @@ namespace WebApp.Controllers
             }
             
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                nameof(Person.Id), vm.UserInWorkDay.UserId);
+                nameof(Person.PersonName), vm.UserInWorkDay.UserId);
             vm.WorkDaysSelectList = new SelectList(await _bll.WorkDayService.AllAsync(User.GetUserId()), nameof(WorkDay.Id),
-                nameof(WorkDay.Id), vm.UserInWorkDay.WorkDayId);
+                nameof(WorkDay.Day), vm.UserInWorkDay.WorkDayId);
             
             return View(vm);
         }
