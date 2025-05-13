@@ -6,5 +6,5 @@ public class WorkDay : IDomainId
 {
     public Guid Id { get; set; }
     
-    public DateTime Day { get; set; }
+    public string Day { get; set; } = default!;
 }

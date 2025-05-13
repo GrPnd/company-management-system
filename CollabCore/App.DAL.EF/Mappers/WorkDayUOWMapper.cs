@@ -15,7 +15,7 @@ public class WorkDayUOWMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkD
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayUOWMapper.Map(u)).ToList()!
+            UsersInWorkDay = entity.UsersInWorkDay?.Select(u => _userInWorkDayUOWMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -29,7 +29,7 @@ public class WorkDayUOWMapper : IUOWMapper<App.DAL.DTO.WorkDay, App.Domain.WorkD
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayUOWMapper.Map(u)).ToList()!
+            UsersInWorkDay = entity.UsersInWorkDay?.Select(u => _userInWorkDayUOWMapper.Map(u)).ToList()!
         };
         
         return res;

@@ -2,5 +2,5 @@
 
 public class WorkDayViewModel
 {
-    public DateTime Day { get; set; }
+    public string Day { get; set; } = default!;
 }

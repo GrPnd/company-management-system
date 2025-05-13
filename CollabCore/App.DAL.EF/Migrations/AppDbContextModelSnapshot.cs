@@ -869,8 +869,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("PersonId")
                         .HasColumnType("uuid");

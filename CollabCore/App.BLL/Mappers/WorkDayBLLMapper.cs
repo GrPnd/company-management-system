@@ -14,7 +14,7 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
+            UsersInWorkDay = entity.UsersInWorkDay?.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
         };
         
         return res;
@@ -28,7 +28,7 @@ public class WorkDayBLLMapper : IBLLMapper<App.BLL.DTO.WorkDay, App.DAL.DTO.Work
         {
             Id = entity.Id,
             Day = entity.Day,
-            UsersInWorkDay = entity.UsersInWorkDay.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
+            UsersInWorkDay = entity.UsersInWorkDay?.Select(u => _userInWorkDayBLLMapper.Map(u)).ToList()!
         };
         
         return res;

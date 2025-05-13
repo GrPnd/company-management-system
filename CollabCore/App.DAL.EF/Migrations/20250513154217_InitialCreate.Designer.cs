@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.DAL.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250511210555_InitialCreate")]
+    [Migration("20250513154217_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -872,8 +872,9 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<DateTime>("Day")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("PersonId")
                         .HasColumnType("uuid");

@@ -45,8 +45,7 @@ namespace WebApp.Controllers
         // GET: Departments/Create
         public IActionResult Create()
         {
-            var vm = new DepartmentViewModel();
-            return View(vm);
+            return View();
         }
 
         // POST: Departments/Create

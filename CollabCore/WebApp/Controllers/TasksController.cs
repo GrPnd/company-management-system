@@ -65,6 +65,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.Task.AssignedAt = DateTime.SpecifyKind(vm.Task.AssignedAt, DateTimeKind.Utc);
+                vm.Task.Deadline = DateTime.SpecifyKind(vm.Task.Deadline, DateTimeKind.Utc);
+                
                 _bll.TaskService.Add(vm.Task);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -117,6 +120,9 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.Task.AssignedAt = DateTime.SpecifyKind(vm.Task.AssignedAt, DateTimeKind.Utc);
+                vm.Task.Deadline = DateTime.SpecifyKind(vm.Task.Deadline, DateTimeKind.Utc);
+                
                 _bll.TaskService.Update(vm.Task);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
