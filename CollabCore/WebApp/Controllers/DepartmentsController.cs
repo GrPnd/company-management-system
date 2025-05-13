@@ -63,7 +63,7 @@ namespace WebApp.Controllers
                     Name = vm.Name
                 };
                 
-                _bll.DepartmentService.Add(entity);
+                _bll.DepartmentService.Add(entity, User.GetUserId());
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var vm = new DepartmentViewModel()
+            var vm = new DepartmentEditViewModel()
             {
                 Id = department.Id,
                 Name = department.Name
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, DepartmentViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, DepartmentEditViewModel vm)
         {
             if (id != vm.Id)
             {

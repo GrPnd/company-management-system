@@ -16,7 +16,7 @@ public class StatusUOWMapper : IUOWMapper<App.DAL.DTO.Status, App.Domain.Status>
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new TaskUOWMapper().Map(t)).ToList()!
+            Tasks = entity.Tasks?.Select(t => _taskUOWMapper.Map(t)).ToList()!
         };
         
         return res;
@@ -30,7 +30,7 @@ public class StatusUOWMapper : IUOWMapper<App.DAL.DTO.Status, App.Domain.Status>
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new TaskUOWMapper().Map(t)).ToList()!
+            Tasks = entity.Tasks?.Select(t => _taskUOWMapper.Map(t)).ToList()!
         };
         
         return res;

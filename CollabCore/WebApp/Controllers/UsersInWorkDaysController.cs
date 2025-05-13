@@ -65,6 +65,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.UserInWorkDay.Since = DateTime.SpecifyKind(vm.UserInWorkDay.Since, DateTimeKind.Utc);
+                vm.UserInWorkDay.Until = DateTime.SpecifyKind(vm.UserInWorkDay.Until, DateTimeKind.Utc);
+                
                 _bll.UserInWorkDayService.Add(vm.UserInWorkDay);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -116,6 +119,9 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.UserInWorkDay.Since = DateTime.SpecifyKind(vm.UserInWorkDay.Since, DateTimeKind.Utc);
+                vm.UserInWorkDay.Until = DateTime.SpecifyKind(vm.UserInWorkDay.Until, DateTimeKind.Utc);
+                
                 _bll.UserInWorkDayService.Update(vm.UserInWorkDay);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

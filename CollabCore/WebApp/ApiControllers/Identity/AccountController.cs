@@ -131,7 +131,8 @@ public class AccountController : ControllerBase
         var responseData = new JWTResponse()
         {
             JWT = jwt,
-            RefreshToken = refreshToken.RefreshToken
+            RefreshToken = refreshToken.RefreshToken,
+            UserId = appUser.Id
         };
 
         return Ok(responseData);
@@ -152,7 +153,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<JWTResponse>> Register(
         [FromBody]
-        RegisterInfo registerModel,
+        Register registerModel,
         [FromQuery]
         int? jwtExpiresInSeconds,
         [FromQuery]
@@ -205,6 +206,7 @@ public class AccountController : ControllerBase
                 {
                     JWT = jwt,
                     RefreshToken = refreshToken.RefreshToken,
+                    UserId = appUser.Id
                 });
 
         }
@@ -228,7 +230,7 @@ public class AccountController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<JWTResponse>> RenewRefreshToken(
         [FromBody]
-        TokenRefreshInfo refreshTokenModel,
+        RefreshTokenModel refreshTokenModel,
         [FromQuery]
         int? jwtExpiresInSeconds,
         [FromQuery]
@@ -239,7 +241,7 @@ public class AccountController : ControllerBase
         // get user info from jwt
         try
         {
-            jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenModel.JWT);
+            jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenModel.Jwt);
             if (jwtToken == null)
             {
                 return BadRequest(new Message("No token"));
@@ -251,8 +253,8 @@ public class AccountController : ControllerBase
         }
 
         // validate jwt, ignore expiration date
-        if (!IdentityExtensions.ValidateJWT(
-                refreshTokenModel.JWT,
+        if (!IdentityExtensions.ValidateJwt(
+                refreshTokenModel.Jwt,
                 _configuration.GetValue<string>(SettingsJWTKey)!,
                 _configuration.GetValue<string>(SettingsJWTIssuer)!,
                 _configuration.GetValue<string>(SettingsJWTAudience)!
@@ -336,6 +338,7 @@ public class AccountController : ControllerBase
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
+            UserId = appUser.Id
         };
 
         return Ok(res);

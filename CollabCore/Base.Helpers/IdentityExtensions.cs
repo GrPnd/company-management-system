@@ -7,17 +7,20 @@ namespace Base.Helpers;
 
 public static class IdentityExtensions
 {
-    public static Guid GetUserId(this ClaimsPrincipal principal)
+    public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
     {
-        var userIdStr = principal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var userIdStr = claimsPrincipal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var userId = Guid.Parse(userIdStr);
-
         return userId;
     }
 
-    private static readonly JwtSecurityTokenHandler JwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+    private static readonly JwtSecurityTokenHandler JWTSecurityTokenHandler = new JwtSecurityTokenHandler();
 
-    public static string GenerateJwt(IEnumerable<Claim> claims, string key, string issuer, string audience,
+    public static string GenerateJwt(
+        IEnumerable<Claim> claims,
+        string key,
+        string issuer,
+        string audience,
         DateTime expires)
     {
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -25,33 +28,34 @@ public static class IdentityExtensions
 
         var token = new JwtSecurityToken(
             issuer: issuer,
-            audience: issuer,
+            audience: audience,
             claims: claims,
             expires: expires,
             signingCredentials: signingCredentials
         );
-        return JwtSecurityTokenHandler.WriteToken(token);
+
+        return JWTSecurityTokenHandler.WriteToken(token);
     }
 
-    public static bool ValidateJWT(string jwt, string key, string issuer, string audience)
+    public static bool ValidateJwt(string jwt, string key, string issuer, string audience)
     {
-        var tokenValidationParameters = new TokenValidationParameters
+        var validationParams = new TokenValidationParameters()
         {
-            ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            ValidateIssuerSigningKey = true,
 
-            ValidateIssuer = true,
             ValidIssuer = issuer,
+            ValidateIssuer = true,
 
-            ValidateAudience = true,
             ValidAudience = audience,
+            ValidateAudience = true,
 
             ValidateLifetime = false
         };
 
         try
         {
-            new JwtSecurityTokenHandler().ValidateToken(jwt, tokenValidationParameters, out _);
+            new JwtSecurityTokenHandler().ValidateToken(jwt, validationParams, out _);
         }
         catch (Exception)
         {

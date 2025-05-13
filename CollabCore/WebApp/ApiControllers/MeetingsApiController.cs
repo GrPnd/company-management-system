@@ -20,7 +20,7 @@ namespace WebApp.ApiControllers
         private readonly MeetingApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public MeetingsApiController(AppBLL bll)
+        public MeetingsApiController(IAppBLL bll)
         {
             _bll = bll;
         }

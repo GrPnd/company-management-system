@@ -64,9 +64,11 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AbsenceViewModel vm)
         {
-            //"Reason,StartDate,EndDate,IsApproved,ByUserId,AuthorizedByUserId,Id")
             if (ModelState.IsValid)
             {
+                vm.Absence.StartDate = DateTime.SpecifyKind(vm.Absence.StartDate, DateTimeKind.Utc);
+                vm.Absence.EndDate = DateTime.SpecifyKind(vm.Absence.EndDate, DateTimeKind.Utc);
+                
                 _bll.AbsenceService.Add(vm.Absence);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -119,6 +121,9 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.Absence.StartDate = DateTime.SpecifyKind(vm.Absence.StartDate, DateTimeKind.Utc);
+                vm.Absence.EndDate = DateTime.SpecifyKind(vm.Absence.EndDate, DateTimeKind.Utc);
+                
                 _bll.AbsenceService.Update(vm.Absence);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

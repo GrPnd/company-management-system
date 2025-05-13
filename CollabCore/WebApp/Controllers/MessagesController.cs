@@ -21,7 +21,7 @@ namespace WebApp.Controllers
         // GET: Messages
         public async Task<IActionResult> Index()
         {
-            var res = await _bll.MessageService.AllAsync();
+            var res = await _bll.MessageService.AllAsync(User.GetUserId());
             return View(res);
         }
 

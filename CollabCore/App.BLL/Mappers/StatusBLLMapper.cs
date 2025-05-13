@@ -14,7 +14,7 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new TaskBLLMapper().Map(t)).ToList()!
+            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!
         };
         
         return res;
@@ -28,7 +28,7 @@ public class StatusBLLMapper : IBLLMapper<App.BLL.DTO.Status, App.DAL.DTO.Status
         {
             Id = entity.Id,
             Name = entity.Name,
-            Tasks = entity.Tasks?.Select(t => new TaskBLLMapper().Map(t)).ToList()!
+            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!
         };
         
         return res;

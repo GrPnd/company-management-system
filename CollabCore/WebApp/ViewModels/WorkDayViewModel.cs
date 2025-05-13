@@ -1,8 +1,6 @@
-﻿using Base.Domain;
+﻿namespace WebApp.ViewModels;
 
-namespace WebApp.ViewModels;
-
-public class WorkDayViewModel : BaseEntity
+public class WorkDayViewModel
 {
     public DateTime Day { get; set; }
 }

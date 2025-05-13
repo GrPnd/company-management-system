@@ -14,4 +14,16 @@ public class MessageService : BaseService<App.BLL.DTO.Message, App.DAL.DTO.Messa
         IBLLMapper<DTO.Message, Message> bllMapper) : base(serviceUOW, serviceUOW.MessageRepository, bllMapper)
     {
     }
+    
+    public async Task<IEnumerable<App.BLL.DTO.Message>> GetMessagesByPersonIdAsyncBLL(Guid personId)
+    {
+        var res = await GetMessagesByPersonIdAsync(personId);
+        return res.Select(m => BLLMapper.Map(m)!);
+    }
+
+    public async Task<IEnumerable<App.DAL.DTO.Message>> GetMessagesByPersonIdAsync(Guid personId)
+    {
+        var result = await ServiceRepository.GetMessagesByPersonIdAsync(personId);
+        return result;
+    }
 }

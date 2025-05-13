@@ -1,4 +1,4 @@
-﻿namespace App.DTO.v1.Identity;
+namespace App.DTO.v1.Identity;
 
 public class Message
 {

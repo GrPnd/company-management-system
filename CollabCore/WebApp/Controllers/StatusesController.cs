@@ -84,7 +84,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var vm = new StatusViewModel()
+            var vm = new StatusEditViewModel()
             {
                 Id = status.Id,
                 Name = status.Name
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, StatusViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, StatusEditViewModel vm)
         {
             if (id != vm.Id)
             {

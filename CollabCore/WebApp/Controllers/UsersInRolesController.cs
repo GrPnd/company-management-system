@@ -65,6 +65,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.UserInRole.Since = DateTime.SpecifyKind(vm.UserInRole.Since, DateTimeKind.Utc);
+                if (vm.UserInRole.Until.HasValue)
+                {
+                    vm.UserInRole.Until = DateTime.SpecifyKind(vm.UserInRole.Until.Value, DateTimeKind.Utc);
+                }
+                
                 _bll.UserInRoleService.Add(vm.UserInRole);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -117,6 +123,12 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.UserInRole.Since = DateTime.SpecifyKind(vm.UserInRole.Since, DateTimeKind.Utc);
+                if (vm.UserInRole.Until.HasValue)
+                {
+                    vm.UserInRole.Until = DateTime.SpecifyKind(vm.UserInRole.Until.Value, DateTimeKind.Utc);
+                }
+                
                 _bll.UserInRoleService.Update(vm.UserInRole);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

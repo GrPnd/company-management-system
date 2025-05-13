@@ -62,11 +62,11 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey>: IBaseSer
         ServiceRepository.Add(dalEntity!, userId);
     }
 
-    public virtual TBllEntity Update(TBllEntity entity, TKey? userId = default)
+    public virtual TBllEntity? Update(TBllEntity entity, TKey? userId = default)
     {
         var dalEntity = BLLMapper.Map(entity);
-        var updatedEntity = ServiceRepository.Update(dalEntity!);
-        return BLLMapper.Map(updatedEntity)!;
+        var updatedEntity = ServiceRepository.Update(dalEntity!, userId);
+        return BLLMapper.Map(updatedEntity);
     }
     
     public virtual async Task<TBllEntity?> UpdateAsync(TBllEntity entity, TKey? userId = default)
@@ -83,19 +83,19 @@ public class BaseService<TBllEntity, TDalEntity, TDalRepository, TKey>: IBaseSer
 
     public virtual void Remove(TKey id, TKey? userId = default)
     {
-        var entity = ServiceRepository.Find(id);
+        var entity = ServiceRepository.Find(id, userId);
         if (entity != null)
         {
-            ServiceRepository.Remove(entity);
+            ServiceRepository.Remove(entity, userId);
         }
     }
 
     public virtual async Task RemoveAsync(TKey id, TKey? userId = default)
     {
-        var entity = await ServiceRepository.FindAsync(id);
+        var entity = await ServiceRepository.FindAsync(id, userId);
         if (entity != null)
         {
-            ServiceRepository.Remove(entity);
+            await ServiceRepository.RemoveAsync(id, userId);
         }
     }
 

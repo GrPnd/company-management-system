@@ -84,7 +84,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var vm = new RoleViewModel()
+            var vm = new RoleEditViewModel()
             {
                 Id = role.Id,
                 Name = role.Name
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, RoleViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, RoleEditViewModel vm)
         {
             if (id != vm.Id)
             {

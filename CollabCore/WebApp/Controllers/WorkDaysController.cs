@@ -84,7 +84,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
             
-            var vm = new WorkDayViewModel()
+            var vm = new WorkDayEditViewModel()
             {
                 Id = workDay.Id,
                 Day = workDay.Day
@@ -98,7 +98,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, WorkDayViewModel vm)
+        public async Task<IActionResult> Edit(Guid id, WorkDayEditViewModel vm)
         {
             if (id != vm.Id)
             {

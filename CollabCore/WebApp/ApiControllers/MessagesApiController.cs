@@ -33,11 +33,26 @@ namespace WebApp.ApiControllers
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Message>), StatusCodes.Status200OK )]
         [ProducesResponseType( 404 )]
-        [HttpGet]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Message>>> GetMessages()
         {
             var data = await _bll.MessageService.AllAsync(User.GetUserId());
             var res = data.Select(p => _mapper.Map(p)!).ToList();
+            return res;
+        }
+        
+        
+        /// <summary>
+        /// Get all messages by a person.
+        /// </summary>
+        /// <param name="personId">Person ID.</param>
+        /// <returns>List of messages by a person.</returns>
+        [HttpGet("person/{personId}")]
+        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.ApiEntities.Message>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Message>>> GetMessagesByPersonId(Guid personId)
+        {
+            var data = await _bll.MessageService.GetMessagesByPersonIdAsyncBLL(personId);
+            var res = data.Select(m => _mapper.Map(m)!).ToList();
             return res;
         }
 

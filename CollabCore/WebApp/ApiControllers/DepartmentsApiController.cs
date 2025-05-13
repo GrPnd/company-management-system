@@ -20,7 +20,7 @@ namespace WebApp.ApiControllers
         private readonly DepartmentApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public DepartmentsApiController(AppBLL bll)
+        public DepartmentsApiController(IAppBLL bll)
         {
             _bll = bll;
         }

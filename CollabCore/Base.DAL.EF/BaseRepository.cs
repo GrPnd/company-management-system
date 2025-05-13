@@ -1,7 +1,5 @@
 ﻿using Base.Contracts;
 using Base.DAL.Contracts;
-using Base.Domain;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Base.DAL.EF;
@@ -38,10 +36,7 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
     {
         var query = RepositoryDbSet.AsQueryable();
 
-        // todo : check userId for null/default
-        if (typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
-            userId != null &&
-            !EqualityComparer<TKey>.Default.Equals(userId, default))
+         if (ShouldUseUserId(userId))
         {
             query = query.Where(e => ((IDomainUserId<TKey>)e).UserId.Equals(userId));
         }
@@ -81,11 +76,9 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
     {
         var dbEntity = UOWMapper.Map(entity);
         
-        if (typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
-            userId != null &&
-            !EqualityComparer<TKey>.Default.Equals(userId, default))
+        if (ShouldUseUserId(userId))
         {
-           ((IDomainUserId<TKey>) dbEntity!).UserId = userId;
+            ((IDomainUserId<TKey>)dbEntity!).UserId = userId!;
         }
         
         RepositoryDbSet.Add(dbEntity!);
@@ -130,13 +123,6 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
     {
         Remove(entity.Id, userId);
     }
-    
-    private bool ShouldUseUserId(TKey? userId = default!)
-    {
-        return typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
-               userId != null &&
-               !EqualityComparer<TKey>.Default.Equals(userId, default);
-    }
 
     public virtual void Remove(TKey id, TKey? userId)
     {
@@ -170,5 +156,12 @@ public class BaseRepository<TDalEntity, TDomainEntity, TKey> : IBaseRepository<T
     {
         var query = GetQuery(userId);
         return await query.AnyAsync(e => e.Id.Equals(id));
+    }
+    
+    private bool ShouldUseUserId(TKey? userId = default!)
+    {
+        return typeof(IDomainUserId<TKey>).IsAssignableFrom(typeof(TDomainEntity)) &&
+               userId != null &&
+               !EqualityComparer<TKey>.Default.Equals(userId, default);
     }
 }

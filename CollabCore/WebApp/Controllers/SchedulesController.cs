@@ -63,6 +63,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.Schedule.StartDate = DateTime.SpecifyKind(vm.Schedule.StartDate, DateTimeKind.Utc);
+                vm.Schedule.EndDate = DateTime.SpecifyKind(vm.Schedule.EndDate, DateTimeKind.Utc);
+                
                 _bll.ScheduleService.Add(vm.Schedule);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -110,6 +113,9 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.Schedule.StartDate = DateTime.SpecifyKind(vm.Schedule.StartDate, DateTimeKind.Utc);
+                vm.Schedule.EndDate = DateTime.SpecifyKind(vm.Schedule.EndDate, DateTimeKind.Utc);
+                
                 _bll.ScheduleService.Update(vm.Schedule);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

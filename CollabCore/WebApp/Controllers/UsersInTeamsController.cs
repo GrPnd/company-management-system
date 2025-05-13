@@ -65,6 +65,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.UserInTeam.Since = DateTime.SpecifyKind(vm.UserInTeam.Since, DateTimeKind.Utc);
+                if (vm.UserInTeam.Until.HasValue)
+                {
+                    vm.UserInTeam.Until = DateTime.SpecifyKind(vm.UserInTeam.Until.Value, DateTimeKind.Utc);
+                }
+                
                 _bll.UserInTeamService.Add(vm.UserInTeam);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -117,6 +123,12 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.UserInTeam.Since = DateTime.SpecifyKind(vm.UserInTeam.Since, DateTimeKind.Utc);
+                if (vm.UserInTeam.Until.HasValue)
+                {
+                    vm.UserInTeam.Until = DateTime.SpecifyKind(vm.UserInTeam.Until.Value, DateTimeKind.Utc);
+                }
+                
                 _bll.UserInTeamService.Update(vm.UserInTeam);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

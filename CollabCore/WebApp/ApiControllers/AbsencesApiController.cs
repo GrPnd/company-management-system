@@ -21,7 +21,7 @@ namespace WebApp.ApiControllers
         private readonly AbsenceApiMapper _mapper = new();
 
         /// <inheritdoc />
-        public AbsencesApiController(AppBLL bll)
+        public AbsencesApiController(IAppBLL bll)
         {
             _bll = bll;
         }

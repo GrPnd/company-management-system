@@ -63,6 +63,8 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                vm.Meeting.StartDate = DateTime.SpecifyKind(vm.Meeting.StartDate, DateTimeKind.Utc);
+                
                 _bll.MeetingService.Add(vm.Meeting);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -110,6 +112,8 @@ namespace WebApp.Controllers
 
             if (ModelState.IsValid)
             {
+                vm.Meeting.StartDate = DateTime.SpecifyKind(vm.Meeting.StartDate, DateTimeKind.Utc);
+                
                 _bll.MeetingService.Update(vm.Meeting);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
