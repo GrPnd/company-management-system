@@ -7,6 +7,9 @@ namespace WebApp.ViewModels;
 public class UserInTeamViewModel
 {
     public UserInTeam UserInTeam { get; set; } = default!;
+    
+    [ValidateNever]
+    public SelectList TeamRoleSelectList { get; set; } = default!;
 
     [ValidateNever]
     public SelectList TeamSelectList { get; set; } = default!;

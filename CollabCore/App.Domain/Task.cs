@@ -27,10 +27,5 @@ public class Task : BaseEntity
     public Status? Status { get; set; }
     
     
-    public Guid UserInTeamId { get; set; }
-    [Display(Name = nameof(UserInTeam), Prompt = nameof(UserInTeam), ResourceType = typeof(App.Resources.Domain.Task))]
-    public UserInTeam? UserInTeam { get; set; }
-    
-    
     public ICollection<UserInTeamInTask>? UserInTeamInTasks { get; set; }
 }

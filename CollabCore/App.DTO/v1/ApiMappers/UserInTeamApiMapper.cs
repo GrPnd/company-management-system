@@ -11,7 +11,7 @@ public class UserInTeamApiMapper : IApiMapper<ApiEntities.UserInTeam, App.BLL.DT
         return new UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
@@ -26,7 +26,7 @@ public class UserInTeamApiMapper : IApiMapper<ApiEntities.UserInTeam, App.BLL.DT
         return new BLL.DTO.UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,

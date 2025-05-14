@@ -69,15 +69,6 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Role.
-        /// </summary>
-        public static string Role {
-            get {
-                return ResourceManager.GetString("Role", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Since.
         /// </summary>
         public static string Since {
@@ -92,6 +83,15 @@ namespace App.Resources.Domain {
         public static string Team {
             get {
                 return ResourceManager.GetString("Team", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string TeamRole {
+            get {
+                return ResourceManager.GetString("TeamRole", resourceCulture);
             }
         }
         

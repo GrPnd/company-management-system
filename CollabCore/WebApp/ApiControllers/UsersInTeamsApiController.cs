@@ -36,7 +36,11 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.UserInTeam>>> GetUsersInTeams()
         {
             var data = await _bll.UserInTeamService.AllAsync(User.GetUserId());
-            var res = data.Select(p => _mapper.Map(p)!).ToList();
+            
+            var now = DateTime.UtcNow;
+            var excludedExpiredUntil = data.Where(u => u.Until == null || u.Until > now);
+            
+            var res = excludedExpiredUntil.Select(p => _mapper.Map(p)!).ToList();
             return res;
         }
 
@@ -60,6 +64,26 @@ namespace WebApp.ApiControllers
 
             return _mapper.Map(userInTeam)!;
         }
+        
+        /// <summary>
+        /// Retrieves all teams for a given person.
+        /// </summary>
+        /// <param name="personId">Person ID.</param>
+        /// <returns>List of teams where a person ID is present.</returns>
+        [HttpGet("person/{personId}")]
+        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.ApiEntities.UserInTeam>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.UserInTeam>>> GetPersonsTeams(Guid personId)
+        {
+            var data = await _bll.UserInTeamService.GetUserInTeamByPersonId(personId);
+            
+            var now = DateTime.UtcNow;
+            var excludedExpiredUntil = data.Where(u => u!.Until == null || u.Until > now);
+            
+            var res = excludedExpiredUntil.Select(m => _mapper.Map(m)!).ToList();
+            return res;
+        }
+
 
         
         /// <summary>

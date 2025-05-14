@@ -1,9 +1,0 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WebApp.ViewModels;
-
-public class RoleViewModel
-{
-    [MaxLength(128)]
-    public string Name { get; set; } = default!;
-}

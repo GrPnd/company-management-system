@@ -26,7 +26,7 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Message.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\Role.resx">
+      <EmbeddedResource Update="Domain\TeamRole.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Role.Designer.cs</LastGenOutput>
       </EmbeddedResource>
@@ -54,10 +54,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>User.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\UserInRole.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>UserInRole.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Domain\UserInTeam.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>UserInTeam.Designer.cs</LastGenOutput>
@@ -83,8 +79,8 @@
       <EmbeddedResource Update="Domain\Message.et.resx">
         <DependentUpon>Message.resx</DependentUpon>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\Role.et.resx">
-        <DependentUpon>Role.resx</DependentUpon>
+      <EmbeddedResource Update="Domain\TeamRole.et.resx">
+        <DependentUpon>TeamRole.resx</DependentUpon>
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\Schedule.et.resx">
         <DependentUpon>Schedule.resx</DependentUpon>
@@ -103,9 +99,6 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\Person.et.resx">
         <DependentUpon>Person.resx</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\UserInRole.et.resx">
-        <DependentUpon>UserInRole.resx</DependentUpon>
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\UserInTeam.et.resx">
         <DependentUpon>UserInTeam.resx</DependentUpon>
@@ -142,10 +135,10 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Message.resx</DependentUpon>
       </Compile>
-      <Compile Update="Domain\Role.Designer.cs">
+      <Compile Update="Domain\TeamRole.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Role.resx</DependentUpon>
+        <DependentUpon>TeamRole.resx</DependentUpon>
       </Compile>
       <Compile Update="Domain\Schedule.Designer.cs">
         <DesignTime>True</DesignTime>
@@ -176,11 +169,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Person.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\UserInRole.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>UserInRole.resx</DependentUpon>
       </Compile>
       <Compile Update="Domain\UserInTeam.Designer.cs">
         <DesignTime>True</DesignTime>

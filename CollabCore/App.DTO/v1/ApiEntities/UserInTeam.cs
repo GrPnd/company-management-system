@@ -7,12 +7,11 @@ public class UserInTeam : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
-    public string Role { get; set; } = default!;  // TODO: TULEB FK??
-    
     public DateTime Since { get; set; }
     
     public DateTime? Until { get; set; }
+    
+    public Guid TeamRoleId { get; set; }
     
     public Guid UserId { get; set; }
     

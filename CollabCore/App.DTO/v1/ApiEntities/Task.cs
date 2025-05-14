@@ -17,6 +17,4 @@ public class Task : IDomainId
     public DateTime Deadline { get; set; }
     
     public Guid StatusId { get; set; }
-    
-    public Guid UserInTeamId { get; set; }
 }

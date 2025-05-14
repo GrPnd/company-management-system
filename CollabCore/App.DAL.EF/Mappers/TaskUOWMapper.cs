@@ -20,8 +20,6 @@ public class TaskUOWMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
             Status = StatusUOWMapper.MapSimple(entity.Status),
-            UserInTeamId = entity.UserInTeamId,
-            UserInTeam = UserInTeamUOWMapper.MapSimple(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskUOWMapper.Map(u)).ToList()!
         };
         
@@ -41,8 +39,6 @@ public class TaskUOWMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
             Status = StatusUOWMapper.MapSimple(entity.Status),
-            UserInTeamId = entity.UserInTeamId,
-            UserInTeam = UserInTeamUOWMapper.MapSimple(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskUOWMapper.Map(u)).ToList()!
         };
         
@@ -60,8 +56,7 @@ public class TaskUOWMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId,
+            StatusId = entity.StatusId
         };
     }
     
@@ -76,8 +71,7 @@ public class TaskUOWMapper : IUOWMapper<App.DAL.DTO.Task, App.Domain.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId,
+            StatusId = entity.StatusId
         };
     }
 }

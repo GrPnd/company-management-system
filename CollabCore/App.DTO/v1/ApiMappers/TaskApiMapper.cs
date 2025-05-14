@@ -15,8 +15,7 @@ public class TaskApiMapper : IApiMapper<ApiEntities.Task, App.BLL.DTO.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId
+            StatusId = entity.StatusId
         };
     }
 
@@ -31,8 +30,7 @@ public class TaskApiMapper : IApiMapper<ApiEntities.Task, App.BLL.DTO.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId
+            StatusId = entity.StatusId
         };
 
     }

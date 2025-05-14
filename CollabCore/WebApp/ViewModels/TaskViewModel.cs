@@ -10,7 +10,4 @@ public class TaskViewModel
 
     [ValidateNever]
     public SelectList StatusesSelectList { get; set; } = default!;
-
-    [ValidateNever]
-    public SelectList UsersInTeamSelectList { get; set; } = default!;
 }

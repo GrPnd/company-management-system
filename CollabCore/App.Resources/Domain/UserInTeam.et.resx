@@ -14,7 +14,7 @@
     <data name=".UserInTeamLayout" xml:space="preserve">
         <value>Kasutajad tiimides</value>
     </data>
-    <data name="Role" xml:space="preserve">
+    <data name="TeamRole" xml:space="preserve">
         <value>Roll</value>
     </data>
     <data name="Since" xml:space="preserve">

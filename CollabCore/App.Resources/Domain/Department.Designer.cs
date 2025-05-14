@@ -60,7 +60,7 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deparments.
+        ///   Looks up a localized string similar to Departments.
         /// </summary>
         public static string _DepartmentLayout {
             get {

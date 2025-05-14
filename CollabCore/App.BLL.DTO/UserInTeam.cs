@@ -7,11 +7,6 @@ public class UserInTeam : IDomainId
 {
     public Guid Id { get; set; }
     
-    [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
-    [Display(Name = nameof(Role), Prompt = nameof(Role), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
-    public string Role { get; set; } = default!;  // TODO: TULEB FK??
-    
-    
     [Display(Name = nameof(Since), Prompt = nameof(Since), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
     public DateTime Since { get; set; }
     
@@ -19,6 +14,10 @@ public class UserInTeam : IDomainId
     [Display(Name = nameof(Until), Prompt = nameof(Until), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
     public DateTime? Until { get; set; }
     
+    
+    public Guid TeamRoleId { get; set; }
+    [Display(Name = nameof(TeamRole), Prompt = nameof(TeamRole), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
+    public TeamRole? TeamRole { get; set; }
     
     public Guid UserId { get; set; }
     [Display(Name = nameof(User), Prompt = nameof(User), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
@@ -29,7 +28,6 @@ public class UserInTeam : IDomainId
     [Display(Name = nameof(Team), Prompt = nameof(Team), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
     public Team? Team { get; set; }
     
-    
-    public ICollection<Task>? Tasks { get; set; }
+
     public ICollection<UserInTeamInTask>? UserInTeamInTasks { get; set; }
 }

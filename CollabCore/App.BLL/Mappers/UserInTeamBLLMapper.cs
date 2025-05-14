@@ -14,14 +14,14 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
         var res = new UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
+            TeamRole = TeamRoleBLLMapper.MapSimple(entity.TeamRole),
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
             User = PersonBLLMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
             Team = TeamBLLMapper.MapSimple(entity.Team!),
-            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
@@ -35,14 +35,14 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
         var res = new DTO.UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
+            TeamRole = TeamRoleBLLMapper.MapSimple(entity.TeamRole),
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
             User = PersonBLLMapper.MapSimple(entity.User),
             TeamId = entity.TeamId,
             Team = TeamBLLMapper.MapSimple(entity.Team!),
-            Tasks = entity.Tasks?.Select(t => _taskBLLMapper.Map(t)).ToList()!,
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
@@ -56,7 +56,7 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
         return new UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,
@@ -71,7 +71,7 @@ public class UserInTeamBLLMapper : IBLLMapper<App.BLL.DTO.UserInTeam, App.DAL.DT
         return new DTO.UserInTeam()
         {
             Id = entity.Id,
-            Role = entity.Role,
+            TeamRoleId = entity.TeamRoleId,
             Since = entity.Since,
             Until = entity.Until,
             UserId = entity.UserId,

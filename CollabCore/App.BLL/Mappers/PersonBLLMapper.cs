@@ -10,7 +10,7 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
     private readonly AbsenceBLLMapper _absenceBLLMapper = new();
     private readonly WorkDayBLLMapper _workDayBLLMapper = new();
     private readonly UserInTeamBLLMapper _userInTeamBLLMapper = new();
-    private readonly RoleBLLMapper _roleBLLMapper = new();
+    private readonly TeamRoleBLLMapper _teamRoleBLLMapper = new();
     public Person? Map(DTO.Person? entity)
     {
         if (entity == null) return null;
@@ -27,7 +27,7 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
             WorkDays = entity.WorkDays?.Select(w => _workDayBLLMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
-            Roles = entity.Roles?.Select(r => _roleBLLMapper.Map(r)).ToList()!
+            TeamRoles = entity.TeamRoles?.Select(r => _teamRoleBLLMapper.Map(r)).ToList()!
         };
     }
 
@@ -47,7 +47,7 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
             WorkDays = entity.WorkDays?.Select(w => _workDayBLLMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
-            Roles = entity.Roles?.Select(r => _roleBLLMapper.Map(r)).ToList()!
+            TeamRoles = entity.TeamRoles?.Select(r => _teamRoleBLLMapper.Map(r)).ToList()!
         };
     }
     

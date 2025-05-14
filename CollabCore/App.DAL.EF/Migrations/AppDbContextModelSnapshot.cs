@@ -407,45 +407,6 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("App.Domain.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ChangedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.Property<Guid?>("PersonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("SysNotes")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("XASDRoles");
-                });
-
             modelBuilder.Entity("App.Domain.Schedule", b =>
                 {
                     b.Property<Guid>("Id")
@@ -561,14 +522,9 @@ namespace App.DAL.EF.Migrations
                     b.Property<string>("SysNotes")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserInTeamId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StatusId");
-
-                    b.HasIndex("UserInTeamId");
 
                     b.ToTable("Tasks");
                 });
@@ -610,6 +566,45 @@ namespace App.DAL.EF.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("App.Domain.TeamRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ChangedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ChangedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<Guid?>("PersonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SysNotes")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("TeamRoles");
                 });
 
             modelBuilder.Entity("App.Domain.Ticket", b =>
@@ -660,51 +655,6 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("App.Domain.UserInRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ChangedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Since")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SysNotes")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("Until")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersInRoles");
-                });
-
             modelBuilder.Entity("App.Domain.UserInTeam", b =>
                 {
                     b.Property<Guid>("Id")
@@ -726,11 +676,6 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
                     b.Property<DateTime>("Since")
                         .HasColumnType("timestamp with time zone");
 
@@ -738,6 +683,9 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("text");
 
                     b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamRoleId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("Until")
@@ -749,6 +697,8 @@ namespace App.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TeamId");
+
+                    b.HasIndex("TeamRoleId");
 
                     b.HasIndex("UserId");
 
@@ -1064,14 +1014,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("App.Domain.Role", b =>
-                {
-                    b.HasOne("App.Domain.Person", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("App.Domain.Schedule", b =>
                 {
                     b.HasOne("App.Domain.Team", "Team")
@@ -1091,15 +1033,7 @@ namespace App.DAL.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.UserInTeam", "UserInTeam")
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserInTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Status");
-
-                    b.Navigation("UserInTeam");
                 });
 
             modelBuilder.Entity("App.Domain.Team", b =>
@@ -1111,6 +1045,14 @@ namespace App.DAL.EF.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("App.Domain.TeamRole", b =>
+                {
+                    b.HasOne("App.Domain.Person", null)
+                        .WithMany("TeamRoles")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("App.Domain.Ticket", b =>
@@ -1132,30 +1074,17 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("ToUser");
                 });
 
-            modelBuilder.Entity("App.Domain.UserInRole", b =>
-                {
-                    b.HasOne("App.Domain.Role", "Role")
-                        .WithMany("UsersInRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Person", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("App.Domain.UserInTeam", b =>
                 {
                     b.HasOne("App.Domain.Team", "Team")
                         .WithMany("UsersInTeams")
                         .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.TeamRole", "TeamRole")
+                        .WithMany("UsersInTeams")
+                        .HasForeignKey("TeamRoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1166,6 +1095,8 @@ namespace App.DAL.EF.Migrations
                         .IsRequired();
 
                     b.Navigation("Team");
+
+                    b.Navigation("TeamRole");
 
                     b.Navigation("User");
                 });
@@ -1281,7 +1212,7 @@ namespace App.DAL.EF.Migrations
 
                     b.Navigation("FromTickets");
 
-                    b.Navigation("Roles");
+                    b.Navigation("TeamRoles");
 
                     b.Navigation("ToMessages");
 
@@ -1290,11 +1221,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("UserInTeams");
 
                     b.Navigation("WorkDays");
-                });
-
-            modelBuilder.Entity("App.Domain.Role", b =>
-                {
-                    b.Navigation("UsersInRoles");
                 });
 
             modelBuilder.Entity("App.Domain.Status", b =>
@@ -1316,10 +1242,13 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("UsersInTeams");
                 });
 
+            modelBuilder.Entity("App.Domain.TeamRole", b =>
+                {
+                    b.Navigation("UsersInTeams");
+                });
+
             modelBuilder.Entity("App.Domain.UserInTeam", b =>
                 {
-                    b.Navigation("Tasks");
-
                     b.Navigation("UserInTeamInTasks");
                 });
 

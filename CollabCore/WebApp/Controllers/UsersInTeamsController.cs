@@ -5,6 +5,7 @@ using App.BLL.DTO;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.ViewModels;
+using TeamRole = App.Domain.TeamRole;
 
 namespace WebApp.Controllers
 {
@@ -48,6 +49,8 @@ namespace WebApp.Controllers
         {
             var vm = new UserInTeamViewModel()
             {
+                TeamRoleSelectList = new SelectList(await _bll.TeamRoleService.AllAsync(User.GetUserId()), nameof(TeamRole.Id),
+                    nameof(TeamRole.Name)),
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name)),
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
@@ -75,7 +78,9 @@ namespace WebApp.Controllers
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
+            
+            vm.TeamRoleSelectList = new SelectList(await _bll.TeamRoleService.AllAsync(User.GetUserId()), nameof(TeamRole.Id),
+                nameof(TeamRole.Name), vm.UserInTeam.TeamRoleId);
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
@@ -100,6 +105,8 @@ namespace WebApp.Controllers
             
             var vm = new UserInTeamViewModel()
             {
+                TeamRoleSelectList = new SelectList(await _bll.TeamRoleService.AllAsync(User.GetUserId()), nameof(TeamRole.Id),
+                    nameof(TeamRole.Name)),
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name), userInTeam.TeamId),
                 UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
@@ -134,6 +141,8 @@ namespace WebApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            vm.TeamRoleSelectList = new SelectList(await _bll.TeamRoleService.AllAsync(User.GetUserId()), nameof(TeamRole.Id),
+                nameof(TeamRole.Name), vm.UserInTeam.TeamRoleId);
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
             vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 

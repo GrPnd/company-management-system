@@ -38,9 +38,9 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
         _personService ??= new PersonService(BLLUOW, new PersonBLLMapper());
     
 
-    private IRoleService? _roleService;
-    public IRoleService RoleService => 
-        _roleService ??= new RoleService(BLLUOW, new RoleBLLMapper());
+    private ITeamRoleService? _teamRoleService;
+    public ITeamRoleService TeamRoleService => 
+        _teamRoleService ??= new TeamRoleService(BLLUOW, new TeamRoleBLLMapper());
     
 
     private IScheduleService? _scheduleService;
@@ -65,11 +65,6 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
     private ITicketService? _ticketService;
     public ITicketService TicketService => 
         _ticketService ??= new TicketService(BLLUOW, new TicketBLLMapper());
-    
-
-    private IUserInRoleService? _userInRoleService;
-    public IUserInRoleService UserInRoleService => 
-        _userInRoleService ??= new UserInRoleService(BLLUOW, new UserInRoleBLLMapper());
     
 
     private IUserInTeamInTaskService? _userInTeamInTaskService;

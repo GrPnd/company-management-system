@@ -32,8 +32,8 @@ public class AppUOW : BaseUow<AppDbContext>, IAppUOW
     public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(UowDbContext);
     
     
-    private IRoleRepository? _roleRepository;
-    public IRoleRepository RoleRepository => _roleRepository ??= new RoleRepository(UowDbContext);
+    private ITeamRoleRepository? _teamRoleRepository;
+    public ITeamRoleRepository TeamRoleRepository => _teamRoleRepository ??= new TeamRoleRepository(UowDbContext);
     
     
     private IScheduleRepository? _scheduleRepository;
@@ -54,10 +54,6 @@ public class AppUOW : BaseUow<AppDbContext>, IAppUOW
     
     private ITicketRepository? _ticketRepository;
     public ITicketRepository TicketRepository => _ticketRepository ??= new TicketRepository(UowDbContext);
-    
-    
-    private IUserInRoleRepository? _userInRoleRepository;
-    public IUserInRoleRepository UserInRoleRepository => _userInRoleRepository ??= new UserInRoleRepository(UowDbContext);
     
     
     private IUserInTeamInTaskRepository? _userInTeamInTaskRepository;

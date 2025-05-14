@@ -37,7 +37,7 @@ public static class AppDataInit
             var result = roleManager.CreateAsync(role).Result;
             if (!result.Succeeded)
             {
-                throw new ApplicationException("Role creation failed!");
+                throw new ApplicationException("TeamRole creation failed!");
             }
         }
 

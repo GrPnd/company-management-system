@@ -38,5 +38,5 @@ public class Person : BaseEntityUser<AppUser>
     
     public ICollection<UserInTeam>? UserInTeams { get; set; }
     
-    public ICollection<Role>? Roles { get; set; }
+    public ICollection<TeamRole>? TeamRoles { get; set; }
 }

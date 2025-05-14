@@ -42,7 +42,7 @@ namespace WebApp.ApiControllers
         
         
         /// <summary>
-        /// Get all messages by a person.
+        /// Get all messages by a person. 
         /// </summary>
         /// <param name="personId">Person ID.</param>
         /// <returns>List of messages by a person.</returns>
@@ -51,7 +51,7 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Message>>> GetMessagesByPersonId(Guid personId)
         {
-            var data = await _bll.MessageService.GetMessagesByPersonIdAsyncBLL(personId);
+            var data = await _bll.MessageService.GetMessagesByPersonIdAsync(personId);
             var res = data.Select(m => _mapper.Map(m)!).ToList();
             return res;
         }

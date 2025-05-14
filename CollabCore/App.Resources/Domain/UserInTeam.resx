@@ -33,7 +33,7 @@
     <data name="Until" xml:space="preserve">
         <value>Until</value>
     </data>
-    <data name="Role" xml:space="preserve">
+    <data name="TeamRole" xml:space="preserve">
         <value>Role</value>
     </data>
 </root>

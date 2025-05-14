@@ -20,8 +20,6 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
             Status = StatusBLLMapper.MapSimple(entity.Status),
-            UserInTeamId = entity.UserInTeamId,
-            UserInTeam = UserInTeamBLLMapper.MapSimple(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
@@ -41,8 +39,6 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             Deadline = entity.Deadline,
             StatusId = entity.StatusId,
             Status = StatusBLLMapper.MapSimple(entity.Status),
-            UserInTeamId = entity.UserInTeamId,
-            UserInTeam = UserInTeamBLLMapper.MapSimple(entity.UserInTeam),
             UserInTeamInTasks = entity.UserInTeamInTasks?.Select(u => _userInTeamInTaskBLLMapper.Map(u)).ToList()!
         };
         
@@ -60,8 +56,7 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId,
+            StatusId = entity.StatusId
         };
     }
     
@@ -76,8 +71,7 @@ public class TaskBLLMapper : IBLLMapper<App.BLL.DTO.Task, App.DAL.DTO.Task>
             Description = entity.Description,
             AssignedAt = entity.AssignedAt,
             Deadline = entity.Deadline,
-            StatusId = entity.StatusId,
-            UserInTeamId = entity.UserInTeamId,
+            StatusId = entity.StatusId
         };
     }
 }

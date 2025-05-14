@@ -10,7 +10,7 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
     private readonly AbsenceUOWMapper _absenceUOWMapper = new();
     private readonly WorkDayUOWMapper _workDayUOWMapper = new();
     private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
-    private readonly RoleUOWMapper _roleUOWMapper = new();
+    private readonly TeamRoleUOWMapper _teamRoleUOWMapper = new();
     
     public Person? Map(Domain.Person? entity)
     {
@@ -28,7 +28,7 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceUOWMapper.Map(a)).ToList()!,
             WorkDays = entity.WorkDays?.Select(w => _workDayUOWMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
-            Roles = entity.Roles?.Select(r => _roleUOWMapper.Map(r)).ToList()!
+            TeamRoles = entity.TeamRoles?.Select(r => _teamRoleUOWMapper.Map(r)).ToList()!
         };
     }
 
@@ -48,7 +48,7 @@ public class PersonUOWMapper : IUOWMapper<App.DAL.DTO.Person, App.Domain.Person>
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceUOWMapper.Map(a)).ToList()!,
             WorkDays = entity.WorkDays?.Select(w => _workDayUOWMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
-            Roles = entity.Roles?.Select(r => _roleUOWMapper.Map(r)).ToList()!
+            TeamRoles = entity.TeamRoles?.Select(r => _teamRoleUOWMapper.Map(r)).ToList()!
         };
     }
 

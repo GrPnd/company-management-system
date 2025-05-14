@@ -17,14 +17,13 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Department> Departments { get; set; } = default!;
     public DbSet<Meeting> Meetings { get; set; } = default!;
     public DbSet<Message> Messages { get; set; } = default!;
-    public DbSet<Role> XASDRoles { get; set; } = default!; // todo: votta ara?
+    public DbSet<TeamRole> TeamRoles { get; set; } = default!;
     public DbSet<Schedule> Schedules { get; set; } = default!;
     public DbSet<Status> Statuses { get; set; } = default!;
     public DbSet<Task> Tasks { get; set; } = default!;
     public DbSet<Team> Teams { get; set; } = default!;
     public DbSet<Ticket> Tickets { get; set; } = default!;
     public DbSet<Person> Persons { get; set; } = default!;
-    public DbSet<UserInRole> UsersInRoles { get; set; } = default!;
     public DbSet<UserInTeam> UsersInTeams { get; set; } = default!;
     public DbSet<UserInTeamInTask> UsersInTeamsInTasks { get; set; } = default!;
     public DbSet<UserInWorkDay> UsersInWorkDays { get; set; } = default!;
@@ -53,7 +52,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
 
         /*
         // TODO - adding primary key to AppUserRole causes issues with RoleManager
-        // We have custom UserRole - with separate PK and navigation for Role and User
+        // We have custom UserRole - with separate PK and navigation for TeamRole and User
         // override default Identity EF config
         builder.Entity<AppUserRole>().HasKey(a => new { a.UserId, a.RoleId });
         builder.Entity<AppUserRole>().HasAlternateKey(a => a.Id);

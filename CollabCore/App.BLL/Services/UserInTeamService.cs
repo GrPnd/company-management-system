@@ -3,7 +3,6 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
-using Base.DAL.Contracts;
 
 namespace App.BLL.Services;
 
@@ -13,5 +12,11 @@ public class UserInTeamService : BaseService<App.BLL.DTO.UserInTeam, App.DAL.DTO
         IAppUOW serviceUOW,
         IBLLMapper<DTO.UserInTeam, UserInTeam> bllMapper) : base(serviceUOW, serviceUOW.UserInTeamRepository, bllMapper)
     {
+    }
+    
+    public async Task<IEnumerable<App.BLL.DTO.UserInTeam?>> GetUserInTeamByPersonId(Guid personId)
+    {
+        var res = await ServiceRepository.GetUserInTeamByPersonId(personId);
+        return res.Select(u => BLLMapper.Map(u)!);
     }
 }

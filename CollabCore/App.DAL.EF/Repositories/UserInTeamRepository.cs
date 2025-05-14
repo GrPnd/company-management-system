@@ -11,4 +11,14 @@ public class UserInTeamRepository : BaseRepository<App.DAL.DTO.UserInTeam, App.D
     public UserInTeamRepository(DbContext repositoryDbContext) : base(repositoryDbContext, new UserInTeamUOWMapper())
     {
     }
+    
+    public async Task<IEnumerable<App.DAL.DTO.UserInTeam?>> GetUserInTeamByPersonId(Guid personId)
+    {
+        var userInTeam = await RepositoryDbSet
+            .Where(u => u.UserId == personId)
+            .Select(u => UOWMapper.Map(u))
+            .ToListAsync();
+
+        return userInTeam;
+    }
 }
