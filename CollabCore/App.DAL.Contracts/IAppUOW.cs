@@ -11,13 +11,10 @@ public interface IAppUOW : IBaseUOW
     IMessageRepository MessageRepository { get; }
     IPersonRepository PersonRepository { get; }
     ITeamRoleRepository TeamRoleRepository { get; }
-    IScheduleRepository ScheduleRepository { get; }
     IStatusRepository StatusRepository { get; }
     ITaskRepository TaskRepository { get; }
     ITeamRepository TeamRepository { get; }
     ITicketRepository TicketRepository { get; }
     IUserInTeamInTaskRepository UserInTeamInTaskRepository { get; }
     IUserInTeamRepository UserInTeamRepository { get; }
-    IUserInWorkDayRepository UserInWorkDayRepository { get; }
-    IWorkDayRepository WorkDayRepository { get; }
 }

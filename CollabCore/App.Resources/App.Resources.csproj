@@ -30,10 +30,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Role.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\Schedule.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Schedule.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Domain\Status.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Status.Designer.cs</LastGenOutput>
@@ -62,14 +58,6 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>UserInTeamInTask.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Domain\UserInWorkDay.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>UserInWorkDay.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\WorkDay.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>WorkDay.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Domain\Department.et.resx">
         <DependentUpon>Department.resx</DependentUpon>
       </EmbeddedResource>
@@ -81,9 +69,6 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\TeamRole.et.resx">
         <DependentUpon>TeamRole.resx</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\Schedule.et.resx">
-        <DependentUpon>Schedule.resx</DependentUpon>
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\Status.et.resx">
         <DependentUpon>Status.resx</DependentUpon>
@@ -105,12 +90,6 @@
       </EmbeddedResource>
       <EmbeddedResource Update="Domain\UserInTeamInTask.et.resx">
         <DependentUpon>UserInTeamInTask.resx</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\UserInWorkDay.et.resx">
-        <DependentUpon>UserInWorkDay.resx</DependentUpon>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Domain\WorkDay.et.resx">
-        <DependentUpon>WorkDay.resx</DependentUpon>
       </EmbeddedResource>
     </ItemGroup>
 
@@ -139,11 +118,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>TeamRole.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\Schedule.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Schedule.resx</DependentUpon>
       </Compile>
       <Compile Update="Domain\Status.Designer.cs">
         <DesignTime>True</DesignTime>
@@ -179,16 +153,6 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>UserInTeamInTask.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\UserInWorkDay.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>UserInWorkDay.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Domain\WorkDay.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>WorkDay.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

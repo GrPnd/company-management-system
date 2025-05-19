@@ -417,29 +417,6 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkDays",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Day = table.Column<string>(type: "text", nullable: false),
-                    PersonId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    SysNotes = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkDays", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkDays_Persons_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Persons",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Meetings",
                 columns: table => new
                 {
@@ -460,31 +437,6 @@ namespace App.DAL.EF.Migrations
                     table.PrimaryKey("PK_Meetings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Meetings_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Schedules",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    SysNotes = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schedules", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Schedules_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
@@ -526,38 +478,6 @@ namespace App.DAL.EF.Migrations
                         name: "FK_UsersInTeams_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UsersInWorkDays",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Since = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Until = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    WorkDayId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
-                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    SysNotes = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsersInWorkDays", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UsersInWorkDays_Persons_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Persons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UsersInWorkDays_WorkDays_WorkDayId",
-                        column: x => x.WorkDayId,
-                        principalTable: "WorkDays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -668,11 +588,6 @@ namespace App.DAL.EF.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_TeamId",
-                table: "Schedules",
-                column: "TeamId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_StatusId",
                 table: "Tasks",
                 column: "StatusId");
@@ -721,21 +636,6 @@ namespace App.DAL.EF.Migrations
                 name: "IX_UsersInTeamsInTasks_UserInTeamId",
                 table: "UsersInTeamsInTasks",
                 column: "UserInTeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersInWorkDays_UserId",
-                table: "UsersInWorkDays",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsersInWorkDays_WorkDayId",
-                table: "UsersInWorkDays",
-                column: "WorkDayId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkDays_PersonId",
-                table: "WorkDays",
-                column: "PersonId");
         }
 
         /// <inheritdoc />
@@ -769,16 +669,10 @@ namespace App.DAL.EF.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
-
-            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "UsersInTeamsInTasks");
-
-            migrationBuilder.DropTable(
-                name: "UsersInWorkDays");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -788,9 +682,6 @@ namespace App.DAL.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "UsersInTeams");
-
-            migrationBuilder.DropTable(
-                name: "WorkDays");
 
             migrationBuilder.DropTable(
                 name: "Statuses");

@@ -160,6 +160,16 @@
       <UpToDateCheckInput Remove="Views\Users\Details.cshtml" />
       <UpToDateCheckInput Remove="Views\Users\Edit.cshtml" />
       <UpToDateCheckInput Remove="Views\Users\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Schedules\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\WorkDays\Create.cshtml" />
+      <UpToDateCheckInput Remove="Views\WorkDays\Delete.cshtml" />
+      <UpToDateCheckInput Remove="Views\WorkDays\Details.cshtml" />
+      <UpToDateCheckInput Remove="Views\WorkDays\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\WorkDays\Index.cshtml" />
     </ItemGroup>
 
 </Project>

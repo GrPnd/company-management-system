@@ -11,13 +11,10 @@ public interface IAppBLL : IBaseBLL
     IMessageService MessageService { get; }
     IPersonService PersonService { get; }
     ITeamRoleService TeamRoleService { get; }
-    IScheduleService ScheduleService { get; }
     IStatusService StatusService { get; }
     ITaskService TaskService { get; }
     ITeamService TeamService { get; }
     ITicketService TicketService { get; }
     IUserInTeamInTaskService UserInTeamInTaskService { get; }
     IUserInTeamService UserInTeamService { get; }
-    IUserInWorkDayService UserInWorkDayService { get; }
-    IWorkDayService WorkDayService { get; }
 }

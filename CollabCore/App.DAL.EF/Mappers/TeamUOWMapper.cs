@@ -7,7 +7,6 @@ namespace App.DAL.EF.Mappers;
 public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
 {
     private readonly UserInTeamUOWMapper _userInTeamUOWMapper = new();
-    private readonly ScheduleUOWMapper _scheduleUOWMapper = new();
     private readonly MeetingUOWMapper _meetingUOWMapper = new();
     
     public Team? Map(Domain.Team? entity)
@@ -21,7 +20,6 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             DepartmentId = entity.DepartmentId,
             Department = DepartmentUOWMapper.MapSimple(entity.Department),
             UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
-            Schedules = entity.Schedules?.Select(s => _scheduleUOWMapper.Map(s)).ToList()!,
             Meetings = entity.Meetings?.Select(m => _meetingUOWMapper.Map(m)).ToList()!
         };
         
@@ -39,7 +37,6 @@ public class TeamUOWMapper : IUOWMapper<App.DAL.DTO.Team, App.Domain.Team>
             DepartmentId = entity.DepartmentId,
             Department = DepartmentUOWMapper.MapSimple(entity.Department),
             UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamUOWMapper.Map(u)).ToList()!,
-            Schedules = entity.Schedules?.Select(s => _scheduleUOWMapper.Map(s)).ToList()!,
             Meetings = entity.Meetings?.Select(m => _meetingUOWMapper.Map(m)).ToList()!
         };
         

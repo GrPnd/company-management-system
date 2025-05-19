@@ -18,7 +18,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Meeting> Meetings { get; set; } = default!;
     public DbSet<Message> Messages { get; set; } = default!;
     public DbSet<TeamRole> TeamRoles { get; set; } = default!;
-    public DbSet<Schedule> Schedules { get; set; } = default!;
     public DbSet<Status> Statuses { get; set; } = default!;
     public DbSet<Task> Tasks { get; set; } = default!;
     public DbSet<Team> Teams { get; set; } = default!;
@@ -26,8 +25,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Person> Persons { get; set; } = default!;
     public DbSet<UserInTeam> UsersInTeams { get; set; } = default!;
     public DbSet<UserInTeamInTask> UsersInTeamsInTasks { get; set; } = default!;
-    public DbSet<UserInWorkDay> UsersInWorkDays { get; set; } = default!;
-    public DbSet<WorkDay> WorkDays { get; set; } = default!;
     public DbSet<AppRefreshToken> RefreshTokens { get; set; } = default!;
     private readonly IUserNameResolver _userNameResolver;
     private readonly ILogger<AppDbContext> _logger;

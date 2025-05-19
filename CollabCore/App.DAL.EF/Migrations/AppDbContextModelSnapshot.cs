@@ -407,46 +407,6 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("App.Domain.Schedule", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ChangedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SysNotes")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Schedules");
-                });
-
             modelBuilder.Entity("App.Domain.Status", b =>
                 {
                     b.Property<Guid>("Id")
@@ -753,89 +713,6 @@ namespace App.DAL.EF.Migrations
                     b.ToTable("UsersInTeamsInTasks");
                 });
 
-            modelBuilder.Entity("App.Domain.UserInWorkDay", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ChangedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("Since")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SysNotes")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Until")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("WorkDayId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WorkDayId");
-
-                    b.ToTable("UsersInWorkDays");
-                });
-
-            modelBuilder.Entity("App.Domain.WorkDay", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("ChangedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ChangedBy")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<string>("Day")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("PersonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("SysNotes")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("WorkDays");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -1014,17 +891,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("App.Domain.Schedule", b =>
-                {
-                    b.HasOne("App.Domain.Team", "Team")
-                        .WithMany("Schedules")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("App.Domain.Task", b =>
                 {
                     b.HasOne("App.Domain.Status", "Status")
@@ -1119,32 +985,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("UserInTeam");
                 });
 
-            modelBuilder.Entity("App.Domain.UserInWorkDay", b =>
-                {
-                    b.HasOne("App.Domain.Person", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.WorkDay", "WorkDay")
-                        .WithMany("UsersInWorkDay")
-                        .HasForeignKey("WorkDayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("WorkDay");
-                });
-
-            modelBuilder.Entity("App.Domain.WorkDay", b =>
-                {
-                    b.HasOne("App.Domain.Person", null)
-                        .WithMany("WorkDays")
-                        .HasForeignKey("PersonId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("App.Domain.Identity.AppRole", null)
@@ -1217,8 +1057,6 @@ namespace App.DAL.EF.Migrations
                     b.Navigation("ToTickets");
 
                     b.Navigation("UserInTeams");
-
-                    b.Navigation("WorkDays");
                 });
 
             modelBuilder.Entity("App.Domain.Status", b =>
@@ -1235,8 +1073,6 @@ namespace App.DAL.EF.Migrations
                 {
                     b.Navigation("Meetings");
 
-                    b.Navigation("Schedules");
-
                     b.Navigation("UsersInTeams");
                 });
 
@@ -1248,11 +1084,6 @@ namespace App.DAL.EF.Migrations
             modelBuilder.Entity("App.Domain.UserInTeam", b =>
                 {
                     b.Navigation("UserInTeamInTasks");
-                });
-
-            modelBuilder.Entity("App.Domain.WorkDay", b =>
-                {
-                    b.Navigation("UsersInWorkDay");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,6 @@ namespace App.BLL.Mappers;
 public class TeamBLLMapper : IBLLMapper<App.BLL.DTO.Team, App.DAL.DTO.Team>
 {
     private readonly UserInTeamBLLMapper _userInTeamBLLMapper = new();
-    private readonly ScheduleBLLMapper _scheduleBLLMapper = new();
     private readonly MeetingBLLMapper _meetingBLLMapper = new();
     public Team? Map(DTO.Team? entity)
     {
@@ -20,7 +19,6 @@ public class TeamBLLMapper : IBLLMapper<App.BLL.DTO.Team, App.DAL.DTO.Team>
             DepartmentId = entity.DepartmentId,
             Department = DepartmentBLLMapper.MapSimple(entity.Department),
             UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
-            Schedules = entity.Schedules?.Select(s => _scheduleBLLMapper.Map(s)).ToList()!,
             Meetings = entity.Meetings?.Select(m => _meetingBLLMapper.Map(m)).ToList()!
         };
         
@@ -38,7 +36,6 @@ public class TeamBLLMapper : IBLLMapper<App.BLL.DTO.Team, App.DAL.DTO.Team>
             DepartmentId = entity.DepartmentId,
             Department = DepartmentBLLMapper.MapSimple(entity.Department),
             UsersInTeams = entity.UsersInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
-            Schedules = entity.Schedules?.Select(s => _scheduleBLLMapper.Map(s)).ToList()!,
             Meetings = entity.Meetings?.Select(m => _meetingBLLMapper.Map(m)).ToList()!
         };
         

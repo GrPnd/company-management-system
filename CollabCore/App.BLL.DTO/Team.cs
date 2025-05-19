@@ -18,6 +18,5 @@ public class Team : IDomainId
     
     
     public ICollection<UserInTeam>? UsersInTeams { get; init; }
-    public ICollection<Schedule>? Schedules { get; init; }
     public ICollection<Meeting>? Meetings { get; init; }
 }

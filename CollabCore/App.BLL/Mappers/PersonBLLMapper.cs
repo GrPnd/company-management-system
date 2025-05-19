@@ -8,7 +8,6 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
     private readonly MessageBLLMapper _messageBLLMapper = new();
     private readonly TicketBLLMapper _ticketBLLMapper = new();
     private readonly AbsenceBLLMapper _absenceBLLMapper = new();
-    private readonly WorkDayBLLMapper _workDayBLLMapper = new();
     private readonly UserInTeamBLLMapper _userInTeamBLLMapper = new();
     private readonly TeamRoleBLLMapper _teamRoleBLLMapper = new();
     public Person? Map(DTO.Person? entity)
@@ -25,7 +24,6 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
             ToTickets = entity.ToTickets?.Select(t => _ticketBLLMapper.Map(t)).ToList()!,
             ByAbsences = entity.ByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
-            WorkDays = entity.WorkDays?.Select(w => _workDayBLLMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
             TeamRoles = entity.TeamRoles?.Select(r => _teamRoleBLLMapper.Map(r)).ToList()!
         };
@@ -45,7 +43,6 @@ public class PersonBLLMapper : IBLLMapper<App.BLL.DTO.Person, App.DAL.DTO.Person
             ToTickets = entity.ToTickets?.Select(t => _ticketBLLMapper.Map(t)).ToList()!,
             ByAbsences = entity.ByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
             AuthorizedByAbsences = entity.AuthorizedByAbsences?.Select(a => _absenceBLLMapper.Map(a)).ToList()!,
-            WorkDays = entity.WorkDays?.Select(w => _workDayBLLMapper.Map(w)).ToList()!,
             UserInTeams = entity.UserInTeams?.Select(u => _userInTeamBLLMapper.Map(u)).ToList()!,
             TeamRoles = entity.TeamRoles?.Select(r => _teamRoleBLLMapper.Map(r)).ToList()!
         };

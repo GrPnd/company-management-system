@@ -43,11 +43,6 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
         _teamRoleService ??= new TeamRoleService(BLLUOW, new TeamRoleBLLMapper());
     
 
-    private IScheduleService? _scheduleService;
-    public IScheduleService ScheduleService => 
-        _scheduleService ??= new ScheduleService(BLLUOW, new ScheduleBLLMapper());
-    
-
     private IStatusService? _statusService;
     public IStatusService StatusService =>
         _statusService ??= new StatusService(BLLUOW, new StatusBLLMapper());
@@ -75,14 +70,4 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
     private IUserInTeamService? _userInTeamService;
     public IUserInTeamService UserInTeamService => 
         _userInTeamService ??= new UserInTeamService(BLLUOW, new UserInTeamBLLMapper(), TeamRoleService);
-    
-
-    private IUserInWorkDayService? _userInWorkDayService;
-    public IUserInWorkDayService UserInWorkDayService => 
-        _userInWorkDayService ??= new UserInWorkDayService(BLLUOW, new UserInWorkDayBLLMapper());
-    
-
-    private IWorkDayService? _workDayService;
-    public IWorkDayService WorkDayService => 
-        _workDayService ??= new WorkDayService(BLLUOW, new WorkDayBLLMapper());
 }

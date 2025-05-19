@@ -36,10 +36,6 @@ public class AppUOW : BaseUow<AppDbContext>, IAppUOW
     public ITeamRoleRepository TeamRoleRepository => _teamRoleRepository ??= new TeamRoleRepository(UowDbContext);
     
     
-    private IScheduleRepository? _scheduleRepository;
-    public IScheduleRepository ScheduleRepository => _scheduleRepository ??= new ScheduleRepository(UowDbContext);
-    
-    
     private IStatusRepository? _statusRepository;
     public IStatusRepository StatusRepository => _statusRepository ??= new StatusRepository(UowDbContext);
     
@@ -62,12 +58,4 @@ public class AppUOW : BaseUow<AppDbContext>, IAppUOW
 
     private IUserInTeamRepository? _userInTeamRepository;
     public IUserInTeamRepository UserInTeamRepository => _userInTeamRepository ??= new UserInTeamRepository(UowDbContext);
-    
-    
-    private IUserInWorkDayRepository? _userInWorkDayRepository;
-    public IUserInWorkDayRepository UserInWorkDayRepository => _userInWorkDayRepository ??= new UserInWorkDayRepository(UowDbContext);
-    
-    
-    private IWorkDayRepository? _workDayRepository;
-    public IWorkDayRepository WorkDayRepository => _workDayRepository ??= new WorkDayRepository(UowDbContext);
 }

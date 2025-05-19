@@ -34,8 +34,6 @@ public class Person : BaseEntityUser<AppUser>
     public ICollection<Absence>? AuthorizedByAbsences { get; set; }
     
     
-    public ICollection<WorkDay>? WorkDays { get; set; }
-    
     public ICollection<UserInTeam>? UserInTeams { get; set; }
     
     public ICollection<TeamRole>? TeamRoles { get; set; }
