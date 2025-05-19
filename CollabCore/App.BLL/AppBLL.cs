@@ -74,7 +74,7 @@ public class AppBLL : BaseBLL<IAppUOW>, IAppBLL
 
     private IUserInTeamService? _userInTeamService;
     public IUserInTeamService UserInTeamService => 
-        _userInTeamService ??= new UserInTeamService(BLLUOW, new UserInTeamBLLMapper());
+        _userInTeamService ??= new UserInTeamService(BLLUOW, new UserInTeamBLLMapper(), TeamRoleService);
     
 
     private IUserInWorkDayService? _userInWorkDayService;

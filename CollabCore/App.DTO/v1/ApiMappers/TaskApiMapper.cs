@@ -1,6 +1,4 @@
-﻿using Task = App.DTO.v1.ApiEntities.Task;
-
-namespace App.DTO.v1.ApiMappers;
+﻿namespace App.DTO.v1.ApiMappers;
 
 public class TaskApiMapper : IApiMapper<ApiEntities.Task, App.BLL.DTO.Task>
 {

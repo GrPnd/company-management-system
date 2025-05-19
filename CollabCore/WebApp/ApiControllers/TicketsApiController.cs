@@ -60,6 +60,57 @@ namespace WebApp.ApiControllers
 
             return _mapper.Map(ticket)!;
         }
+        
+            
+        /// <summary>
+        /// Get all tickets that are sent to a user in a team.
+        /// </summary>
+        /// <param name="userId">Sent to user ID.</param>
+        /// <param name="teamId">Team ID.</param>
+        /// <returns>List of tickets.</returns>
+        [HttpGet("user/{userId}/team/{teamId}")]
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Ticket>), StatusCodes.Status200OK )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Ticket>>> GetTicketsSentToUserInTeam(Guid userId, Guid teamId)
+        {
+            var data = await _bll.TicketService.GetTicketsSentToUserInTeam(userId, teamId);
+            var res = data.Select(p => _mapper.Map(p)!).ToList();
+            return res;
+        }
+        
+        
+        /// <summary>
+        /// Get all tickets that are sent by the user.
+        /// </summary>
+        /// <param name="userId">Sent by user ID.</param>
+        /// <returns>List of tickets by user.</returns>
+        [HttpGet("by/{userId}")]
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Ticket>), StatusCodes.Status200OK )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Ticket>>> GetTicketsSentByPersonId(Guid userId)
+        {
+            var data = await _bll.TicketService.GetTicketsSentByPersonId(userId);
+            var res = data.Select(p => _mapper.Map(p)!).ToList();
+            return res;
+        }
+        
+        /// <summary>
+        /// Get all tickets that are sent to the user.
+        /// </summary>
+        /// <param name="userId">Sent to user ID.</param>
+        /// <returns>List of tickets to user.</returns>
+        [HttpGet("to/{userId}")]
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Ticket>), StatusCodes.Status200OK )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Ticket>>> GetTicketsSentToPersonId(Guid userId)
+        {
+            var data = await _bll.TicketService.GetTicketsSentToPersonId(userId);
+            var res = data.Select(p => _mapper.Map(p)!).ToList();
+            return res;
+        }
 
         
         /// <summary>

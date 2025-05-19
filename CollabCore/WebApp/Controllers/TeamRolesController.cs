@@ -17,14 +17,14 @@ namespace WebApp.Controllers
             _bll = bll;
         }
 
-        // GET: Roles
+        // GET: TeamRoles
         public async Task<IActionResult> Index()
         {
             var res = await _bll.TeamRoleService.AllAsync();
             return View(res);
         }
 
-        // GET: Roles/Details/5
+        // GET: TeamRoles/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -42,14 +42,14 @@ namespace WebApp.Controllers
             return View(role);
         }
 
-        // GET: Roles/Create
+        // GET: TeamRoles/Create
         public IActionResult Create()
         {
             var vm = new TeamRoleViewModel();
             return View(vm);
         }
 
-        // POST: Roles/Create
+        // POST: TeamRoles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -70,7 +70,7 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        // GET: Roles/Edit/5
+        // GET: TeamRoles/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -93,7 +93,7 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        // POST: Roles/Edit/5
+        // POST: TeamRoles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -123,7 +123,7 @@ namespace WebApp.Controllers
             return View(vm);
         }
 
-        // GET: Roles/Delete/5
+        // GET: TeamRoles/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -141,7 +141,7 @@ namespace WebApp.Controllers
             return View(role);
         }
 
-        // POST: Roles/Delete/5
+        // POST: TeamRoles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

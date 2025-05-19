@@ -40,6 +40,23 @@ namespace WebApp.ApiControllers
             var res = data.Select(p => _mapper.Map(p)!).ToList();
             return res;
         }
+        
+        
+        /// <summary>
+        /// Get all meetings by a team. 
+        /// </summary>
+        /// <param name="teamId">TeamId ID.</param>
+        /// <returns>List of meetings by a team.</returns>
+        [HttpGet("team/{teamId}")]
+        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.ApiEntities.Meeting>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Meeting>>> GetMeetingsByATeam(Guid teamId)
+        {
+            var data = await _bll.MeetingService.GetTeamMeetings(teamId);
+            var res = data.Select(m => _mapper.Map(m)!).ToList();
+            return res;
+        }
+        
 
         /// <summary>
         /// Retrieves a meeting by ID.
@@ -96,6 +113,15 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(typeof(App.DTO.v1.ApiEntities.Meeting), StatusCodes.Status200OK)]
         public async Task<ActionResult<App.DTO.v1.ApiEntities.Meeting>> PostMeeting(App.DTO.v1.ApiEntities.Meeting meeting)
         {
+            if (meeting.StartDate.Kind == DateTimeKind.Unspecified)
+            {
+                meeting.StartDate = DateTime.SpecifyKind(meeting.StartDate, DateTimeKind.Utc);
+            }
+            else
+            {
+                meeting.StartDate = meeting.StartDate.ToUniversalTime();
+            }
+            
             var data = _mapper.Map(meeting)!;
             _bll.MeetingService.Add(data);
             await _bll.SaveChangesAsync();

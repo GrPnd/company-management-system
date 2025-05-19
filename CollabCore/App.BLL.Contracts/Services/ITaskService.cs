@@ -4,6 +4,5 @@ namespace App.BLL.Contracts.Services;
 
 public interface ITaskService: IBaseService<App.BLL.DTO.Task>
 {
-    
-    
+    Task DeleteTaskWithTeamTaskRelation(Guid taskId);
 }

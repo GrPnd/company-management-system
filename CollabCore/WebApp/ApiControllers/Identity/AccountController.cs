@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain.Identity;
+using App.DTO.v1;
 using App.DTO.v1.Identity;
 using Asp.Versioning;
 using Base.Helpers;
@@ -94,10 +96,16 @@ public class AccountController : ControllerBase
         }
 
 
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
-
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+        
+        var roles = await _userManager.GetRolesAsync(appUser);
+        var identity = (ClaimsIdentity)claimsPrincipal.Identity!;
+        foreach (var role in roles)
+        {
+            identity.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
+        
+        
         if (!_context.Database.ProviderName!.Contains("InMemory"))
         {
             var deletedRows = await _context
@@ -106,10 +114,7 @@ public class AccountController : ControllerBase
                 .ExecuteDeleteAsync();
             _logger.LogInformation("Deleted {} refresh tokens", deletedRows);
         }
-        else
-        {
-            //TODO: inMemory delete for testing
-        }
+        
 
         var refreshToken = new AppRefreshToken()
         {
@@ -132,7 +137,8 @@ public class AccountController : ControllerBase
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
-            UserId = appUser.Id
+            UserId = appUser.Id,
+            Roles = roles
         };
 
         return Ok(responseData);
@@ -194,6 +200,14 @@ public class AccountController : ControllerBase
                 await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
 
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
+                
+                var roles = await _userManager.GetRolesAsync(appUser);
+                var identity = (ClaimsIdentity)claimsPrincipal.Identity!;
+                foreach (var role in roles)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                }
+                
                 var jwt = IdentityExtensions.GenerateJwt(
                     claimsPrincipal.Claims,
                     _configuration.GetValue<string>(SettingsJWTKey)!,
@@ -206,7 +220,8 @@ public class AccountController : ControllerBase
                 {
                     JWT = jwt,
                     RefreshToken = refreshToken.RefreshToken,
-                    UserId = appUser.Id
+                    UserId = appUser.Id,
+                    Roles = roles
                 });
 
         }
@@ -275,10 +290,6 @@ public class AccountController : ControllerBase
         {
             return NotFound($"User with email {userEmail} not found");
         }
-
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
-        await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
-
 
         // load and compare refresh tokens
 

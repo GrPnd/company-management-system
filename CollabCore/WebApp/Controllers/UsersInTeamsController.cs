@@ -53,8 +53,7 @@ namespace WebApp.Controllers
                     nameof(TeamRole.Name)),
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name)),
-                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.PersonName))
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(), nameof(Person.Id), nameof(Person.PersonName))
             };
             return View(vm);
         }
@@ -83,7 +82,7 @@ namespace WebApp.Controllers
                 nameof(TeamRole.Name), vm.UserInTeam.TeamRoleId);
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
-            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(), nameof(Person.Id), 
                 nameof(Person.PersonName), vm.UserInTeam.UserId);
             
             return View(vm);
@@ -109,8 +108,8 @@ namespace WebApp.Controllers
                     nameof(TeamRole.Name)),
                 TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                     nameof(Team.Name), userInTeam.TeamId),
-                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id),
-                    nameof(Person.PersonName), userInTeam.UserId),
+                UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(), nameof(Person.Id),
+                    nameof(Person.Id), userInTeam.UserId),
                 UserInTeam = userInTeam
             };
             return View(vm);
@@ -145,7 +144,7 @@ namespace WebApp.Controllers
                 nameof(TeamRole.Name), vm.UserInTeam.TeamRoleId);
             vm.TeamSelectList = new SelectList(await _bll.TeamService.AllAsync(User.GetUserId()), nameof(Team.Id),
                 nameof(Team.Name), vm.UserInTeam.TeamId);
-            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(User.GetUserId()), nameof(Person.Id), 
+            vm.UsersSelectList = new SelectList(await _bll.PersonService.AllAsync(), nameof(Person.Id), 
                 nameof(Person.PersonName), vm.UserInTeam.UserId);
             
             return View(vm);

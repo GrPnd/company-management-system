@@ -14,6 +14,7 @@ ViewData["Title"] = "Persons";
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.First().PersonName)</th>
+        <th>@Html.DisplayNameFor(model => model.Id)</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -22,6 +23,7 @@ ViewData["Title"] = "Persons";
     {
     <tr>
         <td>@Html.DisplayFor(modelItem => item.PersonName)</td>
+        <td>@Html.DisplayFor(modelItem => item.Id)</td>
         <td>
             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

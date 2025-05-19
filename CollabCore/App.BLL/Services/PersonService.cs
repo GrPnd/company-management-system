@@ -4,6 +4,7 @@ using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
 using Base.DAL.Contracts;
+using Task = System.Threading.Tasks.Task;
 
 namespace App.BLL.Services;
 
@@ -13,5 +14,17 @@ public class PersonService : BaseService<App.BLL.DTO.Person, App.DAL.DTO.Person,
         IAppUOW serviceUOW,
         IBLLMapper<DTO.Person, Person> bllMapper) : base(serviceUOW, serviceUOW.PersonRepository, bllMapper)
     {
+    }
+
+    public async Task<IEnumerable<DTO.Person>> GetAdmins()
+    {
+        var res = await ServiceRepository.GetAdmins();
+        return res.Select(u => BLLMapper.Map(u)!);
+    }
+
+    public async Task<DTO.Person?> FindByUserIdAsync(Guid userId)
+    {
+        var res = await ServiceRepository.FindByUserIdAsync(userId);
+        return BLLMapper.Map(res);
     }
 }

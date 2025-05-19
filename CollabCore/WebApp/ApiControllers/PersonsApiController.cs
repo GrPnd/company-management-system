@@ -35,7 +35,22 @@ namespace WebApp.ApiControllers
         [ProducesResponseType( 404 )]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Person>>> GetPersons()
         {
-            var data = await _bll.PersonService.AllAsync(User.GetUserId());
+            var data = await _bll.PersonService.AllAsync();
+            var res = data.Select(p => _mapper.Map(p)!).ToList();
+            return res;
+        }
+        
+        /// <summary>
+        /// Get all Admins.
+        /// </summary>
+        /// <returns>List of Admins.</returns>
+        [HttpGet("admins")]
+        [Produces( "application/json" )]
+        [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.Person>), StatusCodes.Status200OK )]
+        [ProducesResponseType( 404 )]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.Person>>> GetAdmins()
+        {
+            var data = await _bll.PersonService.GetAdmins();
             var res = data.Select(p => _mapper.Map(p)!).ToList();
             return res;
         }
@@ -51,7 +66,7 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<App.DTO.v1.ApiEntities.Person>> GetPerson(Guid id)
         {
-            var person = await _bll.PersonService.FindAsync(id, User.GetUserId());
+            var person = await _bll.PersonService.FindAsync(id);
 
             if (person == null)
             {
@@ -60,7 +75,28 @@ namespace WebApp.ApiControllers
 
             return _mapper.Map(person)!;
         }
+        
+        
+        /// <summary>
+        /// Retrieves a person by User ID.
+        /// </summary>
+        /// <param name="userId">User ID.</param>
+        /// <returns>The requested person.</returns>
+        [HttpGet("user/{userId}")]
+        [ProducesResponseType(typeof(App.DTO.v1.ApiEntities.Person), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<App.DTO.v1.ApiEntities.Person>> GetPersonByUserId(Guid userId)
+        {
+            var person = await _bll.PersonService.FindByUserIdAsync(userId);
 
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map(person)!;
+        }
+        
         
         /// <summary>
         /// Updates an existing person.
@@ -108,6 +144,31 @@ namespace WebApp.ApiControllers
                 version = HttpContext.GetRequestedApiVersion()!.ToString()
             }, person);
         }
+        
+        
+        /// <summary>
+        /// Creates a new person to a user.
+        /// </summary>
+        /// <param name="person">Person data.</param>
+        /// <param name="userId">App user ID</param>
+        /// <returns>The created person with a location header.</returns>
+        [HttpPost("user/{userId}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(App.DTO.v1.ApiEntities.Person), StatusCodes.Status200OK)]
+        public async Task<ActionResult<App.DTO.v1.ApiEntities.Person>> PostPersonToUser(App.DTO.v1.ApiEntities.Person person, Guid userId)
+        {
+            var data = _mapper.Map(person)!;
+            _bll.PersonService.Add(data, userId);
+            await _bll.SaveChangesAsync();
+
+            return CreatedAtAction("GetPerson", new
+            {
+                id = person.Id,
+                version = HttpContext.GetRequestedApiVersion()!.ToString()
+            }, person);
+        }
+        
 
 
         /// <summary>
@@ -119,7 +180,7 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeletePerson(Guid id)
         {
-            await _bll.PersonService.RemoveAsync(id, User.GetUserId());
+            await _bll.PersonService.RemoveAsync(id);
             await _bll.SaveChangesAsync();
             return NoContent();
         }

@@ -33,7 +33,6 @@ namespace WebApp.ApiControllers
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( IEnumerable<App.DTO.v1.ApiEntities.TeamRole>), StatusCodes.Status200OK )]
         [ProducesResponseType( 404 )]
-        [HttpGet]
         public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.TeamRole>>> GetRoles()
         {
             var data = await _bll.TeamRoleService.AllAsync(User.GetUserId());

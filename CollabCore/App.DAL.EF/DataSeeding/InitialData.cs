@@ -6,12 +6,28 @@ public static class InitialData
         Roles =
         [
             ("admin", null),
+            ("user", null),
         ];
 
     public static readonly (string name, string firstName, string lastName, string password, Guid? id, string[] roles)[]
         Users =
         [
-            ("admin@taltech.ee", "admin", "taltech", "Foo.Bar.1", null, ["admin"]),
-            ("user@taltech.ee", "user", "taltech", "Foo.Bar.2", null, []),
+            ("admin@cc.ee", "admin", "collabcore", "Foo.Bar.1", null, ["admin"]),
+        ];
+    
+    
+    public static readonly (string teamRoleName, Guid? id)[]
+        TeamRoles =
+        [
+            ("Worker", null),
+            ("Team Leader", null),
+        ];
+    
+    public static readonly (string statusName, Guid? id)[]
+        Statuses =
+        [
+            ("Assigned", null),
+            ("Completing", null),
+            ("Done", null),
         ];
 }

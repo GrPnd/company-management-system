@@ -1,6 +1,7 @@
 using App.BLL.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using App.DTO.v1.ApiMappers;
+using App.DTO.v1.ApiMappers.EnrichedApiMappers;
 using Asp.Versioning;
 using Base.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +18,7 @@ namespace WebApp.ApiControllers
     {
         private readonly IAppBLL _bll;
         private readonly UserInTeamInTaskApiMapper _mapper = new();
+        private readonly EnrichedUserInTeamInTaskApiMapper _enrichedMapper = new();
 
         /// <inheritdoc />
         public UsersInTeamsInTasksApiController(IAppBLL bll)
@@ -59,6 +61,49 @@ namespace WebApp.ApiControllers
             }
 
             return _mapper.Map(userInTeamInTask)!;
+        }
+        
+        
+        /// <summary>
+        /// Get enriched tasks for a user in a specific team.
+        /// </summary>
+        /// <param name="userId">User identifier.</param>
+        /// <param name="teamId">Team identifier.</param>
+        /// <returns>Enriched user tasks in the team.</returns>
+        [HttpGet("user/{userId}/team/{teamId}")]
+        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.ApiEntities.EnrichedEntities.EnrichedUserInTeamInTask>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.EnrichedEntities.EnrichedUserInTeamInTask>>> GetEnrichedTasksForUserInTeam(Guid userId, Guid teamId)
+        {
+            var res = await _bll.UserInTeamInTaskService.GetEnrichedTasksForUserInTeam(userId, teamId);
+
+            if (res == null || !res.Any())
+            {
+                return NotFound();
+            }
+            
+            return res.Select(e => _enrichedMapper.Map(e)).ToList();
+        }
+        
+        
+        /// <summary>
+        /// Get enriched tasks for a  team.
+        /// </summary>
+        /// <param name="teamId">Team identifier.</param>
+        /// <returns>Enriched user tasks for the team.</returns>
+        [HttpGet("team/{teamId}")]
+        [ProducesResponseType(typeof(IEnumerable<App.DTO.v1.ApiEntities.EnrichedEntities.EnrichedUserInTeamInTask>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<App.DTO.v1.ApiEntities.EnrichedEntities.EnrichedUserInTeamInTask>>> GetEnrichedTasksForTeam(Guid teamId)
+        {
+            var res = await _bll.UserInTeamInTaskService.GetEnrichedTasksForUserInTeam(null, teamId);
+
+            if (res == null || !res.Any())
+            {
+                return NotFound();
+            }
+            
+            return res.Select(e => _enrichedMapper.Map(e)).ToList();
         }
 
         

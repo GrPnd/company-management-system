@@ -17,13 +17,13 @@ namespace WebApp.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Roles
+        // GET: Admin/TeamRoles
         public async Task<IActionResult> Index()
         {
             return View(await _context.Roles.ToListAsync());
         }
 
-        // GET: Admin/Roles/Details/5
+        // GET: Admin/TeamRoles/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -41,13 +41,13 @@ namespace WebApp.Areas.Admin.Controllers
             return View(appRole);
         }
 
-        // GET: Admin/Roles/Create
+        // GET: Admin/TeamRoles/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Roles/Create
+        // POST: Admin/TeamRoles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -64,7 +64,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(appRole);
         }
 
-        // GET: Admin/Roles/Edit/5
+        // GET: Admin/TeamRoles/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -80,7 +80,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(appRole);
         }
 
-        // POST: Admin/Roles/Edit/5
+        // POST: Admin/TeamRoles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -115,7 +115,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(appRole);
         }
 
-        // GET: Admin/Roles/Delete/5
+        // GET: Admin/TeamRoles/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -133,7 +133,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(appRole);
         }
 
-        // POST: Admin/Roles/Delete/5
+        // POST: Admin/TeamRoles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

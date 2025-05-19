@@ -86,7 +86,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FirstName", person.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", person.UserId);
             return View(person);
         }
 

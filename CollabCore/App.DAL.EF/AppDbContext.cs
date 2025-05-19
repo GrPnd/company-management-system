@@ -43,12 +43,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     {
         base.OnModelCreating(builder);
 
-        // remove cascade delete
+        /*remove cascade delete
         foreach (var relationship in builder.Model
                      .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        }
+        }*/
 
         /*
         // TODO - adding primary key to AppUserRole causes issues with RoleManager

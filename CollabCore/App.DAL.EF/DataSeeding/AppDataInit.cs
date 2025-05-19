@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +8,7 @@ namespace App.DAL.EF.DataSeeding;
 
 public static class AppDataInit
 {
-     public static void SeedAppData(AppDbContext context)
+    public static void SeedAppData(AppDbContext context)
     {
     }
 
@@ -20,7 +22,7 @@ public static class AppDataInit
         context.Database.EnsureDeleted();
     }
 
-    public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+    public static void SeedIdentity(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
     {
         foreach (var (roleName, id) in InitialData.Roles)
         {
@@ -37,7 +39,7 @@ public static class AppDataInit
             var result = roleManager.CreateAsync(role).Result;
             if (!result.Succeeded)
             {
-                throw new ApplicationException("TeamRole creation failed!");
+                throw new ApplicationException("Role creation failed!");
             }
         }
 
@@ -61,6 +63,17 @@ public static class AppDataInit
                 {
                     throw new ApplicationException("User creation failed!");
                 }
+
+                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName)).Result;
+                if (!result.Succeeded)
+                {
+                    throw new ApplicationException("Claim adding failed!");
+                }
+                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName)).Result;
+                if (!result.Succeeded)
+                {
+                    throw new ApplicationException("Claim adding failed!");
+                }
             }
 
             foreach (var role in userInfo.roles)
@@ -70,7 +83,7 @@ public static class AppDataInit
                     Console.WriteLine($"User {user.UserName} already in role {role}");
                     continue;
                 }
-                
+
                 var roleResult = userManager.AddToRoleAsync(user, role).Result;
                 if (!roleResult.Succeeded)
                 {
@@ -84,7 +97,50 @@ public static class AppDataInit
                     Console.WriteLine($"User {user.UserName} added to role {role}");
                 }
             }
+            
+
+            var existingPerson = context.Persons.SingleOrDefault(p => p.UserId == user.Id);
+            if (existingPerson == null)
+            {
+                var person = new Person()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
+                    PersonName = "Admin",
+                    CreatedAt = DateTime.Now.ToUniversalTime(),
+                    CreatedBy = "admin@cc.ee"
+                };
+                context.Persons.Add(person);
+                context.SaveChanges();
+            }
+        }
+        
+        foreach (var (teamRoleName, id) in InitialData.TeamRoles)
+        {
+            var teamRole = new TeamRole()
+            {
+                Id = id ?? Guid.NewGuid(),
+                Name = teamRoleName,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "admin@cc.ee"
+            };
+
+            context.TeamRoles.Add(teamRole);
+            context.SaveChanges();
+        }
+        
+        foreach (var (statusName, id) in InitialData.Statuses)
+        {
+            var status = new Status()
+            {
+                Id = id ?? Guid.NewGuid(),
+                Name = statusName,
+                CreatedAt = DateTime.Now.ToUniversalTime(),
+                CreatedBy = "admin@cc.ee"
+            };
+
+            context.Statuses.Add(status);
+            context.SaveChanges();
         }
     }
-   
 }

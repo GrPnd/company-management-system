@@ -98,6 +98,8 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(typeof(App.DTO.v1.ApiEntities.Task), StatusCodes.Status200OK)]
         public async Task<ActionResult<App.DTO.v1.ApiEntities.Task>> PostTask(App.DTO.v1.ApiEntities.Task task)
         {
+            if (task.Id == Guid.Empty) task.Id = Guid.NewGuid();
+            
             var data = _mapper.Map(task)!;
             _bll.TaskService.Add(data);
             await _bll.SaveChangesAsync();
@@ -119,6 +121,21 @@ namespace WebApp.ApiControllers
         public async Task<IActionResult> DeleteTask(Guid id)
         {
             await _bll.TaskService.RemoveAsync(id, User.GetUserId());
+            await _bll.SaveChangesAsync();
+            return NoContent();
+        }
+        
+        
+        /// <summary>
+        /// Deletes a task by ID with UserInTeamInTask relation.
+        /// </summary>
+        /// <param name="taskId">Task ID.</param>
+        /// <returns>No content on success.</returns>
+        [HttpDelete("task/{taskId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteTaskWithRelation(Guid taskId)
+        {
+            await _bll.TaskService.DeleteTaskWithTeamTaskRelation(taskId);
             await _bll.SaveChangesAsync();
             return NoContent();
         }

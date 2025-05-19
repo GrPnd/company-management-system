@@ -1,6 +1,7 @@
 ﻿using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 
 namespace WebApp.ViewModels;
 

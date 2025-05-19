@@ -15,4 +15,10 @@ public class MeetingService : BaseService<App.BLL.DTO.Meeting, App.DAL.DTO.Meeti
         IBLLMapper<DTO.Meeting, Meeting> bllMapper) : base(serviceUOW, serviceUOW.MeetingRepository, bllMapper)
     {
     }
+
+    public async Task<IEnumerable<DTO.Meeting?>> GetTeamMeetings(Guid teamId)
+    {
+        var res = await ServiceRepository.GetTeamMeetings(teamId);
+        return res.Select(u => BLLMapper.Map(u)!);
+    }
 }
