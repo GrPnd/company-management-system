@@ -13,7 +13,6 @@ public class UserInTeamInTaskApiMapper : IApiMapper<ApiEntities.UserInTeamInTask
             Id = entity.Id,
             Since = entity.Since,
             Until = entity.Until,
-            Review = entity.Review,
             TaskId = entity.TaskId,
             UserInTeamId = entity.UserInTeamId
         };
@@ -28,7 +27,6 @@ public class UserInTeamInTaskApiMapper : IApiMapper<ApiEntities.UserInTeamInTask
             Id = entity.Id,
             Since = entity.Since,
             Until = entity.Until,
-            Review = entity.Review,
             TaskId = entity.TaskId,
             UserInTeamId = entity.UserInTeamId
         };

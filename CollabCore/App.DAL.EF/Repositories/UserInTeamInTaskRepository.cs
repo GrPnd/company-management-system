@@ -105,7 +105,6 @@ public class UserInTeamInTaskRepository : BaseRepository<App.DAL.DTO.UserInTeamI
                 Id = link.Id,
                 Since = link.Since,
                 Until = link.Until,
-                Review = link.Review,
                 TaskId = link.TaskId,
                 UserInTeamId = link.UserInTeamId,
                 StatusId = task.StatusId,

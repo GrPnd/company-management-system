@@ -23,11 +23,6 @@
                 <span asp-validation-for="UserInTeamInTask.Until" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserInTeamInTask.Review" class="control-label"></label>
-                <input asp-for="UserInTeamInTask.Review" class="form-control" />
-                <span asp-validation-for="UserInTeamInTask.Review" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="UserInTeamInTask.TaskId" class="control-label"></label>
                 <select asp-for="UserInTeamInTask.TaskId" class="form-control" asp-items="Model.TaskSelectList"></select>
                 <span asp-validation-for="UserInTeamInTask.TaskId" class="text-danger"></span>

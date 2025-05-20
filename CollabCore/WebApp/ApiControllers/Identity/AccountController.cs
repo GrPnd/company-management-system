@@ -252,6 +252,7 @@ public class AccountController : ControllerBase
         int? refreshTokenExpiresInSeconds
     )
     {
+        _logger.LogInformation("RenewRefreshToken called with JWT: {Jwt}, RefreshToken: {RefreshToken}", refreshTokenModel.Jwt, refreshTokenModel.RefreshToken);
         JwtSecurityToken jwtToken;
         // get user info from jwt
         try
@@ -259,11 +260,13 @@ public class AccountController : ControllerBase
             jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(refreshTokenModel.Jwt);
             if (jwtToken == null)
             {
+                _logger.LogWarning("RenewRefreshToken: No token found in input");
                 return BadRequest(new Message("No token"));
             }
         }
         catch (Exception e)
         {
+            _logger.LogWarning("RenewRefreshToken: Cant parse token: {Message}", e.Message);
             return BadRequest(new Message($"Cant parse the token, {e.Message}"));
         }
 
@@ -275,12 +278,14 @@ public class AccountController : ControllerBase
                 _configuration.GetValue<string>(SettingsJWTAudience)!
             ))
         {
+            _logger.LogWarning("RenewRefreshToken: JWT validation failed");
             return BadRequest("JWT validation fail");
         }
 
         var userEmail = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
         if (userEmail == null)
         {
+            _logger.LogWarning("RenewRefreshToken: No email claim found in JWT");
             return BadRequest(new Message("No email in jwt"));
         }
 
@@ -288,40 +293,43 @@ public class AccountController : ControllerBase
         var appUser = await _userManager.FindByEmailAsync(userEmail);
         if (appUser == null)
         {
+            _logger.LogWarning("RenewRefreshToken: User {Email} not found", userEmail);
             return NotFound($"User with email {userEmail} not found");
         }
 
         // load and compare refresh tokens
 
-        await _context.Entry(appUser).Collection(u => u.RefreshTokens!)
+        var validRefreshTokens = await _context.Entry(appUser).Collection(u => u.RefreshTokens!)
             .Query()
             .Where(x =>
                 (x.RefreshToken == refreshTokenModel.RefreshToken && x.Expiration > DateTime.UtcNow) ||
-                (x.PreviousRefreshToken == refreshTokenModel.RefreshToken &&
-                 x.PreviousExpiration > DateTime.UtcNow)
+                (x.PreviousRefreshToken == refreshTokenModel.RefreshToken && x.PreviousExpiration > DateTime.UtcNow)
             )
             .ToListAsync();
 
-        if (appUser.RefreshTokens == null)
+        if (validRefreshTokens == null || validRefreshTokens.Count == 0)
         {
-            return Problem("RefreshTokens collection is null");
+            _logger.LogWarning("RenewRefreshToken: RefreshTokens collection is empty, no valid refresh tokens found");
+            return BadRequest(new Message("Refresh token invalid or expired"));
         }
 
-        if (appUser.RefreshTokens.Count == 0)
+        if (validRefreshTokens.Count != 1)
         {
-            return Problem("RefreshTokens collection is empty, no valid refresh tokens found");
-        }
-
-        if (appUser.RefreshTokens.Count != 1)
-        {
+            _logger.LogWarning("RenewRefreshToken: More than one valid refresh token found");
             return Problem("More than one valid refresh token found.");
         }
+        
 
         // generate new jwt
-
         // get claims based user
         var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
 
+        // Log all claims for debugging
+        foreach (var claim in claimsPrincipal.Claims)
+        {
+            _logger.LogInformation("Claim: {Type} = {Value}", claim.Type, claim.Value);
+        }
+        
         // generate jwt
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
@@ -330,13 +338,16 @@ public class AccountController : ControllerBase
             _configuration.GetValue<string>(SettingsJWTAudience)!,
             GetExpirationDateTime(jwtExpiresInSeconds, SettingsJWTExpiresInSeconds)
         );
+        
+        _logger.LogInformation("RenewRefreshToken: Generated new JWT of length {Length}", jwt?.Length ?? 0);
+        _logger.LogDebug("RenewRefreshToken: JWT token: {Jwt}", jwt);
 
         // make new refresh token, obsolete old ones
-        var refreshToken = appUser.RefreshTokens.First();
+        var refreshToken = validRefreshTokens.First();
         if (refreshToken.RefreshToken == refreshTokenModel.RefreshToken)
         {
             refreshToken.PreviousRefreshToken = refreshToken.RefreshToken;
-            refreshToken.PreviousExpiration = DateTime.UtcNow.AddMinutes(1);
+            refreshToken.PreviousExpiration = refreshToken.Expiration;
 
             refreshToken.RefreshToken = Guid.NewGuid().ToString();
             refreshToken.Expiration =

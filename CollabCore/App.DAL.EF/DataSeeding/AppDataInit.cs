@@ -117,6 +117,9 @@ public static class AppDataInit
         
         foreach (var (teamRoleName, id) in InitialData.TeamRoles)
         {
+            var existing = context.TeamRoles.FirstOrDefault(t => t.Name == teamRoleName);
+            if (existing != null) continue;
+            
             var teamRole = new TeamRole()
             {
                 Id = id ?? Guid.NewGuid(),
@@ -131,6 +134,9 @@ public static class AppDataInit
         
         foreach (var (statusName, id) in InitialData.Statuses)
         {
+            var existing = context.Statuses.FirstOrDefault(t => t.Name == statusName);
+            if (existing != null) continue;
+            
             var status = new Status()
             {
                 Id = id ?? Guid.NewGuid(),

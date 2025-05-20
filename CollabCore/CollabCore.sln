@@ -50,7 +50,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BLL.Contracts", "App.BL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BLL.DTO", "App.BLL.DTO\App.BLL.DTO.csproj", "{37F65FFF-D7E3-4DF0-AD32-FE7F51C3FA5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Test", "App.Test\App.Test.csproj", "{3E3FE05D-CCF9-4E4B-92FC-CA74F6A54969}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Tests", "App.Tests\App.Tests.csproj", "{3E3FE05D-CCF9-4E4B-92FC-CA74F6A54969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

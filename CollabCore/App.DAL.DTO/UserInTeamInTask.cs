@@ -14,11 +14,6 @@ public class UserInTeamInTask : IDomainId
     [Display(Name = nameof(Until), Prompt = nameof(Until), ResourceType = typeof(App.Resources.Domain.UserInTeamInTask))]
     public DateTime? Until { get; set; }
     
-
-    [Display(Name = nameof(Review), Prompt = nameof(Review), ResourceType = typeof(App.Resources.Domain.UserInTeamInTask))]
-    public string? Review { get; set; }
-    
-    
     public Guid TaskId { get; set; }
     [Display(Name = nameof(Task), Prompt = nameof(Task), ResourceType = typeof(App.Resources.Domain.UserInTeamInTask))]
     public Task? Task { get; set; }

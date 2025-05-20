@@ -10,8 +10,6 @@ public class UserInTeamInTask : IDomainId
     
     public DateTime? Until { get; set; }
     
-    public string? Review { get; set; }
-    
     public Guid TaskId { get; set; }
     
     public Guid UserInTeamId { get; set; }
