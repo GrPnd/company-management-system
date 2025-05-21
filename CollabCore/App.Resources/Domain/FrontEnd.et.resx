@@ -419,4 +419,13 @@
     <data name="Yes" xml:space="preserve">
         <value>Jah</value>
     </data>
+    <data name="Worker" xml:space="preserve">
+        <value>Töötaja</value>
+    </data>
+    <data name="Team Leader" xml:space="preserve">
+        <value>Tiimi liider</value>
+    </data>
+    <data name="Team member" xml:space="preserve">
+        <value>Tiimiliige</value>
+    </data>
 </root>

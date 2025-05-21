@@ -1041,11 +1041,29 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team Leader.
+        /// </summary>
+        internal static string Team_Leader {
+            get {
+                return ResourceManager.GetString("Team Leader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team Management.
         /// </summary>
         internal static string Team_Management {
             get {
                 return ResourceManager.GetString("Team Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team member.
+        /// </summary>
+        internal static string Team_member {
+            get {
+                return ResourceManager.GetString("Team member", resourceCulture);
             }
         }
         
@@ -1217,6 +1235,15 @@ namespace App.Resources.Domain {
         internal static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Worker.
+        /// </summary>
+        internal static string Worker {
+            get {
+                return ResourceManager.GetString("Worker", resourceCulture);
             }
         }
         

@@ -8,14 +8,14 @@ using UserInTeamInTask = App.BLL.DTO.UserInTeamInTask;
 
 namespace App.Tests.Unit;
 
-public class UserInTeamInTaskServiceTest
+public class BaseServiceTest
 {
     private readonly Mock<IAppUOW> _uowMock;
     private readonly Mock<IUserInTeamInTaskRepository> _repoMock;
     private readonly Mock<IBLLMapper<UserInTeamInTask, App.DAL.DTO.UserInTeamInTask>> _mapperMock;
-    private readonly UserInTeamInTaskService _service;
+    private readonly UserInTeamInTaskService _baseService;
 
-    public UserInTeamInTaskServiceTest()
+    public BaseServiceTest()
     {
         _repoMock = new Mock<IUserInTeamInTaskRepository>();
         _uowMock = new Mock<IAppUOW>();
@@ -23,7 +23,7 @@ public class UserInTeamInTaskServiceTest
 
         _uowMock.Setup(u => u.UserInTeamInTaskRepository).Returns(_repoMock.Object);
 
-        _service = new UserInTeamInTaskService(_uowMock.Object, _mapperMock.Object);
+        _baseService = new UserInTeamInTaskService(_uowMock.Object, _mapperMock.Object);
     }
 
 
@@ -78,7 +78,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(dalEntities[1])).Returns(bllEntities[1]);
 
         // Act
-        var result = _service.All(userId);
+        var result = _baseService.All(userId);
 
         // Assert
         _repoMock.Verify(r => r.All(userId), Times.Once);
@@ -140,7 +140,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(dalEntities[1])).Returns(bllEntities[1]);
 
         // Act
-        var result = await _service.AllAsync(userId);
+        var result = await _baseService.AllAsync(userId);
 
         // Assert
         _repoMock.Verify(r => r.AllAsync(userId), Times.Once);
@@ -180,7 +180,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(dalEntity)).Returns(bllEntity);
 
         // Act
-        var result = await _service.FindAsync(entityId, userId);
+        var result = await _baseService.FindAsync(entityId, userId);
 
         // Assert
         Assert.NotNull(result);
@@ -201,7 +201,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.FindAsync(entityId, userId)).ReturnsAsync((App.DAL.DTO.UserInTeamInTask?)null);
 
         // Act
-        var result = await _service.FindAsync(entityId, userId);
+        var result = await _baseService.FindAsync(entityId, userId);
 
         // Assert
         Assert.Null(result);
@@ -235,7 +235,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(bllEntity)).Returns(dalEntity);
 
         // Act
-        _service.Add(bllEntity, userId);
+        _baseService.Add(bllEntity, userId);
 
         // Assert
         _mapperMock.Verify(m => m.Map(bllEntity), Times.Once);
@@ -272,7 +272,7 @@ public class UserInTeamInTaskServiceTest
 
 
         // Act
-        _service.Add(bllEntity, userId);
+        _baseService.Add(bllEntity, userId);
 
 
         // Assert
@@ -286,7 +286,7 @@ public class UserInTeamInTaskServiceTest
 
 
         // Act
-        var foundEntity = await _service.FindAsync(entityId, userId);
+        var foundEntity = await _baseService.FindAsync(entityId, userId);
 
 
         // Assert
@@ -326,7 +326,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(dalEntity)).Returns(bllEntity);
 
         // Act
-        var res = await _service.UpdateAsync(bllEntity, userId);
+        var res = await _baseService.UpdateAsync(bllEntity, userId);
 
         // Assert
         Assert.NotNull(res);
@@ -363,7 +363,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.Add(initialDalEntity, userId));
 
         // Act
-        _service.Add(initialBllEntity, userId);
+        _baseService.Add(initialBllEntity, userId);
 
         // Assert
         _mapperMock.Verify(m => m.Map(initialBllEntity), Times.Once);
@@ -392,7 +392,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.UpdateAsync(dalEntity, userId)).ReturnsAsync(dalEntity);
 
         // Act
-        var res = await _service.UpdateAsync(newBllEntity, userId);
+        var res = await _baseService.UpdateAsync(newBllEntity, userId);
 
         // Assert
         Assert.NotNull(res);
@@ -417,7 +417,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.Find(entityId, userId)).Returns((App.DAL.DTO.UserInTeamInTask?)null);
 
         // Act
-        _service.Remove(entityId, userId);
+        _baseService.Remove(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.Find(entityId, userId), Times.Once);
@@ -445,7 +445,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.RemoveAsync(entityId, userId)).Returns(Task.CompletedTask);
 
         // Act
-        await _service.RemoveAsync(entityId, userId);
+        await _baseService.RemoveAsync(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.FindAsync(entityId, userId), Times.Once);
@@ -462,7 +462,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.FindAsync(entityId, userId)).ReturnsAsync((App.DAL.DTO.UserInTeamInTask?)null);
 
         // Act
-        await _service.RemoveAsync(entityId, userId);
+        await _baseService.RemoveAsync(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.FindAsync(entityId, userId), Times.Once);
@@ -488,7 +488,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.Find(entityId, userId)).Returns(dalEntity);
 
         // Act
-        var result = _service.Exists(entityId, userId);
+        var result = _baseService.Exists(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.Find(entityId, userId), Times.Once);
@@ -505,7 +505,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.FindAsync(entityId, userId)).ReturnsAsync((App.DAL.DTO.UserInTeamInTask?)null);
 
         // Act
-        var result = await _service.ExistsAsync(entityId, userId);
+        var result = await _baseService.ExistsAsync(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.FindAsync(entityId, userId), Times.Once);
@@ -541,7 +541,7 @@ public class UserInTeamInTaskServiceTest
         _repoMock.Setup(r => r.Add(dalEntity, userId));
 
         // Act
-        _service.Add(bllEntity, userId);
+        _baseService.Add(bllEntity, userId);
 
         // Assert
         _mapperMock.Verify(m => m.Map(bllEntity), Times.Once);
@@ -556,7 +556,7 @@ public class UserInTeamInTaskServiceTest
         _mapperMock.Setup(m => m.Map(dalEntity)).Returns(bllEntity);
 
         // Act
-        var foundEntity = await _service.FindAsync(entityId, userId);
+        var foundEntity = await _baseService.FindAsync(entityId, userId);
 
         // Assert
         Assert.NotNull(foundEntity);
@@ -577,14 +577,14 @@ public class UserInTeamInTaskServiceTest
             .Callback(() => isRemoved = true);
 
         // Act
-        _service.Remove(entityId, userId);
+        _baseService.Remove(entityId, userId);
 
         // Assert
         _repoMock.Verify(r => r.Remove(It.IsAny<App.DAL.DTO.UserInTeamInTask>(), userId), Times.Once);
 
 
         // Act
-        var foundEntityAfterRemoval = await _service.FindAsync(entityId, userId);
+        var foundEntityAfterRemoval = await _baseService.FindAsync(entityId, userId);
 
         // Assert
         Assert.Null(foundEntityAfterRemoval);

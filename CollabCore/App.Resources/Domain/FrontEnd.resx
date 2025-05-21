@@ -427,4 +427,13 @@
     <data name="No" xml:space="preserve">
         <value>No</value>
     </data>
+    <data name="Worker" xml:space="preserve">
+        <value>Worker</value>
+    </data>
+    <data name="Team Leader" xml:space="preserve">
+        <value>Team Leader</value>
+    </data>
+    <data name="Team member" xml:space="preserve">
+        <value>Team member</value>
+    </data>
 </root>
