@@ -213,6 +213,24 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        internal static string Change_password {
+            get {
+                return ResourceManager.GetString("Change password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm New Password.
+        /// </summary>
+        internal static string Confirm_New_Password {
+            get {
+                return ResourceManager.GetString("Confirm New Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         internal static string Create {
@@ -290,6 +308,15 @@ namespace App.Resources.Domain {
         internal static string Create_Person_in_Team {
             get {
                 return ResourceManager.GetString("Create Person in Team", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Password.
+        /// </summary>
+        internal static string Current_Password {
+            get {
+                return ResourceManager.GetString("Current Password", resourceCulture);
             }
         }
         
@@ -740,6 +767,15 @@ namespace App.Resources.Domain {
         internal static string Name {
             get {
                 return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Password.
+        /// </summary>
+        internal static string New_Password {
+            get {
+                return ResourceManager.GetString("New Password", resourceCulture);
             }
         }
         

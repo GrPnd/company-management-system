@@ -428,4 +428,16 @@
     <data name="Team member" xml:space="preserve">
         <value>Tiimiliige</value>
     </data>
+    <data name="Change password" xml:space="preserve">
+        <value>Muuda salasõna</value>
+    </data>
+    <data name="Current Password" xml:space="preserve">
+        <value>Hetkene salasõna</value>
+    </data>
+    <data name="New Password" xml:space="preserve">
+        <value>Uus salasõna</value>
+    </data>
+    <data name="Confirm New Password" xml:space="preserve">
+        <value>Kinnita uus salasõna</value>
+    </data>
 </root>

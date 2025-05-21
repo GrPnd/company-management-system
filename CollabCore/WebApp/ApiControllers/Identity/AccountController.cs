@@ -1,9 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using App.DAL.EF;
 using App.Domain.Identity;
-using App.DTO.v1;
 using App.DTO.v1.Identity;
 using Asp.Versioning;
 using Base.Helpers;
@@ -137,6 +135,7 @@ public class AccountController : ControllerBase
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
+            Email = appUser.Email,
             UserId = appUser.Id,
             Roles = roles
         };
@@ -220,6 +219,7 @@ public class AccountController : ControllerBase
                 {
                     JWT = jwt,
                     RefreshToken = refreshToken.RefreshToken,
+                    Email = appUser.Email,
                     UserId = appUser.Id,
                     Roles = roles
                 });
@@ -307,7 +307,7 @@ public class AccountController : ControllerBase
             )
             .ToListAsync();
 
-        if (validRefreshTokens == null || validRefreshTokens.Count == 0)
+        if (validRefreshTokens.Count == 0)
         {
             _logger.LogWarning("RenewRefreshToken: RefreshTokens collection is empty, no valid refresh tokens found");
             return BadRequest(new Message("Refresh token invalid or expired"));
@@ -355,11 +355,12 @@ public class AccountController : ControllerBase
 
             await _context.SaveChangesAsync();
         }
-
+        
         var res = new JWTResponse()
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
+            Email = appUser.Email,
             UserId = appUser.Id
         };
 
@@ -414,5 +415,96 @@ public class AccountController : ControllerBase
             : _configuration.GetValue<int>(settingsKey);
 
         return DateTime.UtcNow.AddSeconds(expiresInSeconds ?? 60);
+    }
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPut]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Message>> UpdateProfile([FromBody] UpdateUserProfile dto)
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null) return NotFound(new Message("User not found"));
+
+        if (dto.Address != null)
+        {
+            user.Address = dto.Address;
+        }
+        
+        if (dto.PhoneNumber != null)
+        {
+            user.PhoneNumber = dto.PhoneNumber;
+        }
+        
+        if (dto.AdditionalInfo != null)
+        {
+            user.AdditionalInfo = dto.AdditionalInfo;
+        }
+        
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(new Message
+            {
+                Messages = result.Errors.Select(e => e.Description).ToList()
+            });
+        }
+
+        return Ok(new Message("Profile updated successfully"));
+    }
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpGet]
+    [ProducesResponseType(typeof(UpdateUserProfile), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UpdateUserProfile>> GetProfile()
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null)
+            return NotFound(new Message("User not found"));
+
+        var profile = new UpdateUserProfile
+        {
+            Address = user.Address,
+            PhoneNumber = user.PhoneNumber,
+            AdditionalInfo = user.AdditionalInfo
+        };
+
+        return Ok(profile);
+    }
+    
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Message>> ChangePassword([FromBody] ChangePassword model)
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null)
+        {
+            return BadRequest(new Message("User not found."));
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(new Message
+            {
+                Messages = result.Errors.Select(e => e.Description).ToList()
+            });
+        }
+
+        return Ok(new Message("Password changed successfully."));
     }
 }

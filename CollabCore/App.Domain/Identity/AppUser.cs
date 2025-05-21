@@ -16,6 +16,11 @@ public class AppUser : BaseUser<AppUserRole>
     [Required]
     public string LastName { get; set; } = default!;
     
+    [MaxLength(64)]
+    public string Address { get; set; } = default!;
+    
+    [MaxLength(128)]
+    public string? AdditionalInfo { get; set; }
     
     public ICollection<Person>? Persons { get; set; }
     public ICollection<AppRefreshToken>? RefreshTokens { get; set; }
