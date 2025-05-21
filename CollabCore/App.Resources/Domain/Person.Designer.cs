@@ -67,5 +67,23 @@ namespace App.Resources.Domain {
                 return ResourceManager.GetString(".PersonLayout", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        public static string _Person {
+            get {
+                return ResourceManager.GetString(".Person", resourceCulture);
+            }
+        }
     }
 }

@@ -24,4 +24,7 @@
     <data name=".DepartmentLayout" xml:space="preserve">
         <value>Departments</value>
     </data>
+    <data name=".Department" xml:space="preserve">
+        <value>Department</value>
+    </data>
 </root>

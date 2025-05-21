@@ -20,13 +20,13 @@
     <data name="StartDate" xml:space="preserve">
         <value>Alguskuupäev</value>
     </data>
-    <data name="Link" xml:space="preserve">
-        <value>Link</value>
-    </data>
     <data name="Team" xml:space="preserve">
         <value>Tiim</value>
     </data>
     <data name=".MeetingLayOut" xml:space="preserve">
         <value>Kohtumised</value>
+    </data>
+    <data name=".Meeting" xml:space="preserve">
+        <value>Kohtumine</value>
     </data>
 </root>

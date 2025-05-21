@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team.
+        /// </summary>
+        public static string _Team {
+            get {
+                return ResourceManager.GetString(".Team", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teams.
         /// </summary>
         public static string _TeamLayout {

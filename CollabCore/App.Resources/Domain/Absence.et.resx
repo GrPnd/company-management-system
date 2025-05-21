@@ -32,4 +32,7 @@
     <data name=".AbsenceLayout" xml:space="preserve">
         <value>Puudumised</value>
     </data>
+    <data name=".Absence" xml:space="preserve">
+        <value>Puudumine</value>
+    </data>
 </root>

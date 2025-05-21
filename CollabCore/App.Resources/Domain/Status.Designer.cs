@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string _Status {
+            get {
+                return ResourceManager.GetString(".Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statuses.
         /// </summary>
         public static string _StatusLayout {

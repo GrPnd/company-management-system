@@ -23,4 +23,7 @@
     <data name=".MessageLayout" xml:space="preserve">
         <value>Sõnumid</value>
     </data>
+    <data name=".Message" xml:space="preserve">
+        <value>Sõnum</value>
+    </data>
 </root>

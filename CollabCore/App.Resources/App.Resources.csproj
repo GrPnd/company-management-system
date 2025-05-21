@@ -91,6 +91,14 @@
       <EmbeddedResource Update="Domain\UserInTeamInTask.et.resx">
         <DependentUpon>UserInTeamInTask.resx</DependentUpon>
       </EmbeddedResource>
+      <EmbeddedResource Update="Domain\FrontEnd.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>FrontEnd.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Domain\Home.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Home.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -153,6 +161,16 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>UserInTeamInTask.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\FrontEnd.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>FrontEnd.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Domain\Home.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Home.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

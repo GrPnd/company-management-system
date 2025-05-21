@@ -20,4 +20,7 @@
     <data name=".TeamLayout" xml:space="preserve">
         <value>Tiimid</value>
     </data>
+    <data name=".Team" xml:space="preserve">
+        <value>Tiim</value>
+    </data>
 </root>

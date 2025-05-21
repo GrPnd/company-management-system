@@ -29,4 +29,7 @@
     <data name="User" xml:space="preserve">
         <value>Kasutaja</value>
     </data>
+    <data name=".UserInTeam" xml:space="preserve">
+        <value>Kasutaja tiimis</value>
+    </data>
 </root>

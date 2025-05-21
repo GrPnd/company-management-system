@@ -23,4 +23,85 @@
     <data name="DeletedAt" xml:space="preserve">
         <value>Kustutatud</value>
     </data>
+    <data name="Home" xml:space="preserve">
+        <value>Koduleht</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Logi sisse</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Registreeri</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Tere</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logi välja</value>
+    </data>
+    <data name="Index" xml:space="preserve">
+        <value>Pealeht</value>
+    </data>
+    <data name="CreateNew" xml:space="preserve">
+        <value>Loo uus</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Muuda</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Detailid</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Kustuta</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Loo</value>
+    </data>
+    <data name="BackToList" xml:space="preserve">
+        <value>Tagasi pealehele</value>
+    </data>
+    <data name="DeleteConfirm" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada seda?</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Salvesta</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Keel</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
+    <data name="ChangeAccountSettings" xml:space="preserve">
+        <value>Muuda oma konto andmeid</value>
+    </data>
+    <data name="ManageAccount" xml:space="preserve">
+        <value>Halda oma kasutajat</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profiil</value>
+    </data>
+    <data name="TwoFactor" xml:space="preserve">
+        <value>Kahefaktoriline autentimine</value>
+    </data>
+    <data name="PhoneNumber" xml:space="preserve">
+        <value>Telefoninumber</value>
+    </data>
+    <data name="PersonalData" xml:space="preserve">
+        <value>Isiklikud andmed</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Parool</value>
+    </data>
+    <data name="ChangePassword" xml:space="preserve">
+        <value>Muuda salasõna</value>
+    </data>
+    <data name="AppUsers" xml:space="preserve">
+        <value>Äpi kasutajad</value>
+    </data>
+    <data name="AppRoles" xml:space="preserve">
+        <value>Äpi rollid</value>
+    </data>
+    <data name="UserRoles" xml:space="preserve">
+        <value>Kasutaja rollid</value>
+    </data>
 </root>

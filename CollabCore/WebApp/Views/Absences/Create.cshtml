@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>@Base.Resources.Common.Create</h1>
 
-<h4>Absence</h4>
+<h4>@App.Resources.Domain.Absence._Absence</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,26 +29,26 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Absence.IsApproved" /> @Html.DisplayNameFor(model => model.Absence.IsApproved)
+                    <input class="form-check-input" asp-for="Absence.IsApproved"/>@Html.DisplayNameFor(model => model.Absence.IsApproved)
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="Absence.ByUserId" class="control-label"></label>
+                <label asp-for="Absence.ByUserId" class="control-label">@Html.DisplayNameFor(model => model.Absence.ByUser)</label>
                 <select asp-for="Absence.ByUserId" class ="form-control" asp-items="Model.ByUserSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Absence.AuthorizedByUserId" class="control-label"></label>
+                <label asp-for="Absence.AuthorizedByUserId" class="control-label">@Html.DisplayNameFor(model => model.Absence.AuthorizedByUser)</label>
                 <select asp-for="Absence.AuthorizedByUserId" class ="form-control" asp-items="Model.AuthorizedByUserSelectList"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Base.Resources.Common.Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Base.Resources.Common.BackToList</a>
 </div>
 
 @section Scripts {

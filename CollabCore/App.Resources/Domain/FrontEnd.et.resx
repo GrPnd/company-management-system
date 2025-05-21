@@ -1,0 +1,422 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Dashboard" xml:space="preserve">
+        <value>Töölaud</value>
+    </data>
+    <data name="You are not in any teams!" xml:space="preserve">
+        <value>Sa pole üheskis tiimis!</value>
+    </data>
+    <data name="My Absences" xml:space="preserve">
+        <value>Minu puudumised</value>
+    </data>
+    <data name="Tasks" xml:space="preserve">
+        <value>Ülesanded</value>
+    </data>
+    <data name="Tickets" xml:space="preserve">
+        <value>Kaebused</value>
+    </data>
+    <data name="Absences" xml:space="preserve">
+        <value>Puudumised</value>
+    </data>
+    <data name="Messages" xml:space="preserve">
+        <value>Sõnumid</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Logi sisse</value>
+    </data>
+    <data name="Register" xml:space="preserve">
+        <value>Registreeri</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logi välja</value>
+    </data>
+    <data name="No tasks remaining!" xml:space="preserve">
+        <value>Kõik ülesanded on tehtud!</value>
+    </data>
+    <data name="My Tasks" xml:space="preserve">
+        <value>Minu ülesaned</value>
+    </data>
+    <data name="My Tickets" xml:space="preserve">
+        <value>Minu kaebused</value>
+    </data>
+    <data name="My Messages" xml:space="preserve">
+        <value>Minu sõnumid</value>
+    </data>
+    <data name="Send a new message" xml:space="preserve">
+        <value>Saada uus sõnum</value>
+    </data>
+    <data name="Write a ticket" xml:space="preserve">
+        <value>Koosta kaebus</value>
+    </data>
+    <data name="Request a absence" xml:space="preserve">
+        <value>Taotle eemalviibimine</value>
+    </data>
+    <data name="You dont have/havent sent any messages!" xml:space="preserve">
+        <value>Sul pole või pole saatnud ühtegi sõnumit!</value>
+    </data>
+    <data name="Team" xml:space="preserve">
+        <value>Tiim</value>
+    </data>
+    <data name="Details" xml:space="preserve">
+        <value>Detailid</value>
+    </data>
+    <data name="My Account" xml:space="preserve">
+        <value>Minu konto</value>
+    </data>
+    <data name="My Career" xml:space="preserve">
+        <value>Minu karjäär</value>
+    </data>
+    <data name="User Management" xml:space="preserve">
+        <value>Kasutajate haldus</value>
+    </data>
+    <data name="Users" xml:space="preserve">
+        <value>Kasutajad</value>
+    </data>
+    <data name="Persons" xml:space="preserve">
+        <value>Isikud</value>
+    </data>
+    <data name="Teams" xml:space="preserve">
+        <value>Tiimid</value>
+    </data>
+    <data name="Team Management" xml:space="preserve">
+        <value>Tiimide haldus</value>
+    </data>
+    <data name="Departments" xml:space="preserve">
+        <value>Osakonnad</value>
+    </data>
+    <data name="Persons In Teams" xml:space="preserve">
+        <value>Isikud tiimides</value>
+    </data>
+    <data name="Create new Person" xml:space="preserve">
+        <value>Loo uus isik</value>
+    </data>
+    <data name="Create new Team" xml:space="preserve">
+        <value>Loo uus tiim</value>
+    </data>
+    <data name="Currently there are no teams!" xml:space="preserve">
+        <value>Hetkel pole olemas ühtegi tiimi!</value>
+    </data>
+    <data name="Create Person in Team" xml:space="preserve">
+        <value>Loo uus isik tiimi</value>
+    </data>
+    <data name="Currently there are no users in teams!" xml:space="preserve">
+        <value>Hetkel pole ühtegi isikut tiimis!</value>
+    </data>
+    <data name="Team Role" xml:space="preserve">
+        <value>Roll tiimis</value>
+    </data>
+    <data name="Manage Absences/Tickets" xml:space="preserve">
+        <value>Halda eemalviibimisi/kaebusid</value>
+    </data>
+    <data name="No absences have been requested!" xml:space="preserve">
+        <value>Ühtegi eemalviibimist pole esitatud!</value>
+    </data>
+    <data name="Absence Requests" xml:space="preserve">
+        <value>Eemalviibimise taotlused</value>
+    </data>
+    <data name="My Teams" xml:space="preserve">
+        <value>Minu tiimid</value>
+    </data>
+    <data name="Upcoming Meetings" xml:space="preserve">
+        <value>Tulevased kohtumised</value>
+    </data>
+    <data name="No meetings are upcoming!" xml:space="preserve">
+        <value>Ühtegi kohtumist pole tulekul!</value>
+    </data>
+    <data name="You are the only member!" xml:space="preserve">
+        <value>Sa oled ainuke tiimi liige!</value>
+    </data>
+    <data name="Team Members" xml:space="preserve">
+        <value>Tiimi liikmed</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Muuda</value>
+    </data>
+    <data name="Save" xml:space="preserve">
+        <value>Salvesta</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Kustuta</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Tühista</value>
+    </data>
+    <data name="Create a new Meeting" xml:space="preserve">
+        <value>Loo uus koosolek</value>
+    </data>
+    <data name="Starts" xml:space="preserve">
+        <value>Algab</value>
+    </data>
+    <data name="Mandatory" xml:space="preserve">
+        <value>Kohustuslik</value>
+    </data>
+    <data name="Actions" xml:space="preserve">
+        <value>Tegevused</value>
+    </data>
+    <data name="Manage Tasks" xml:space="preserve">
+        <value>Halda ülesaneid</value>
+    </data>
+    <data name="Manage Meetings" xml:space="preserve">
+        <value>Halda koosolekuid</value>
+    </data>
+    <data name="Tickets/Absences" xml:space="preserve">
+        <value>Kaebused/Eemalviibimised</value>
+    </data>
+    <data name="Is Mandatory" xml:space="preserve">
+        <value>On kohustuslik</value>
+    </data>
+    <data name="Start Date" xml:space="preserve">
+        <value>Alguskuupäev</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nimi</value>
+    </data>
+    <data name="Are you sure you want to delete this meeting?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle koosoleku?</value>
+    </data>
+    <data name="No teams" xml:space="preserve">
+        <value>Pole ühtegi tiimi</value>
+    </data>
+    <data name="No tickets have been sent to you!" xml:space="preserve">
+        <value>Sulle pole saadetud ühtegi kaebust!</value>
+    </data>
+    <data name="By" xml:space="preserve">
+        <value>Poolt</value>
+    </data>
+    <data name="Manage Absence Request" xml:space="preserve">
+        <value>Halda eemalviibiste taotlusi</value>
+    </data>
+    <data name="Approved" xml:space="preserve">
+        <value>Kinnitatud</value>
+    </data>
+    <data name="You havent written any tickets!" xml:space="preserve">
+        <value>Sa pole saatnud ühtegi kaebust!</value>
+    </data>
+    <data name="To" xml:space="preserve">
+        <value>Kellele</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+        <value>Pealkiri</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+        <value>Kirjeldus</value>
+    </data>
+    <data name="This field is required!" xml:space="preserve">
+        <value>See väli on kohustuslik!</value>
+    </data>
+    <data name="Send to" xml:space="preserve">
+        <value>Saada</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Staatus</value>
+    </data>
+    <data name="Update Status" xml:space="preserve">
+        <value>Uuenda staatust</value>
+    </data>
+    <data name="Update Status for" xml:space="preserve">
+        <value>Uuenda staatust</value>
+    </data>
+    <data name="Create a new Task" xml:space="preserve">
+        <value>Loo uus ülesanne</value>
+    </data>
+    <data name="Manage Task" xml:space="preserve">
+        <value>Halda ülesannet</value>
+    </data>
+    <data name="Deadline" xml:space="preserve">
+        <value>Tähtaeg</value>
+    </data>
+    <data name="Manage users" xml:space="preserve">
+        <value>Halda kasutajaid</value>
+    </data>
+    <data name="Add users to ask" xml:space="preserve">
+        <value>Lisa kasutajaid ülesandele</value>
+    </data>
+    <data name="Select a member" xml:space="preserve">
+        <value>Vali tiimi liige</value>
+    </data>
+    <data name="Assign to" xml:space="preserve">
+        <value>Määra</value>
+    </data>
+    <data name="Create a Ticket" xml:space="preserve">
+        <value>Loo kaebus</value>
+    </data>
+    <data name="First Name" xml:space="preserve">
+        <value>Eesnimi</value>
+    </data>
+    <data name="Required!" xml:space="preserve">
+        <value>Kohustuslik</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>Loo kasutaja</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Salasõna</value>
+    </data>
+    <data name="Last Name" xml:space="preserve">
+        <value>Perekonnanimi</value>
+    </data>
+    <data name="Registred successfully" xml:space="preserve">
+        <value>Registreeritud edukalt. Palun oota, et administraator valideerikus sinu kasutaja! :)</value>
+    </data>
+    <data name="From" xml:space="preserve">
+        <value>Kellelt</value>
+    </data>
+    <data name="Delete Message" xml:space="preserve">
+        <value>Kustuta sõnum</value>
+    </data>
+    <data name="Are you sure you want to delete this message?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle sõnumi?</value>
+    </data>
+    <data name="Text message" xml:space="preserve">
+        <value>Sõnum</value>
+    </data>
+    <data name="Team Name" xml:space="preserve">
+        <value>Tiimi nimi</value>
+    </data>
+    <data name="Team Role Name" xml:space="preserve">
+        <value>Roll tiimis</value>
+    </data>
+    <data name="In the team since" xml:space="preserve">
+        <value>Tiimis alates</value>
+    </data>
+    <data name="In the team until" xml:space="preserve">
+        <value>Tiimis kuni</value>
+    </data>
+    <data name="Edit Person in Team" xml:space="preserve">
+        <value>Halda isikut tiimis</value>
+    </data>
+    <data name="User" xml:space="preserve">
+        <value>Kasutaja</value>
+    </data>
+    <data name="Since" xml:space="preserve">
+        <value>Alates</value>
+    </data>
+    <data name="Until" xml:space="preserve">
+        <value>Kuni</value>
+    </data>
+    <data name="Optional" xml:space="preserve">
+        <value>Valikuline</value>
+    </data>
+    <data name="Person" xml:space="preserve">
+        <value>Isik</value>
+    </data>
+    <data name="Are you sure you want to delete this user in team?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle kasutaja tiimis?</value>
+    </data>
+    <data name="Delete User in Team" xml:space="preserve">
+        <value>Kustuta isik tiimis</value>
+    </data>
+    <data name="Edit Team" xml:space="preserve">
+        <value>Halda tiimi</value>
+    </data>
+    <data name="Department" xml:space="preserve">
+        <value>Osakond</value>
+    </data>
+    <data name="Are you sure you want to delete team?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle tiimi?</value>
+    </data>
+    <data name="Delete Team" xml:space="preserve">
+        <value>Kustuta tiim</value>
+    </data>
+    <data name="Edit Person" xml:space="preserve">
+        <value>Halda isikut</value>
+    </data>
+    <data name="Delete Person" xml:space="preserve">
+        <value>Kustuta isik</value>
+    </data>
+    <data name="Are you sure you want to delete this person?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle isiku?</value>
+    </data>
+    <data name="Create a new Department" xml:space="preserve">
+        <value>Loo uus osakond</value>
+    </data>
+    <data name="Currently there are no departments!" xml:space="preserve">
+        <value>Hetkel pole ühtegi osakonda!</value>
+    </data>
+    <data name="Edit Department" xml:space="preserve">
+        <value>Halda osakonda</value>
+    </data>
+    <data name="Delete Department" xml:space="preserve">
+        <value>Kustuta osakond</value>
+    </data>
+    <data name="Are you sure you want to delete this department?" xml:space="preserve">
+        <value>Oled sa kindel, et soovid kustutada selle osakonna?</value>
+    </data>
+    <data name="App Users" xml:space="preserve">
+        <value>Äpi kasutajad</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value>Telefon</value>
+    </data>
+    <data name="Address" xml:space="preserve">
+        <value>Aadress</value>
+    </data>
+    <data name="Additional info" xml:space="preserve">
+        <value>Lisainfo</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+        <value>Kuupäev</value>
+    </data>
+    <data name="Reasoning" xml:space="preserve">
+        <value>Põhjus</value>
+    </data>
+    <data name="Reason" xml:space="preserve">
+        <value>Põhjus</value>
+    </data>
+    <data name="End Date" xml:space="preserve">
+        <value>Lõppkuupäev</value>
+    </data>
+    <data name="Department Name" xml:space="preserve">
+        <value>Osakonna nimi</value>
+    </data>
+    <data name="Select a department" xml:space="preserve">
+        <value>Vali osakond</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+        <value>Uuenda</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Loo</value>
+    </data>
+    <data name="Send" xml:space="preserve">
+        <value>Saada</value>
+    </data>
+    <data name="Message content" xml:space="preserve">
+        <value>Sõnumi sisu</value>
+    </data>
+    <data name="Select User" xml:space="preserve">
+        <value>Vali kasutaja</value>
+    </data>
+    <data name="Select Team" xml:space="preserve">
+        <value>Vali tiim</value>
+    </data>
+    <data name="Select Team Role" xml:space="preserve">
+        <value>Vali tiimi roll</value>
+    </data>
+    <data name="Edit Meeting" xml:space="preserve">
+        <value>Halda koosolekut</value>
+    </data>
+    <data name="Delete Meeting" xml:space="preserve">
+        <value>Kustuta koosolek</value>
+    </data>
+    <data name="No" xml:space="preserve">
+        <value>Ei</value>
+    </data>
+    <data name="You havent requested any absences!" xml:space="preserve">
+        <value>Sa pole taotlenud ühtegi eemalviibimist!</value>
+    </data>
+    <data name="Yes" xml:space="preserve">
+        <value>Jah</value>
+    </data>
+</root>

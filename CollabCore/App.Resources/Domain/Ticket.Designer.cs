@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ticket.
+        /// </summary>
+        public static string _Ticket {
+            get {
+                return ResourceManager.GetString(".Ticket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tickets.
         /// </summary>
         public static string _TicketLayout {

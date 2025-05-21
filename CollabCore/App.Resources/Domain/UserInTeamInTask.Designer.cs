@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User in Team in Task.
+        /// </summary>
+        public static string _UserInTeamInTask {
+            get {
+                return ResourceManager.GetString(".UserInTeamInTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users in Teams in Tasks.
         /// </summary>
         public static string _UserInTeamInTaskLayout {

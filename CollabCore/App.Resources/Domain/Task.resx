@@ -39,4 +39,7 @@
     <data name="UserInTeam" xml:space="preserve">
         <value>User in team</value>
     </data>
+    <data name=".Task" xml:space="preserve">
+        <value>Task</value>
+    </data>
 </root>

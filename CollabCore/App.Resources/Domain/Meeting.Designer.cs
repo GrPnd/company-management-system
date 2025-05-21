@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meeting.
+        /// </summary>
+        public static string _Meeting {
+            get {
+                return ResourceManager.GetString(".Meeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meetings.
         /// </summary>
         public static string _MeetingLayOut {
@@ -74,15 +83,6 @@ namespace App.Resources.Domain {
         public static string IsMandatory {
             get {
                 return ResourceManager.GetString("IsMandatory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link.
-        /// </summary>
-        public static string Link {
-            get {
-                return ResourceManager.GetString("Link", resourceCulture);
             }
         }
         

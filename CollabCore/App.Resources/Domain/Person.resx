@@ -21,4 +21,13 @@
     <data name=".PersonLayout" xml:space="preserve">
         <value>Persons</value>
     </data>
+    <data name="_Person" xml:space="preserve">
+        <value>Person</value>
+    </data>
+    <data name="PersonName" xml:space="preserve">
+        <value>Person Name</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
 </root>

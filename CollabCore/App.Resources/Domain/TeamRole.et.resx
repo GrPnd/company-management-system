@@ -17,4 +17,7 @@
     <data name="Name" xml:space="preserve">
         <value>Nimetus</value>
     </data>
+    <data name=".TeamRole" xml:space="preserve">
+        <value>Tiimi roll</value>
+    </data>
 </root>

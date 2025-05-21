@@ -95,30 +95,36 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            return View(person);
+            var users = await _userManager.Users.ToListAsync();
+            var vm = new PersonViewModel()
+            {
+                UsersSelectList = new SelectList(users, "Id", "UserName"),
+                Person = person
+            };
+            return View(vm);
         }
 
         // POST: Persons/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Person entity)
+        public async Task<IActionResult> Edit(Guid id, PersonViewModel vm)
         {
-            if (id != entity.Id)
+            if (id != vm.Person.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _bll.PersonService.Update(entity);
+                _bll.PersonService.Update(vm.Person);
                 await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(entity);
-
+            var users = await _userManager.Users.ToListAsync();
+            vm.UsersSelectList = new SelectList(users, "Id", "UserName", vm.Person.Id);
+            return View(vm);
         }
 
         // GET: Persons/Delete/5

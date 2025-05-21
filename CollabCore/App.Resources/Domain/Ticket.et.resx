@@ -26,4 +26,7 @@
     <data name=".TicketLayout" xml:space="preserve">
         <value>Kaebused</value>
     </data>
+    <data name=".Ticket" xml:space="preserve">
+        <value>Kaebus</value>
+    </data>
 </root>

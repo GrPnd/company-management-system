@@ -39,4 +39,7 @@
     <data name=".AbsenceLayout" xml:space="preserve">
         <value>Absences</value>
     </data>
+    <data name=".Absence" xml:space="preserve">
+        <value>Absence</value>
+    </data>
 </root>

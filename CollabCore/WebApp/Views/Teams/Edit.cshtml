@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>@Base.Resources.Common.Edit</h1>
 
-<h4>Team</h4>
+<h4>@App.Resources.Domain.Team._Team</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,20 +18,20 @@
                 <span asp-validation-for="Team.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Team.DepartmentId" class="control-label"></label>
+                <label asp-for="Team.DepartmentId" class="control-label">@Html.DisplayNameFor(model => model.Team.Department)</label>
                 <select asp-for="Team.DepartmentId" class="form-control" asp-items="Model.DepartmentsSelectList"></select>
                 <span asp-validation-for="Team.DepartmentId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Team.Id" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="@Base.Resources.Common.Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Base.Resources.Common.BackToList</a>
 </div>
 
 @section Scripts {

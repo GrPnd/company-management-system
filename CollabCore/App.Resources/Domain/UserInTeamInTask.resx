@@ -36,4 +36,7 @@
     <data name="UserInTeam" xml:space="preserve">
         <value>User in Team</value>
     </data>
+    <data name=".UserInTeamInTask" xml:space="preserve">
+        <value>User in Team in Task</value>
+    </data>
 </root>

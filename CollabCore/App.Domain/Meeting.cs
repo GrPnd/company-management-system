@@ -19,7 +19,6 @@ public class Meeting : BaseEntity
     
     
     [MaxLength(128, ErrorMessageResourceType = typeof(Base.Resources.Common), ErrorMessageResourceName = "MaxLength")]
-    [Display(Name = nameof(Link), Prompt = nameof(Link), ResourceType = typeof(App.Resources.Domain.Meeting))]
     public string Link { get; set; } = default!;
     
     

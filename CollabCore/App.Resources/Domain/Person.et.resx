@@ -12,6 +12,15 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name=".PersonLayout" xml:space="preserve">
-        <value>Persoonid</value>
+        <value>Isikud</value>
+    </data>
+    <data name="_Person" xml:space="preserve">
+        <value>Isik</value>
+    </data>
+    <data name="PersonName" xml:space="preserve">
+        <value>Isiku nimi</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nimi</value>
     </data>
 </root>

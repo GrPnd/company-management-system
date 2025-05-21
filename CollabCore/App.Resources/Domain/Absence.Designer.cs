@@ -60,6 +60,15 @@ namespace App.Resources.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Absence.
+        /// </summary>
+        public static string _Absence {
+            get {
+                return ResourceManager.GetString(".Absence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Absences.
         /// </summary>
         public static string _AbsenceLayout {

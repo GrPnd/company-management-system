@@ -17,4 +17,7 @@
     <data name=".DepartmentLayout" xml:space="preserve">
         <value>Osakonnad</value>
     </data>
+    <data name=".Department" xml:space="preserve">
+        <value>Osakond</value>
+    </data>
 </root>

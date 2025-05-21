@@ -17,4 +17,7 @@
     <data name="Name" xml:space="preserve">
         <value>Nimetus</value>
     </data>
+    <data name=".Status" xml:space="preserve">
+        <value>Staatus</value>
+    </data>
 </root>

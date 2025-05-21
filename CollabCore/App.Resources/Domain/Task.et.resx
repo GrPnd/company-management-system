@@ -32,4 +32,7 @@
     <data name="Deadline" xml:space="preserve">
         <value>Tähtaeg</value>
     </data>
+    <data name=".Task" xml:space="preserve">
+        <value>Ülesanne</value>
+    </data>
 </root>

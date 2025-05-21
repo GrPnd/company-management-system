@@ -27,4 +27,7 @@
     <data name="Department" xml:space="preserve">
         <value>Department</value>
     </data>
+    <data name=".Team" xml:space="preserve">
+        <value>Team</value>
+    </data>
 </root>

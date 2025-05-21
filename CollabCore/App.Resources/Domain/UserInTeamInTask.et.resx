@@ -29,4 +29,7 @@
     <data name="UserInTeam" xml:space="preserve">
         <value>Kasutaja tiimis</value>
     </data>
+    <data name=".UserInTeamInTask" xml:space="preserve">
+        <value>Kasutaja tiimi ülesandes</value>
+    </data>
 </root>
