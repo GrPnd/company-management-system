@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
 
 namespace App.Domain.Identity;
 
@@ -17,7 +16,7 @@ public class AppUser : BaseUser<AppUserRole>
     public string LastName { get; set; } = default!;
     
     [MaxLength(64)]
-    public string Address { get; set; } = default!;
+    public string? Address { get; set; }
     
     [MaxLength(128)]
     public string? AdditionalInfo { get; set; }

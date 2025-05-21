@@ -30,8 +30,7 @@ public class UserInTeamService : BaseService<App.BLL.DTO.UserInTeam, App.DAL.DTO
         
         if (teamLeaderRoleId == null)
         {
-            Console.WriteLine("Team Leader role not found.");
-            return Enumerable.Empty<App.BLL.DTO.UserInTeam>();
+            return [];
         }
         
         var allData = await ServiceRepository.AllAsync();

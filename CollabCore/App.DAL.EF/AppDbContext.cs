@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Task = App.Domain.Task;
+
 
 namespace App.DAL.EF;
 
@@ -19,7 +19,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     public DbSet<Message> Messages { get; set; } = default!;
     public DbSet<TeamRole> TeamRoles { get; set; } = default!;
     public DbSet<Status> Statuses { get; set; } = default!;
-    public DbSet<Task> Tasks { get; set; } = default!;
+    public DbSet<Domain.Task> Tasks { get; set; } = default!;
     public DbSet<Team> Teams { get; set; } = default!;
     public DbSet<Ticket> Tickets { get; set; } = default!;
     public DbSet<Person> Persons { get; set; } = default!;
@@ -39,22 +39,6 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, IdentityUs
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        /*remove cascade delete
-        foreach (var relationship in builder.Model
-                     .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-        {
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        }*/
-
-        /*
-        // TODO - adding primary key to AppUserRole causes issues with RoleManager
-        // We have custom UserRole - with separate PK and navigation for TeamRole and User
-        // override default Identity EF config
-        builder.Entity<AppUserRole>().HasKey(a => new { a.UserId, a.RoleId });
-        builder.Entity<AppUserRole>().HasAlternateKey(a => a.Id);
-        builder.Entity<AppUserRole>().HasIndex(a => new { a.UserId, a.RoleId }).IsUnique();
-        */
 
         builder.Entity<AppUserRole>()
             .HasOne(a => a.User)

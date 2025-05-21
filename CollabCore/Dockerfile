@@ -26,7 +26,7 @@ COPY App.DAL.EF/*.csproj ./App.DAL.EF/
 COPY App.DTO/*.csproj ./App.DTO/
 COPY App.Domain/*.csproj ./App.Domain/
 COPY App.Resources/*.csproj ./App.Resources/
-COPY App.Test/*.csproj ./App.Test/
+COPY App.Tests/*.csproj ./App.Tests/
 
 COPY WebApp/*.csproj ./WebApp/
 
@@ -54,7 +54,7 @@ COPY App.DAL.EF/. ./App.DAL.EF/
 COPY App.DTO/. ./App.DTO/
 COPY App.Domain/. ./App.Domain/
 COPY App.Resources/. ./App.Resources/
-COPY App.Test/. ./App.Test/
+COPY App.Tests/. ./App.Tests/
 
 COPY WebApp/. ./WebApp/
 

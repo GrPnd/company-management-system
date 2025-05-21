@@ -3,8 +3,6 @@ using App.DAL.Contracts;
 using App.DAL.DTO;
 using Base.BLL;
 using Base.BLL.Contracts;
-using Base.DAL.Contracts;
-using Task = System.Threading.Tasks.Task;
 
 namespace App.BLL.Services;
 

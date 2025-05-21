@@ -1,9 +1,7 @@
 ﻿using App.BLL.Contracts.Services;
-using App.BLL.DTO;
 using App.DAL.Contracts;
 using Base.BLL;
 using Base.BLL.Contracts;
-using Base.DAL.Contracts;
 using Meeting = App.DAL.DTO.Meeting;
 
 namespace App.BLL.Services;

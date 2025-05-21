@@ -1,6 +1,5 @@
 ﻿using App.DAL.DTO;
 using Base.DAL.Contracts;
-using Task = System.Threading.Tasks.Task;
 
 namespace App.DAL.EF.Mappers;
 

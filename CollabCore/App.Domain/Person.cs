@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Domain.Identity;
-using Base.Contracts;
 using Base.Domain;
 
 namespace App.Domain;

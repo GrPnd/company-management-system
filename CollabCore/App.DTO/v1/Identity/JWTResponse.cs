@@ -6,6 +6,6 @@ public class JWTResponse
     public string RefreshToken { get; set; } = default!;
     public string Email { get; set; } = default!;
     
-    public Guid UserId { get; set; } = default!;
+    public Guid UserId { get; set; }
     public IEnumerable<string> Roles { get; set; } = new List<string>();
 }

@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: collabcorebase
     ports:
-      - "5432:5432"  # Makes the DB accessible from the host
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +23,7 @@ services:
     container_name: collabcore-webapp
     depends_on:
       db:
-        condition: service_healthy  # Wait for DB to be healthy before starting
+        condition: service_healthy
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=collabcorebase;Username=postgres;Password=postgres
     ports:

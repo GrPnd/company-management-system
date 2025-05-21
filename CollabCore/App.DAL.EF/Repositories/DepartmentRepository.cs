@@ -1,6 +1,5 @@
 ﻿using App.DAL.Contracts.Repositories;
 using App.DAL.EF.Mappers;
-using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,13 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Base.Domain;
-using DateTime = System.DateTime;
 
 namespace App.Domain;
 
 public class UserInTeam : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Display(Name = nameof(Since), Prompt = nameof(Since), ResourceType = typeof(App.Resources.Domain.UserInTeam))]
     public DateTime Since { get; set; }
     

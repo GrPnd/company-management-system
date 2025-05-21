@@ -5,7 +5,6 @@ namespace App.DAL.Contracts.Repositories;
 
 public interface IUserInTeamInTaskRepository: IBaseRepository<App.DAL.DTO.UserInTeamInTask>, IUserInTeamInTaskRepositoryCustom
 {
-    
 }
 
 public interface IUserInTeamInTaskRepositoryCustom

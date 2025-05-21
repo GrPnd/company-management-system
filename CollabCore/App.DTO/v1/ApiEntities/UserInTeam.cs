@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Base.Contracts;
+﻿using Base.Contracts;
 
 namespace App.DTO.v1.ApiEntities;
 

@@ -29,7 +29,7 @@ public class UserInTeamInTaskRepository : BaseRepository<App.DAL.DTO.UserInTeamI
                 .FirstOrDefaultAsync(uit => uit.UserId == userId && uit.TeamId == teamId);
 
             if (userInTeam == null)
-                return Enumerable.Empty<App.DAL.DTO.Enriched.DAL.DTO.EnrichedUserInTeamInTask>();
+                return [];
         }
 
         
@@ -98,7 +98,7 @@ public class UserInTeamInTaskRepository : BaseRepository<App.DAL.DTO.UserInTeamI
                     return participant?.User?.PersonName;
                 })
                 .Where(name => !string.IsNullOrWhiteSpace(name))
-                .ToList()!;
+                .ToList();
 
             enrichedTasks.Add(new EnrichedUserInTeamInTask
             {

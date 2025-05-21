@@ -1,5 +1,4 @@
-﻿using App.DAL.Contracts.Repositories;
-using Base.BLL.Contracts;
+﻿using Base.BLL.Contracts;
 
 namespace App.BLL.Contracts.Services;
 

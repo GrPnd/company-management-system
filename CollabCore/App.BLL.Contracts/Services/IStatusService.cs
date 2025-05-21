@@ -4,5 +4,4 @@ namespace App.BLL.Contracts.Services;
 
 public interface IStatusService: IBaseService<App.BLL.DTO.Status>
 {
-    
 }

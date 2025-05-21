@@ -1,9 +1,7 @@
 ﻿using App.DAL.Contracts.Repositories;
 using App.DAL.EF.Mappers;
-using App.Domain;
 using Base.DAL.EF;
 using Microsoft.EntityFrameworkCore;
-using Message = App.DAL.DTO.Message;
 
 namespace App.DAL.EF.Repositories;
 

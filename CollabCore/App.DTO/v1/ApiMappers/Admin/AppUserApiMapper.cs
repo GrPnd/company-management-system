@@ -21,9 +21,9 @@ public class AppUserApiMapper
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Email = dto.Email,
-            UserName = dto.Email, // optional: Identity requires UserName
-            NormalizedUserName = dto.Email.ToUpperInvariant(), // optional
-            NormalizedEmail = dto.Email.ToUpperInvariant()     // optional
+            UserName = dto.Email,
+            NormalizedUserName = dto.Email.ToUpperInvariant(),
+            NormalizedEmail = dto.Email.ToUpperInvariant()
         };
     }
 }
