@@ -27,9 +27,14 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=collabcorebase;Username=postgres;Password=postgres
     ports:
-      - "5000:80"  # Maps container port 80 to host port 5000
+      - "5000:8888"
     networks:
       - default
 
 volumes:
   pgdata:
+    
+networks:
+  default:
+    external:
+      name: collabcore-network

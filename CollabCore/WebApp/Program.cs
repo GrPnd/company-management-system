@@ -164,6 +164,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen();
 
+
+builder.WebHost.UseUrls("http://0.0.0.0:8888");
+
 // ===============================================================================
 var app = builder.Build();
 // ===============================================================================

@@ -330,6 +330,13 @@ public class AccountController : ControllerBase
             _logger.LogInformation("Claim: {Type} = {Value}", claim.Type, claim.Value);
         }
         
+        var roles = await _userManager.GetRolesAsync(appUser);
+        var identity = (ClaimsIdentity)claimsPrincipal.Identity!;
+        foreach (var role in roles)
+        {
+            identity.AddClaim(new Claim(ClaimTypes.Role, role));
+        }
+        
         // generate jwt
         var jwt = IdentityExtensions.GenerateJwt(
             claimsPrincipal.Claims,
@@ -361,6 +368,7 @@ public class AccountController : ControllerBase
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
             Email = appUser.Email,
+            Roles = roles,
             UserId = appUser.Id
         };
 
