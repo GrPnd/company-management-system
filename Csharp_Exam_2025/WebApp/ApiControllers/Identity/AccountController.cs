@@ -135,8 +135,11 @@ public class AccountController : ControllerBase
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
-            Email = appUser.Email,
             UserId = appUser.Id,
+            Email = appUser.Email,
+            FirstName = appUser.FirstName,
+            LastName = appUser.LastName,
+            UserName = appUser.UserName,
             Roles = roles
         };
 
@@ -197,6 +200,7 @@ public class AccountController : ControllerBase
 
                 await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.GivenName, appUser.FirstName));
                 await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Surname, appUser.LastName));
+                await _userManager.AddClaimAsync(appUser, new Claim(ClaimTypes.Name, appUser.UserName));
 
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser);
                 
@@ -219,11 +223,13 @@ public class AccountController : ControllerBase
                 {
                     JWT = jwt,
                     RefreshToken = refreshToken.RefreshToken,
-                    Email = appUser.Email,
                     UserId = appUser.Id,
+                    Email = appUser.Email,
+                    FirstName = appUser.FirstName,
+                    LastName = appUser.LastName,
+                    UserName = appUser.UserName,
                     Roles = roles
                 });
-
         }
 
         var errors = result.Errors.Select(error => error.Description).ToList();
@@ -367,9 +373,12 @@ public class AccountController : ControllerBase
         {
             JWT = jwt,
             RefreshToken = refreshToken.RefreshToken,
+            UserId = appUser.Id,
             Email = appUser.Email,
-            Roles = roles,
-            UserId = appUser.Id
+            FirstName = appUser.FirstName,
+            LastName = appUser.LastName,
+            UserName = appUser.UserName,
+            Roles = roles
         };
 
         return Ok(res);
@@ -423,5 +432,96 @@ public class AccountController : ControllerBase
             : _configuration.GetValue<int>(settingsKey);
 
         return DateTime.UtcNow.AddSeconds(expiresInSeconds ?? 60);
+    }
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPut]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    public async Task<ActionResult<Message>> UpdateProfile([FromBody] UpdateUserProfile dto)
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null) return NotFound(new Message("User not found"));
+
+        if (dto.Address != null)
+        {
+            user.Address = dto.Address;
+        }
+        
+        if (dto.PhoneNumber != null)
+        {
+            user.PhoneNumber = dto.PhoneNumber;
+        }
+        
+        if (dto.AdditionalInfo != null)
+        {
+            user.AdditionalInfo = dto.AdditionalInfo;
+        }
+        
+        var result = await _userManager.UpdateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(new Message
+            {
+                Messages = result.Errors.Select(e => e.Description).ToList()
+            });
+        }
+
+        return Ok(new Message("Profile updated successfully"));
+    }
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpGet]
+    [ProducesResponseType(typeof(UpdateUserProfile), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UpdateUserProfile>> GetProfile()
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null)
+            return NotFound(new Message("User not found"));
+
+        var profile = new UpdateUserProfile
+        {
+            Address = user.Address,
+            PhoneNumber = user.PhoneNumber,
+            AdditionalInfo = user.AdditionalInfo
+        };
+
+        return Ok(profile);
+    }
+    
+    
+    
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Message), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Message>> ChangePassword([FromBody] ChangePassword model)
+    {
+        var userId = User.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        if (user == null)
+        {
+            return BadRequest(new Message("User not found."));
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(new Message
+            {
+                Messages = result.Errors.Select(e => e.Description).ToList()
+            });
+        }
+
+        return Ok(new Message("Password changed successfully."));
     }
 }

@@ -1,4 +1,4 @@
-@model WebApp.Models.PersonViewModel
+@model App.DAL.DTO.Team
 
 @{
     ViewData["Title"] = "Create";
@@ -6,20 +6,16 @@
 
 <h1>Create</h1>
 
-<h4>Person</h4>
+<h4>Team</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Person.PersonName" class="control-label"></label>
-                <input asp-for="Person.PersonName" class="form-control" />
-                <span asp-validation-for="Person.PersonName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Person.Id" class="control-label"></label>
-                <select asp-for="Person.Id" class ="form-control" asp-items="Model.UsersSelectList"></select>
+                <label asp-for="TeamName" class="control-label"></label>
+                <input asp-for="TeamName" class="form-control" />
+                <span asp-validation-for="TeamName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -1,5 +1,3 @@
-using System.Security.Claims;
-using App.Domain;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +20,7 @@ public static class AppDataInit
         context.Database.EnsureDeleted();
     }
 
-    public static void SeedIdentity(AppDbContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+    public static void SeedIdentity(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
     {
         foreach (var (roleName, id) in InitialData.Roles)
         {
@@ -63,17 +61,6 @@ public static class AppDataInit
                 {
                     throw new ApplicationException("User creation failed!");
                 }
-
-                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName)).Result;
-                if (!result.Succeeded)
-                {
-                    throw new ApplicationException("Claim adding failed!");
-                }
-                result = userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName)).Result;
-                if (!result.Succeeded)
-                {
-                    throw new ApplicationException("Claim adding failed!");
-                }
             }
 
             foreach (var role in userInfo.roles)
@@ -96,21 +83,6 @@ public static class AppDataInit
                 {
                     Console.WriteLine($"User {user.UserName} added to role {role}");
                 }
-            }
-            
-
-            //var existingPerson = context.Persons.SingleOrDefault(p => p.UserId == user.Id);
-            var existingPerson = context.Persons.FirstOrDefault(p => p.UserId == user.Id);
-            if (existingPerson == null)
-            {
-                var person = new Person()
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.Id,
-                    PersonName = "Admin",
-                };
-                context.Persons.Add(person);
-                context.SaveChanges();
             }
         }
     }

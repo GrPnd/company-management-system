@@ -14,4 +14,15 @@ public class AppUOW : BaseUow<AppDbContext>, IAppUOW
     
     private IPersonRepository? _personRepository;
     public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(UowDbContext);
+    
+    
+    private ITeamRepository? _teamRepository;
+    public ITeamRepository TeamRepository =>
+        _teamRepository ??= new TeamRepository(UowDbContext);
+    
+    
+    private IUserInTeamRepository? _userInTeamRepository;
+    public IUserInTeamRepository UserInTeamRepository =>
+        _userInTeamRepository ??= new UserInTeamRepository(UowDbContext);
+
 }

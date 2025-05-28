@@ -6,4 +6,6 @@ namespace App.DAL.Contracts;
 public interface IAppUOW : IBaseUOW
 {
     IPersonRepository PersonRepository { get; }
+    ITeamRepository TeamRepository { get; }
+    IUserInTeamRepository UserInTeamRepository { get; }
 }

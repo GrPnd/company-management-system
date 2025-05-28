@@ -1,24 +1,25 @@
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-
 using App.DAL.Contracts;
 using App.DAL.EF;
 using App.DAL.EF.DataSeeding;
+using App.DAL.EF.Repositories;
 using App.Domain.Identity;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Base.Contracts;
+using Base.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp;
-
-
+using WebApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+// used for older style [Column(TypeName = "jsonb")] for LangStr
+#pragma warning disable CS0618 // Type or member is obsolete
+NpgsqlConnection.GlobalTypeMapper.EnableDynamicJson();
+#pragma warning restore CS0618 // Type or member is obsolete
+
+Console.WriteLine(builder.Environment.EnvironmentName);
 
 if (builder.Environment.IsProduction())
 {
@@ -62,12 +69,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddScoped<IAppUOW, AppUOW>();
-//builder.Services.AddScoped<IAppBLL, AppBLL>();
+//builder.Services.AddScoped<IAppBLL, AppBll>();
 
 
-
-builder.Services.AddIdentity<AppUser, AppRole>(options =>
-            options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<AppUser, AppRole>(o =>
+        o.SignIn.RequireConfirmedAccount = false)
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
@@ -79,29 +85,33 @@ builder.Services
     .AddAuthentication()
     .AddCookie(options => { options.SlidingExpiration = true; })
     .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        //options.SaveToken = false;
-        options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = builder.Configuration["JWTSecurity:Issuer"],
-            ValidAudience = builder.Configuration["JWTSecurity:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["JWTSecurity:Key"]!)),
-            ClockSkew = TimeSpan.Zero
-        };
-    });
+            options.RequireHttpsMetadata = false;
+            //options.SaveToken = false;
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidIssuer = builder.Configuration["JWTSecurity:Issuer"],
+                ValidAudience = builder.Configuration["JWTSecurity:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["JWTSecurity:Key"]!)),
+                ClockSkew = TimeSpan.Zero
+            };
+        }
+    );
+
 
 /*
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddDefaultIdentity<AppUser>(
+    options => options.SignIn.RequireConfirmedAccount = false)
+.AddEntityFrameworkStores<AppDbContext>();
 */
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddScoped<IUserNameResolver, UserNameResolver>();
+builder.Services.AddScoped<IUserNameResolver, UserNameResolver>();
 
 // add culture switching support
+
 var supportedCultures = builder.Configuration
     .GetSection("SupportedCultures")
     .GetChildren()
@@ -116,7 +126,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures = supportedCultures;
     // if nothing is found, use this
     options.DefaultRequestCulture =
-        new RequestCulture(builder.Configuration["DefaultCulture"]!, 
+        new RequestCulture(
+            builder.Configuration["DefaultCulture"]!,
             builder.Configuration["DefaultCulture"]!);
     options.SetDefaultCulture(builder.Configuration["DefaultCulture"]!);
 
@@ -163,13 +174,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 builder.Services.AddSwaggerGen();
 
-
-//builder.WebHost.UseUrls("http://0.0.0.0:8888");
-
-// ===============================================================================
+// ========================================================================
 var app = builder.Build();
-// ===============================================================================
-
+// ========================================================================
 
 // Migrate db, seed initial data...
 SetupAppData(app, app.Environment, app.Configuration);
@@ -184,9 +191,7 @@ else
     app.UseExceptionHandler("/Home/Error");
 }
 
-app.UseHttpsRedirection();
-
-app.UseRequestLocalization(options: app.Services.GetService<IOptions<RequestLocalizationOptions>>()!.Value!);
+app.UseRequestLocalization(options: app.Services.GetService<IOptions<RequestLocalizationOptions>>()!.Value);
 
 app.UseRouting();
 
@@ -194,18 +199,20 @@ app.UseCors("CorsAllowAll");
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
-{
-    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
-    foreach ( var description in provider.ApiVersionDescriptions )
     {
-        options.SwaggerEndpoint(
-            $"/swagger/{description.GroupName}/swagger.json",
-            description.GroupName.ToUpperInvariant()
-        );
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var description in provider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint(
+                $"/swagger/{description.GroupName}/swagger.json",
+                description.GroupName.ToUpperInvariant()
+            );
+        }
+        // serve from root
+        // options.RoutePrefix = string.Empty;
     }
-    // serve from root
-    // options.RoutePrefix = string.Empty;
-});
+);
+
 
 app.UseAuthorization();
 
@@ -215,6 +222,7 @@ app.MapControllerRoute(
         name: "areas",
         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 
 app.MapControllerRoute(
         name: "default",
@@ -268,7 +276,7 @@ static void SetupAppData(IApplicationBuilder app, IWebHostEnvironment env, IConf
     if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))
     {
         logger.LogInformation("SeedIdentity");
-        AppDataInit.SeedIdentity(context, userManager, roleManager);
+        AppDataInit.SeedIdentity(userManager, roleManager);
     }
 
     if (configuration.GetValue<bool>("DataInitialization:SeedData"))

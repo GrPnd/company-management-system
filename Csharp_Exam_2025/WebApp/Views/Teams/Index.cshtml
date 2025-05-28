@@ -1,7 +1,7 @@
-@model IEnumerable<App.DAL.DTO.Person>
+@model IEnumerable<App.DAL.DTO.Team>
 
 @{
-ViewData["Title"] = "Persons";
+    ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
@@ -13,21 +13,16 @@ ViewData["Title"] = "Persons";
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.PersonName)
+            @Html.DisplayNameFor(model => model.TeamName)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PersonName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.TeamName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

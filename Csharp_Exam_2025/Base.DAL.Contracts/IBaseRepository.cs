@@ -18,6 +18,7 @@ public interface IBaseRepository<TEntity, TKey>
     Task<TEntity?> FindAsync(TKey id, TKey? userId = default!);
 
     void Add(TEntity entity, TKey? userId = default!);
+    Task AddAsync(TEntity entity, TKey? userId = default!);
 
     TEntity? Update(TEntity entity, TKey? userId = default!);
     Task<TEntity?> UpdateAsync(TEntity entity, TKey? userId = default!);

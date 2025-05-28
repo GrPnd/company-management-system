@@ -2,7 +2,7 @@
 
 namespace App.DAL.Contracts.Repositories;
 
-public interface IPersonRepository : IBaseRepository<App.DAL.DTO.Person>
+public interface IUserInTeamRepository : IBaseRepository<App.DAL.DTO.UserInTeam>
 {
     
 }

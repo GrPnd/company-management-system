@@ -31,8 +31,10 @@ namespace App.DAL.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    LastName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Address = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    AdditionalInfo = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -54,6 +56,23 @@ namespace App.DAL.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TeamName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -71,7 +90,7 @@ namespace App.DAL.EF.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,7 +111,7 @@ namespace App.DAL.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,7 +131,7 @@ namespace App.DAL.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,13 +150,13 @@ namespace App.DAL.EF.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,7 +176,7 @@ namespace App.DAL.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,6 +185,11 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     PersonName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -176,7 +200,7 @@ namespace App.DAL.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,6 +209,11 @@ namespace App.DAL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
                     RefreshToken = table.Column<string>(type: "text", nullable: false),
                     Expiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PreviousRefreshToken = table.Column<string>(type: "text", nullable: true),
@@ -198,7 +227,37 @@ namespace App.DAL.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersInTeams",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedBy = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
+                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    SysNotes = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersInTeams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsersInTeams_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UsersInTeams_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -247,6 +306,16 @@ namespace App.DAL.EF.Migrations
                 name: "IX_RefreshTokens_UserId",
                 table: "RefreshTokens",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersInTeams_TeamId",
+                table: "UsersInTeams",
+                column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersInTeams_UserId",
+                table: "UsersInTeams",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -274,10 +343,16 @@ namespace App.DAL.EF.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
+                name: "UsersInTeams");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Teams");
         }
     }
 }
